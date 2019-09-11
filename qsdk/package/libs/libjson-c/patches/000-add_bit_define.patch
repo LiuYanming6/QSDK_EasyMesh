@@ -1,0 +1,55 @@
+diff -Naur json-c-0.13/arraylist.c json-c-0.13-modify/arraylist.c
+--- json-c-0.13/arraylist.c	2017-11-30 12:41:30.000000000 +0800
++++ json-c-0.13-modify/arraylist.c	2018-07-05 15:09:05.324675475 +0800
+@@ -34,6 +34,7 @@
+ #endif
+ #endif
+ 
++#include "bits.h"
+ #include "arraylist.h"
+ 
+ struct array_list*
+diff -Naur json-c-0.13/json.h json-c-0.13-modify/json.h
+--- json-c-0.13/json.h	2017-12-06 12:53:57.000000000 +0800
++++ json-c-0.13-modify/json.h	2018-07-05 15:09:05.324675475 +0800
+@@ -21,6 +21,7 @@
+ extern "C" {
+ #endif
+ 
++#include "bits.h"	
+ #include "debug.h"
+ #include "linkhash.h"
+ #include "arraylist.h"
+diff -Naur json-c-0.13/json_tokener.c json-c-0.13-modify/json_tokener.c
+--- json-c-0.13/json_tokener.c	2017-12-05 22:16:50.000000000 +0800
++++ json-c-0.13-modify/json_tokener.c	2018-07-05 15:09:05.324675475 +0800
+@@ -24,6 +24,7 @@
+ #include <string.h>
+ #include <limits.h>
+ 
++#include "bits.h"
+ #include "debug.h"
+ #include "printbuf.h"
+ #include "arraylist.h"
+diff -Naur json-c-0.13/json_util.c json-c-0.13-modify/json_util.c
+--- json-c-0.13/json_util.c	2017-11-30 12:41:30.000000000 +0800
++++ json-c-0.13-modify/json_util.c	2018-07-05 15:09:05.324675475 +0800
+@@ -54,6 +54,7 @@
+ 
+ #include "snprintf_compat.h"
+ 
++#include "bits.h"
+ #include "debug.h"
+ #include "printbuf.h"
+ #include "json_inttypes.h"
+diff -Naur json-c-0.13/printbuf.c json-c-0.13-modify/printbuf.c
+--- json-c-0.13/printbuf.c	2017-11-30 12:41:30.000000000 +0800
++++ json-c-0.13-modify/printbuf.c	2018-07-05 15:09:05.325675463 +0800
+@@ -25,6 +25,7 @@
+ # error Not enough var arg support!
+ #endif /* HAVE_STDARG_H */
+ 
++#include "bits.h"
+ #include "debug.h"
+ #include "printbuf.h"
+ #include "snprintf_compat.h"
