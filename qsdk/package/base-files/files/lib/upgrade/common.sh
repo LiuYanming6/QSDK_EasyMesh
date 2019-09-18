@@ -199,7 +199,8 @@ get_magic_word() {
 }
 
 get_magic_long() {
-	(get_image "$@" | dd bs=4 count=1 | hexdump -v -n 4 -e '1/1 "%02x"') 2>/dev/null
+#	(get_image "$@" | dd bs=4 count=1 | hexdump -v -n 4 -e '1/1 "%02x"') 2>/dev/null
+	(hexdump -s 1507328 -v -n 4 -e '1/1 "%02x"' "$@") 2>/dev/null
 }
 
 jffs2_copy_config() {
