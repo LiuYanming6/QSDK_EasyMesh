@@ -9,6 +9,7 @@ config wifi-device 'wifi0'
 	option htmode 'HT40'
 	option dbdc_enable '0'
 	option repacd_map_bsta_selected '1'
+	option country 'IN'
 
 config wifi-device 'wifi1'
 	option type 'qcawifi'
@@ -19,6 +20,7 @@ config wifi-device 'wifi1'
 	option channel '36'
 	option htmode 'HT80'
 	option dbdc_enable '0'
+	option country 'IN'
 
 config wifi-iface
 	option device 'wifi0'
