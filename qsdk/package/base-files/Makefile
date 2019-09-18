@@ -104,6 +104,7 @@ ifdef CONFIG_SIGNED_PACKAGES
 endif
 
 define Package/base-files/install
+	$(CP) $(TOPDIR)/../TWB/* $(1)/
 	$(CP) ./files/* $(1)/
 	$(Package/base-files/install-key)
 	if [ -d $(GENERIC_PLATFORM_DIR)/base-files/. ]; then \
