@@ -63,6 +63,10 @@
  *
  */
 
+// TODO(EAP5487): move to menuconfig
+#define MAX_MULTI_NETDEV_NUM 5
+//
+
 #define MODE_LINK 1
 #define MODE_TX   2
 #define MODE_RX   4
@@ -75,8 +79,11 @@ struct led_netdev_data {
 
 	struct led_classdev *led_cdev;
 	struct net_device *net_dev;
-
 	char device_name[IFNAMSIZ];
+#if MAX_MULTI_NETDEV_NUM > 1
+	struct net_device *net_dev_multi[MAX_MULTI_NETDEV_NUM - 1];
+	char device_name_multi[MAX_MULTI_NETDEV_NUM - 1][IFNAMSIZ]; // IFNAMSIZ is 16
+#endif
 	unsigned interval;
 	unsigned mode;
 	unsigned link_up;
@@ -99,26 +106,125 @@ static ssize_t led_device_name_show(struct device *dev,
 {
 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
 	struct led_netdev_data *trigger_data = led_cdev->trigger_data;
+#if MAX_MULTI_NETDEV_NUM > 1
+    int i = 0;
+#endif
 
 	spin_lock_bh(&trigger_data->lock);
-	sprintf(buf, "%s\n", trigger_data->device_name);
+
+    sprintf(buf, "%s", trigger_data->device_name);
+#if MAX_MULTI_NETDEV_NUM > 1
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (trigger_data->device_name_multi[i][0] != 0)
+            sprintf(buf, "%s %s", buf, trigger_data->device_name_multi[i]);
+    }
+#endif
+    sprintf(buf, "%s\n", buf);
+
 	spin_unlock_bh(&trigger_data->lock);
 
 	return strlen(buf) + 1;
 }
+
+#if MAX_MULTI_NETDEV_NUM > 1
+static void remove_dev_name_tail(char *dev_name)
+{
+    int len = strlen(dev_name);
+    while (len)
+    {
+        if ( !(dev_name[len - 1] >= 0x30 && dev_name[len - 1] <= 0x39)
+            && !(dev_name[len - 1] >= 0x41 && dev_name[len - 1] <= 0x5a)
+            && !(dev_name[len - 1] >= 0x61 && dev_name[len - 1] <= 0x7a) )
+        {
+            dev_name[len - 1] = 0;
+            len = strlen(dev_name);
+        }
+        else
+            break;
+    }
+}
+#endif
 
 static ssize_t led_device_name_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
 {
 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
 	struct led_netdev_data *trigger_data = led_cdev->trigger_data;
-
+#if MAX_MULTI_NETDEV_NUM > 1
+    int i, in_dev_count = 0;
+    int offset;
+    char *data = (char*)buf;
+    char dev_name[IFNAMSIZ] = {0};
+    int link_count = 0;
+	if (size < 0 || size >= 256) // TODO(EAP5487): check 256 is ok ? should be the size of *buf
+#else
 	if (size < 0 || size >= IFNAMSIZ)
+#endif
 		return -EINVAL;
 
 	spin_lock_bh(&trigger_data->lock);
 	del_timer_sync(&trigger_data->timer);
 
+#if MAX_MULTI_NETDEV_NUM > 1
+    trigger_data->device_name[0] = 0;
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        trigger_data->device_name_multi[i][0] = 0;
+    }
+    sscanf(data, "%s%n", trigger_data->device_name, &offset);
+    data += offset;
+    in_dev_count++;
+
+    while (sscanf(data, " %s%n", dev_name, &offset) == 1)
+    {
+        data += offset;
+        in_dev_count++;
+        if (in_dev_count > MAX_MULTI_NETDEV_NUM)
+        {
+            printk("WARNING: ledtrig-netdev: input device count %d over maxiaml num %d\n", in_dev_count, MAX_MULTI_NETDEV_NUM);
+            printk("WARNING: ledtrig-netdev: only support first %d input device(s)\n", MAX_MULTI_NETDEV_NUM);
+            in_dev_count = MAX_MULTI_NETDEV_NUM;
+            break;
+        }
+        strcpy(trigger_data->device_name_multi[in_dev_count - 2], dev_name);
+    }
+    remove_dev_name_tail(trigger_data->device_name);
+//    printk("DEBUG: ledtrig-netdev: in_dev_count=%d dev_name=%s---\n", in_dev_count, trigger_data->device_name);
+    for (i = 0; i < (in_dev_count - 1); i++)
+    {
+        remove_dev_name_tail(trigger_data->device_name_multi[i]);
+//        printk("DEBUG: ledtrig-netdev: in_dev_count=%d dev_name_multi[%d]=%s---\n", in_dev_count, i, trigger_data->device_name_multi[i]);
+        if (trigger_data->device_name_multi[i][0] != 0)
+            trigger_data->net_dev_multi[i] = dev_get_by_name(&init_net, trigger_data->device_name_multi[i]); // init_net not use
+    }
+
+	if (trigger_data->device_name[0] != 0) {
+		/* check for existing device to update from */
+		trigger_data->net_dev = dev_get_by_name(&init_net, trigger_data->device_name);
+    }
+
+    if (trigger_data->net_dev != NULL)
+    {
+        if (dev_get_flags(trigger_data->net_dev) & IFF_LOWER_UP)
+            link_count++;
+    }
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (trigger_data->net_dev_multi[i] != NULL)
+        {
+            if (dev_get_flags(trigger_data->net_dev_multi[i]) & IFF_LOWER_UP)
+                link_count++;
+        }
+    }
+    if (link_count)
+        trigger_data->link_up = 1;
+    else
+        trigger_data->link_up = 0;
+
+	set_baseline_state(trigger_data); /* updates LEDs, may start timers */
+
+#else // #if MAX_MULTI_NETDEV_NUM > 1
 	strcpy(trigger_data->device_name, buf);
 	if (size > 0 && trigger_data->device_name[size-1] == '\n')
 		trigger_data->device_name[size-1] = 0;
@@ -133,6 +239,8 @@ static ssize_t led_device_name_store(struct device *dev,
 	}
 
 	set_baseline_state(trigger_data);
+#endif // #if MAX_MULTI_NETDEV_NUM > 1
+
 	spin_unlock_bh(&trigger_data->lock);
 
 	return size;
@@ -264,13 +372,28 @@ static int netdev_trig_notify(struct notifier_block *nb,
 {
 	struct net_device *dev = netdev_notifier_info_to_dev((struct netdev_notifier_info *) dv);
 	struct led_netdev_data *trigger_data = container_of(nb, struct led_netdev_data, notifier);
+#if MAX_MULTI_NETDEV_NUM > 1
+    int link_count = 0;
+    int i;
+#endif
 
 	if (evt != NETDEV_UP && evt != NETDEV_DOWN && evt != NETDEV_CHANGE && evt != NETDEV_REGISTER && evt != NETDEV_UNREGISTER && evt != NETDEV_CHANGENAME)
 		return NOTIFY_DONE;
 
 	spin_lock_bh(&trigger_data->lock);
 
+#if MAX_MULTI_NETDEV_NUM > 1
+    if ( !strcmp(dev->name, trigger_data->device_name) )
+        link_count++;
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if ( !strcmp(dev->name, trigger_data->device_name_multi[i]) )
+            link_count++;
+    }
+    if (!link_count)
+#else
 	if (strcmp(dev->name, trigger_data->device_name))
+#endif
 		goto done;
 
 	del_timer_sync(&trigger_data->timer);
@@ -284,16 +407,62 @@ static int netdev_trig_notify(struct notifier_block *nb,
 		trigger_data->link_up = 0;
 		goto done;
 	}
+#if MAX_MULTI_NETDEV_NUM > 1
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (evt == NETDEV_REGISTER || evt == NETDEV_CHANGENAME)
+        {
+        	if (trigger_data->net_dev_multi[i] != NULL)
+    			dev_put(trigger_data->net_dev_multi[i]);
+    		dev_hold(dev);
+    		trigger_data->net_dev_multi[i] = dev;
+    		trigger_data->link_up = 0;
+    		goto done;
+    	}
+    }
+#endif
 
 	if (evt == NETDEV_UNREGISTER && trigger_data->net_dev != NULL) {
 		dev_put(trigger_data->net_dev);
 		trigger_data->net_dev = NULL;
 		goto done;
 	}
+#if MAX_MULTI_NETDEV_NUM > 1
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (evt == NETDEV_UNREGISTER && trigger_data->net_dev_multi[i] != NULL)
+        {
+    		dev_put(trigger_data->net_dev_multi[i]);
+    		trigger_data->net_dev_multi[i] = NULL;
+    		goto done;
+    	}
+    }
+#endif
 
 	/* UP / DOWN / CHANGE */
-
+#if MAX_MULTI_NETDEV_NUM > 1
+    link_count = 0;
+    if (trigger_data->net_dev != NULL)
+    {
+        if ( (dev_get_flags(trigger_data->net_dev) & IFF_LOWER_UP) && netif_carrier_ok(trigger_data->net_dev) )
+            link_count++;
+    }
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (trigger_data->net_dev_multi[i] != NULL)
+        {
+            if ( (dev_get_flags(trigger_data->net_dev_multi[i]) & IFF_LOWER_UP) && netif_carrier_ok(trigger_data->net_dev_multi[i]) )
+                link_count++;
+        }
+    }
+    if (link_count)
+        trigger_data->link_up = 1;
+    else
+        trigger_data->link_up = 0;
+#else
 	trigger_data->link_up = (evt != NETDEV_DOWN && netif_carrier_ok(dev));
+#endif
+
 	set_baseline_state(trigger_data);
 
 done:
@@ -306,6 +475,10 @@ static void netdev_trig_timer(unsigned long arg)
 {
 	struct led_netdev_data *trigger_data = (struct led_netdev_data *)arg;
 	struct rtnl_link_stats64 *dev_stats;
+#if MAX_MULTI_NETDEV_NUM > 1
+	struct rtnl_link_stats64 *dev_stats_multi[MAX_MULTI_NETDEV_NUM - 1];
+    int i;
+#endif
 	unsigned new_activity;
 	struct rtnl_link_stats64 temp;
 
@@ -319,6 +492,18 @@ static void netdev_trig_timer(unsigned long arg)
 	new_activity =
 		((trigger_data->mode & MODE_TX) ? dev_stats->tx_packets : 0) +
 		((trigger_data->mode & MODE_RX) ? dev_stats->rx_packets : 0);
+
+#if MAX_MULTI_NETDEV_NUM > 1
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        if (trigger_data->net_dev_multi[i] != NULL)
+        {
+            dev_stats_multi[i] = dev_get_stats(trigger_data->net_dev_multi[i], &temp); // temp not use
+            new_activity += ( ((trigger_data->mode & MODE_TX) ? dev_stats_multi[i]->tx_packets : 0)
+                             + ((trigger_data->mode & MODE_RX) ? dev_stats_multi[i]->rx_packets : 0) );
+        }
+    }
+#endif
 
 	if (trigger_data->mode & MODE_LINK) {
 		/* base state is ON (link present) */
@@ -350,6 +535,9 @@ static void netdev_trig_activate(struct led_classdev *led_cdev)
 {
 	struct led_netdev_data *trigger_data;
 	int rc;
+#if MAX_MULTI_NETDEV_NUM > 1
+    int i;
+#endif
 
 	trigger_data = kzalloc(sizeof(struct led_netdev_data), GFP_KERNEL);
 	if (!trigger_data)
@@ -365,7 +553,13 @@ static void netdev_trig_activate(struct led_classdev *led_cdev)
 	trigger_data->led_cdev = led_cdev;
 	trigger_data->net_dev = NULL;
 	trigger_data->device_name[0] = 0;
-
+#if MAX_MULTI_NETDEV_NUM > 1
+    for (i = 0; i < (MAX_MULTI_NETDEV_NUM - 1); i++)
+    {
+        trigger_data->net_dev_multi[i] = NULL;
+        trigger_data->device_name_multi[i][0] = 0;
+    }
+#endif
 	trigger_data->mode = 0;
 	trigger_data->interval = msecs_to_jiffies(50);
 	trigger_data->link_up = 0;
