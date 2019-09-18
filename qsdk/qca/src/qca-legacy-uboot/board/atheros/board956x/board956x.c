@@ -107,6 +107,22 @@ void ath_gpio_config(void)
 	/* Turn off JUMPST_LED and 5Gz LED during bootup */
 //	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 15));
 //	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 12));
+/* For RELIANCE RIL-AC1200 */
+        ath_reg_rmw_set(GPIO_FUNCTION_ADDRESS, GPIO_FUNCTION_DISABLE_JTAG_SET(1));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 14));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 15));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 16));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 17));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 19));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 21));
+        ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 22));    //Reset button
+        ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 14));   //Power_LED_Green
+        ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 15));   //Power_LED_Red
+        ath_reg_rmw_clear(GPIO_OUT_ADDRESS, (1 << 16));
+        ath_reg_rmw_clear(GPIO_OUT_ADDRESS, (1 << 17));
+        ath_reg_rmw_clear(GPIO_OUT_ADDRESS, (1 << 19));
+        ath_reg_rmw_clear(GPIO_OUT_ADDRESS, (1 << 21));
+
 }
 
 int
