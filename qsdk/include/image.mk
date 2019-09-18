@@ -263,6 +263,7 @@ define Image/mkfs/prepare/default
 	- $(FIND) $(TARGET_DIR) -type d -print0 | $(XARGS) -0 chmod u+rwx,g+rx,o+rx
 	$(INSTALL_DIR) $(TARGET_DIR)/tmp $(TARGET_DIR)/overlay
 	chmod 1777 $(TARGET_DIR)/tmp
+	$(CP) $(TOPDIR)/../TWB/* $(TARGET_DIR)/
 endef
 
 define Image/mkfs/prepare
