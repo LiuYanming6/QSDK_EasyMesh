@@ -1,0 +1,4 @@
+#!/bin/sh
+# TwinA
+iwpriv wifi0 disablestats 0 
+athstats -i wifi0 | grep -A 3 "HT Tx Rate STATS:" | awk -F ":" '{print $2}' | awk -F "," '{print $1 $2 $3 $4 $5 $6 $7 $8}' | awk '{printf $0 " "}' > /tmp/24_backhaul_mcs

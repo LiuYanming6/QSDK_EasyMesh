@@ -1,0 +1,12 @@
+#!/bin/sh
+# TwinA 
+
+#Capture the output message from kernel
+cat /proc/kmsg > /tmp/txrx_fw_stats &
+#Must wait otherwise it fails to deliver message
+sleep 1 
+iwpriv ath11 txrx_fw_stats 6
+#Kill the child process first 
+kill -9 `ps | grep "/proc/kmsg" | grep -v grep | awk '{printf $1 " "}'`
+#Extract the 10 digits of MCS                     
+cat /tmp/txrx_fw_stats | grep "MCS counts (0..9)" | awk -F ":" '{print $2}' | awk -F "," '{print $1 $2 $3 $4 $5 $6 $7 $8 $9 $10}' > /tmp/50_backhaul_mcs

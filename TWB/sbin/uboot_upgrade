@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cp /etc/tnwuboot /tmp/
+
+uboot1=`strings '/dev/mtd0' | grep 'U-Boot' | grep 'dirty'`
+echo "Current U-Boot: $uboot1" >/dev/console
+
+[ -f "/tmp/tnwuboot" ] && {
+    uboot2=`strings '/tmp/tnwuboot' | grep 'U-Boot' | grep 'dirty'`
+    echo "New U-Boot: $uboot2" >/dev/console
+
+    if [ "$uboot1" != "$uboot2" ]; then
+        echo "Upgrade U-Boot ... " >/dev/console
+        mtd write /tmp/tnwuboot /dev/mtd0
+    else
+        echo "U-Boot is up-to-date" >/dev/console
+    fi
+}
+
+rm /tmp/tnwuboot
+

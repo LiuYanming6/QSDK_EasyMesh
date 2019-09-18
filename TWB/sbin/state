@@ -1,0 +1,42 @@
+#!/bin/sh
+
+STATE=$1
+case "$STATE" in
+'N')
+echo "Setting to Normal State ..."
+    ;;
+'M')
+echo "Setting to Manual State ..."
+  ;;
+'D')
+echo "Setting to Debug State ..."
+    ;;
+'F')
+echo "Setting to Factory State ..."
+    ;;
+'T')
+echo "Setting to Test State ..."
+    ;;
+'r')
+    ;;
+*)
+echo "Usage $0 [Type]"
+echo "[Type] "
+echo "     N:Normal State"
+echo "     M:Manual State"
+echo "     D:Debug  State "
+echo "     F:Factory State"
+echo "     T:Factory State"
+echo "     r:Read State"
+exit 1;
+    ;;
+esac
+
+
+if test $STATE = "r" ; then
+state_cfg get state;
+exit 1;
+fi
+
+state_cfg set state $STATE
+echo "Finished."
