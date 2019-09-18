@@ -39,7 +39,7 @@
 	};
 
 	chosen {
-		bootargs = "board=DTB console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),14528k(rootfs),1472k(kernel),64k(art),16000k@0x50000(firmware) rootfstype=squashfs,jffs2 noinitrd crashkernel=10M@20M";
+		bootargs = "board=DTB console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot),64k(u-boot-env),1472k(kernel),14528k(rootfs),64k(art),16000k@0x50000(firmware),15488k@0x50000(twb_kernel),512k@0xf70000(twb_storage),16384k@0(all) rootfstype=squashfs,jffs2 noinitrd crashkernel=10M@20M";
 	};
 
 	extosc: oscillator {
@@ -118,13 +118,13 @@
 				};
 
 				partition@2 {
-					label = "rootfs";
-					reg = <0x050000 0xe80000>;
+                                        label = "kernel";
+                                        reg = <0x050000 0x1c0000>;
 				};
 
 				partition@3 {
-					label = "kernel";
-					reg = <0xe80000 0xff0000>;
+                                        label = "rootfs";
+                                        reg = <0x1c0000 0xff0000>;
 				};
 
 				partition@4 {
@@ -136,7 +136,47 @@
 					label = "firmware";
 					reg = <0x50000 0xff0000>;
 				};
+
+				partition@6 {
+					label = "twb_kernel";
+					reg = <0x50000 0xf70000>;
+                                };
+
+				partition@7 {
+					label = "twb_storage";
+					reg = <0x50000 0xff0000>;
+                                };
+
+				partition@8 {
+					label = "all";
+					reg = <0x0 0xff0000>;
+                                };
 			};
+
+                        mt29f@1 {
+                                #address-cells = <1>;
+                                #size-cells = <1>;
+                                compatible = "spinand,mt29f";
+                                reg = <1>;
+                                spi-max-frequency = <50000000>;
+                                status = "okay";
+
+                                partition@0 {
+                                        label = "backup_kernel";
+                                        reg = <0x0000000 0x180000>;
+                                };
+
+                                partition@1 {
+                                        label = "backup_rootfs";
+                                        reg = <0x180000 0xe40000>;
+                                };
+
+                                partition@2 {
+                                        label = "backup_all";
+                                        reg = <0x0000000 0x8000000>;
+                                };
+                        };
+
 		};
 
 		mdio1: mdio@1a000000 {
