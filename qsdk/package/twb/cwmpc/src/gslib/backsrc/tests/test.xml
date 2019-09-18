@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <!-- this is a commnet -->
+  <SOAP:envelope>
+    <SOAP:Body>
+    <AddObject name="object">
+    </AddObject>
+      <datatag>ATTR1 101</datatag>
+     <attrtag attr1="ATTR1" strattr="string" attr2="101"/>
+    </SOAP:Body>
+   <device  id="xx:xx:xx:xx:xx" name="client01" defuser="testusernaem" ip="192.168.10.105" upnp="true" firstuse="0"/>
+   <user name="test" >
+      <parctl contentActive="true" blackActive="false" whiteActive="true" sizeActive="false" sizePeriod="1000" sizeLimit="1000" timeActive="yes" timePeriod="2000">
+      <timespec start="3000" end="4000"/>
+      </parctl>
+    </user>
+  </SOAP:envelope>
+

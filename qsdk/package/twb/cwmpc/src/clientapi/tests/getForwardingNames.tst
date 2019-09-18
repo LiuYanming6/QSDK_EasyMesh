@@ -1,0 +1,5 @@
+StartSession 300
+GetParameterNames InternetGatewayDevice.Layer3Forwarding.Forwarding. 1
+GetNextParameterName all
+
+EndSession

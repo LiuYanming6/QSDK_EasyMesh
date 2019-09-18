@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urn:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3" xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:urn="urn:broadband-forum-org:cwmp:datamodel-1-4">
+  <model name="InternetGatewayDevice:1.10">
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="UDPConnReq:1" dmr:version="1.2">
+      <object ref="InternetGatewayDevice.ManagementServer." requirement="notSpecified">
+        <parameter ref="UDPConnectionRequestAddress" requirement="readOnly"/>
+        <parameter ref="UDPConnectionRequestAddressNotificationLimit" requirement="readWrite"/>
+        <parameter ref="STUNEnable" requirement="readWrite"/>
+        <parameter ref="STUNServerAddress" requirement="readWrite"/>
+        <parameter ref="STUNServerPort" requirement="readWrite"/>
+        <parameter ref="STUNUsername" requirement="readWrite"/>
+        <parameter ref="STUNPassword" requirement="readWrite"/>
+        <parameter ref="STUNMaximumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="STUNMinimumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="NATDetected" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="TraceRoute:1" dmr:version="1.4">
+      <object ref="InternetGatewayDevice.TraceRouteDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfTries" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="MaxHopCount" requirement="readWrite"/>
+        <parameter ref="ResponseTime" requirement="readOnly"/>
+        <parameter ref="RouteHopsNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.TraceRouteDiagnostics.RouteHops.{i}." requirement="present">
+        <parameter ref="HopHost" requirement="readOnly"/>
+        <parameter ref="HopHostAddress" requirement="readOnly"/>
+        <parameter ref="HopErrorCode" requirement="readOnly"/>
+        <parameter ref="HopRTTimes" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="Time:1" dmr:version="1.1">
+      <object ref="InternetGatewayDevice.Time." requirement="present">
+        <parameter ref="NTPServer1" requirement="readWrite"/>
+        <parameter ref="NTPServer2" requirement="readWrite"/>
+        <parameter ref="CurrentLocalTime" requirement="readOnly"/>
+        <parameter ref="LocalTimeZone" requirement="readWrite"/>
+        <parameter ref="LocalTimeZoneName" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsUsed" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsStart" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsEnd" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="SM_Baseline:1" dmr:version="1.8">
+      <object ref="InternetGatewayDevice.SoftwareModules." requirement="present">
+        <parameter ref="ExecEnvNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="DeploymentUnitNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="ExecutionUnitNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.SoftwareModules.ExecEnv.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="Type" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="ActiveExecutionUnits" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.SoftwareModules.DeploymentUnit.{i}." requirement="present">
+        <parameter ref="UUID" requirement="readOnly"/>
+        <parameter ref="DUID" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Resolved" requirement="readOnly"/>
+        <parameter ref="URL" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="ExecutionUnitList" requirement="readOnly"/>
+        <parameter ref="ExecutionEnvRef" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.SoftwareModules.ExecutionUnit.{i}." requirement="present">
+        <parameter ref="EUID" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="ExecEnvLabel" requirement="readOnly"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="RequestedState" requirement="readWrite"/>
+        <parameter ref="ExecutionFaultCode" requirement="readOnly"/>
+        <parameter ref="ExecutionFaultMessage" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="References" requirement="readOnly"/>
+        <parameter ref="SupportedDataModelList" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.SoftwareModules.ExecutionUnit.{i}.Extensions." requirement="present"/>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="IPPing:1" dmr:version="1.1">
+      <object ref="InternetGatewayDevice.IPPingDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfRepetitions" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="SuccessCount" requirement="readOnly"/>
+        <parameter ref="FailureCount" requirement="readOnly"/>
+        <parameter ref="AverageResponseTime" requirement="readOnly"/>
+        <parameter ref="MinimumResponseTime" requirement="readOnly"/>
+        <parameter ref="MaximumResponseTime" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="Baseline:1" dmr:version="1.1">
+      <object ref="InternetGatewayDevice." requirement="present">
+        <parameter ref="DeviceSummary" requirement="readOnly"/>
+        <parameter ref="LANDeviceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="WANDeviceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.DeviceInfo." requirement="present">
+        <parameter ref="Manufacturer" requirement="readOnly"/>
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="ModelName" requirement="readOnly"/>
+        <parameter ref="Description" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+        <parameter ref="HardwareVersion" requirement="readOnly"/>
+        <parameter ref="SoftwareVersion" requirement="readOnly"/>
+        <parameter ref="SpecVersion" requirement="readOnly"/>
+        <parameter ref="ProvisioningCode" requirement="readWrite"/>
+        <parameter ref="UpTime" requirement="readOnly"/>
+        <parameter ref="DeviceLog" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.ManagementServer." requirement="present">
+        <parameter ref="URL" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="PeriodicInformEnable" requirement="readWrite"/>
+        <parameter ref="PeriodicInformInterval" requirement="readWrite"/>
+        <parameter ref="PeriodicInformTime" requirement="readWrite"/>
+        <parameter ref="ParameterKey" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestURL" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestUsername" requirement="readWrite"/>
+        <parameter ref="ConnectionRequestPassword" requirement="readWrite"/>
+        <parameter ref="UpgradesManaged" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer3Forwarding." requirement="present">
+        <parameter ref="DefaultConnectionService" requirement="readWrite"/>
+        <parameter ref="ForwardNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Type" requirement="readWrite"/>
+        <parameter ref="DestIPAddress" requirement="readWrite"/>
+        <parameter ref="DestSubnetMask" requirement="readWrite"/>
+        <parameter ref="SourceIPAddress" requirement="readWrite"/>
+        <parameter ref="SourceSubnetMask" requirement="readWrite"/>
+        <parameter ref="GatewayIPAddress" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="ForwardingMetric" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANConfigSecurity." requirement="present">
+        <parameter ref="ConfigPassword" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}." requirement="present">
+        <parameter ref="LANEthernetInterfaceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="LANUSBInterfaceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="LANWLANConfigurationNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement." requirement="present">
+        <parameter ref="DHCPServerConfigurable" requirement="readWrite"/>
+        <parameter ref="DHCPServerEnable" requirement="readWrite"/>
+        <parameter ref="DHCPRelay" requirement="readOnly"/>
+        <parameter ref="MinAddress" requirement="readWrite"/>
+        <parameter ref="MaxAddress" requirement="readWrite"/>
+        <parameter ref="ReservedAddresses" requirement="readWrite"/>
+        <parameter ref="SubnetMask" requirement="readWrite"/>
+        <parameter ref="DNSServers" requirement="readWrite"/>
+        <parameter ref="DomainName" requirement="readWrite"/>
+        <parameter ref="IPRouters" requirement="readWrite"/>
+        <parameter ref="IPInterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.IPInterface.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="IPInterfaceIPAddress" requirement="readWrite"/>
+        <parameter ref="IPInterfaceSubnetMask" requirement="readWrite"/>
+        <parameter ref="IPInterfaceAddressingType" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.Hosts." requirement="present">
+        <parameter ref="HostNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}." requirement="present">
+        <parameter ref="IPAddress" requirement="readOnly"/>
+        <parameter ref="AddressSource" requirement="readOnly"/>
+        <parameter ref="LeaseTimeRemaining" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="HostName" requirement="readOnly"/>
+        <parameter ref="InterfaceType" requirement="readOnly"/>
+        <parameter ref="Active" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}." requirement="present">
+        <parameter ref="WANConnectionNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANCommonInterfaceConfig." requirement="present">
+        <parameter ref="EnabledForInternet" requirement="readOnly"/>
+        <parameter ref="WANAccessType" requirement="readOnly"/>
+        <parameter ref="Layer1UpstreamMaxBitRate" requirement="readOnly"/>
+        <parameter ref="Layer1DownstreamMaxBitRate" requirement="readOnly"/>
+        <parameter ref="PhysicalLinkStatus" requirement="readOnly"/>
+        <parameter ref="TotalBytesSent" requirement="readOnly"/>
+        <parameter ref="TotalBytesReceived" requirement="readOnly"/>
+        <parameter ref="TotalPacketsSent" requirement="readOnly"/>
+        <parameter ref="TotalPacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}." requirement="present">
+        <parameter ref="WANIPConnectionNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="WANPPPConnectionNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="ConnectionStatus" requirement="readOnly"/>
+        <parameter ref="PossibleConnectionTypes" requirement="readOnly"/>
+        <parameter ref="ConnectionType" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readWrite"/>
+        <parameter ref="Uptime" requirement="readOnly"/>
+        <parameter ref="LastConnectionError" requirement="readOnly"/>
+        <parameter ref="RSIPAvailable" requirement="readOnly"/>
+        <parameter ref="NATEnabled" requirement="readWrite"/>
+        <parameter ref="AddressingType" requirement="readOnly"/>
+        <parameter ref="ExternalIPAddress" requirement="readOnly"/>
+        <parameter ref="SubnetMask" requirement="readOnly"/>
+        <parameter ref="DefaultGateway" requirement="readOnly"/>
+        <parameter ref="DNSEnabled" requirement="readOnly"/>
+        <parameter ref="DNSOverrideAllowed" requirement="readOnly"/>
+        <parameter ref="DNSServers" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="ConnectionTrigger" requirement="readWrite"/>
+        <parameter ref="RouteProtocolRx" requirement="readWrite"/>
+        <parameter ref="PortMappingNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.PortMapping.{i}." requirement="createDelete">
+        <parameter ref="PortMappingEnabled" requirement="readWrite"/>
+        <parameter ref="PortMappingLeaseDuration" requirement="readOnly"/>
+        <parameter ref="RemoteHost" requirement="readWrite"/>
+        <parameter ref="ExternalPort" requirement="readWrite"/>
+        <parameter ref="InternalPort" requirement="readWrite"/>
+        <parameter ref="PortMappingProtocol" requirement="readWrite"/>
+        <parameter ref="InternalClient" requirement="readWrite"/>
+        <parameter ref="PortMappingDescription" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats." requirement="present">
+        <parameter ref="EthernetBytesSent" requirement="readOnly"/>
+        <parameter ref="EthernetBytesReceived" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsSent" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="ConnectionStatus" requirement="readOnly"/>
+        <parameter ref="PossibleConnectionTypes" requirement="readOnly"/>
+        <parameter ref="ConnectionType" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readWrite"/>
+        <parameter ref="Uptime" requirement="readOnly"/>
+        <parameter ref="LastConnectionError" requirement="readOnly"/>
+        <parameter ref="RSIPAvailable" requirement="readOnly"/>
+        <parameter ref="NATEnabled" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="ExternalIPAddress" requirement="readOnly"/>
+        <parameter ref="DNSEnabled" requirement="readOnly"/>
+        <parameter ref="DNSOverrideAllowed" requirement="readOnly"/>
+        <parameter ref="DNSServers" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="TransportType" requirement="readOnly"/>
+        <parameter ref="PPPoEACName" requirement="readWrite"/>
+        <parameter ref="PPPoEServiceName" requirement="readWrite"/>
+        <parameter ref="ConnectionTrigger" requirement="readWrite"/>
+        <parameter ref="RouteProtocolRx" requirement="readWrite"/>
+        <parameter ref="PortMappingNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.PortMapping.{i}." requirement="createDelete">
+        <parameter ref="PortMappingEnabled" requirement="readWrite"/>
+        <parameter ref="PortMappingLeaseDuration" requirement="readOnly"/>
+        <parameter ref="RemoteHost" requirement="readWrite"/>
+        <parameter ref="ExternalPort" requirement="readWrite"/>
+        <parameter ref="InternalPort" requirement="readWrite"/>
+        <parameter ref="PortMappingProtocol" requirement="readWrite"/>
+        <parameter ref="InternalClient" requirement="readWrite"/>
+        <parameter ref="PortMappingDescription" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats." requirement="present">
+        <parameter ref="EthernetBytesSent" requirement="readOnly"/>
+        <parameter ref="EthernetBytesReceived" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsSent" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</urn:document>

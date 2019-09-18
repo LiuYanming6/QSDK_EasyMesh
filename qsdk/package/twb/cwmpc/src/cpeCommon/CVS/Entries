@@ -1,0 +1,13 @@
+/CPETransfer.c/1.13/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/Makefile/1.6/Mon May 14 16:29:01 2012//TR-5-3-0-Beta1
+/configsave.c/1.13/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/cpeFaultMessages.c/1.3/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/cpeSMM.c/1.4/Wed Jun 13 15:43:40 2012//TR-5-3-0-Beta1
+/cpelisten.c/1.10/Wed Jun 13 11:01:47 2012//TR-5-3-0-Beta1
+/dhcpVendorOptions.c/1.5/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/runstates.h/1.1/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/sysWrapper.c/1.2/Fri Jul 30 14:45:50 2010//TR-5-3-0-Beta1
+/sysutils.c/1.4/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/sysutils.h/1.2/Thu May 10 17:38:01 2012//TR-5-3-0-Beta1
+/voucherMgmt.c/1.3/Thu Sep  3 14:46:19 2009//TR-5-3-0-Beta1
+D

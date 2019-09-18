@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urn:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3" xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:urn="urn:broadband-forum-org:cwmp:datamodel-1-4">
+  <model name="Device:2.4">
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="UDPConnReq:1" dmr:version="2.0">
+      <description>This profile only applies to Internet Gateway Devices that are acting as CPE behind a NAT gateway as described in {{bibref|TR-069|Annex G}}, and implies support for all of the CPE requirements defined within Annex G.</description>
+      <object ref="Device.ManagementServer." requirement="notSpecified">
+        <parameter ref="UDPConnectionRequestAddress" requirement="readOnly"/>
+        <parameter ref="STUNEnable" requirement="readWrite"/>
+        <parameter ref="STUNServerAddress" requirement="readWrite"/>
+        <parameter ref="STUNServerPort" requirement="readWrite"/>
+        <parameter ref="STUNUsername" requirement="readWrite"/>
+        <parameter ref="STUNPassword" requirement="readWrite"/>
+        <parameter ref="STUNMaximumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="STUNMinimumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="NATDetected" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="TraceRoute:1" dmr:version="2.0">
+      <object ref="Device.IP.Diagnostics.TraceRoute." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfTries" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="MaxHopCount" requirement="readWrite"/>
+        <parameter ref="ResponseTime" requirement="readOnly"/>
+        <parameter ref="RouteHopsNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Diagnostics.TraceRoute.RouteHops.{i}." requirement="present">
+        <parameter ref="Host" requirement="readOnly"/>
+        <parameter ref="HostAddress" requirement="readOnly"/>
+        <parameter ref="ErrorCode" requirement="readOnly"/>
+        <parameter ref="RTTimes" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="Hosts:1" dmr:version="2.0">
+      <object ref="Device.Hosts." requirement="present">
+        <parameter ref="HostNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Hosts.Host.{i}." requirement="present">
+        <parameter ref="IPAddress" requirement="readOnly"/>
+        <parameter ref="AddressSource" requirement="readOnly"/>
+        <parameter ref="LeaseTimeRemaining" requirement="readOnly"/>
+        <parameter ref="PhysAddress" requirement="readOnly"/>
+        <parameter ref="HostName" requirement="readOnly"/>
+        <parameter ref="Active" requirement="readOnly"/>
+        <parameter ref="Layer1Interface" requirement="readOnly"/>
+        <parameter ref="Layer3Interface" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="SM_Baseline:1" dmr:version="2.1">
+      <object ref="Device.SoftwareModules." requirement="present">
+        <parameter ref="ExecEnvNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="DeploymentUnitNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="ExecutionUnitNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.SoftwareModules.ExecEnv.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="Type" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="ActiveExecutionUnits" requirement="readOnly"/>
+      </object>
+      <object ref="Device.SoftwareModules.DeploymentUnit.{i}." requirement="present">
+        <parameter ref="UUID" requirement="readOnly"/>
+        <parameter ref="DUID" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Resolved" requirement="readOnly"/>
+        <parameter ref="URL" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="ExecutionUnitList" requirement="readOnly"/>
+        <parameter ref="ExecutionEnvRef" requirement="readOnly"/>
+      </object>
+      <object ref="Device.SoftwareModules.ExecutionUnit.{i}." requirement="present">
+        <parameter ref="EUID" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="ExecEnvLabel" requirement="readOnly"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="RequestedState" requirement="readWrite"/>
+        <parameter ref="ExecutionFaultCode" requirement="readOnly"/>
+        <parameter ref="ExecutionFaultMessage" requirement="readOnly"/>
+        <parameter ref="Vendor" requirement="readOnly"/>
+        <parameter ref="Version" requirement="readOnly"/>
+        <parameter ref="References" requirement="readOnly"/>
+        <parameter ref="SupportedDataModelList" requirement="readOnly"/>
+      </object>
+      <object ref="Device.SoftwareModules.ExecutionUnit.{i}.Extensions." requirement="present"/>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="EthernetLink:1" dmr:version="2.0">
+      <object ref="Device.Ethernet." requirement="present">
+        <parameter ref="LinkNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ethernet.Link.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="LowerLayers" requirement="readWrite"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ethernet.Link.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+        <parameter ref="ErrorsSent" requirement="readOnly"/>
+        <parameter ref="ErrorsReceived" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsSent" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsSent" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsReceived" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsSent" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsSent" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="UnknownProtoPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="EthernetInterface:1" dmr:version="2.0">
+      <object ref="Device.Ethernet." requirement="present">
+        <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ethernet.Interface.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="Upstream" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="MaxBitRate" requirement="readWrite"/>
+        <parameter ref="DuplexMode" requirement="readWrite"/>
+      </object>
+      <object ref="Device.Ethernet.Interface.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+        <parameter ref="ErrorsSent" requirement="readOnly"/>
+        <parameter ref="ErrorsReceived" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsSent" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsSent" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsReceived" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsSent" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsSent" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="UnknownProtoPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="IPInterface:1" dmr:version="2.0">
+      <object ref="Device.IP." requirement="present">
+        <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="LowerLayers" requirement="readWrite"/>
+        <parameter ref="Type" requirement="readOnly"/>
+        <parameter ref="Reset" requirement="readWrite"/>
+        <parameter ref="IPv4AddressNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}.IPv4Address.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="IPAddress" requirement="readWrite"/>
+        <parameter ref="SubnetMask" requirement="readWrite"/>
+        <parameter ref="AddressingType" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+        <parameter ref="ErrorsSent" requirement="readOnly"/>
+        <parameter ref="ErrorsReceived" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsSent" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsSent" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsReceived" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsSent" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsSent" requirement="readOnly"/>
+        <parameter ref="BroadcastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="UnknownProtoPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="IPv6Interface:1" dmr:version="2.2">
+      <object ref="Device.IP." requirement="present">
+        <parameter ref="IPv6Capable" requirement="readOnly"/>
+        <parameter ref="IPv6Enable" requirement="readWrite"/>
+        <parameter ref="IPv6Status" requirement="readOnly"/>
+        <parameter ref="ULAPrefix" requirement="readWrite"/>
+        <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="IPv6Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="LowerLayers" requirement="readWrite"/>
+        <parameter ref="Type" requirement="readOnly"/>
+        <parameter ref="ULAEnable" requirement="readWrite"/>
+        <parameter ref="Reset" requirement="readWrite"/>
+        <parameter ref="IPv6AddressNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="IPv6PrefixNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}.IPv6Address.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="IPAddressStatus" requirement="readOnly"/>
+        <parameter ref="IPAddress" requirement="readWrite"/>
+        <parameter ref="Origin" requirement="readOnly"/>
+        <parameter ref="Prefix" requirement="readWrite"/>
+        <parameter ref="PreferredLifetime" requirement="readWrite"/>
+        <parameter ref="ValidLifetime" requirement="readWrite"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}.IPv6Prefix.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="PrefixStatus" requirement="readOnly"/>
+        <parameter ref="Prefix" requirement="readWrite"/>
+        <parameter ref="Origin" requirement="readOnly"/>
+        <parameter ref="OnLink" requirement="readWrite"/>
+        <parameter ref="Autonomous" requirement="readWrite"/>
+        <parameter ref="PreferredLifetime" requirement="readWrite"/>
+        <parameter ref="ValidLifetime" requirement="readWrite"/>
+      </object>
+      <object ref="Device.IP.Interface.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+        <parameter ref="ErrorsSent" requirement="readOnly"/>
+        <parameter ref="ErrorsReceived" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsSent" requirement="readOnly"/>
+        <parameter ref="UnicastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsSent" requirement="readOnly"/>
+        <parameter ref="DiscardPacketsReceived" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsSent" requirement="readOnly"/>
+        <parameter ref="MulticastPacketsReceived" requirement="readOnly"/>
+        <parameter ref="UnknownProtoPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="IPPing:1" dmr:version="2.0">
+      <object ref="Device.IP.Diagnostics.IPPing." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfRepetitions" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="SuccessCount" requirement="readOnly"/>
+        <parameter ref="FailureCount" requirement="readOnly"/>
+        <parameter ref="AverageResponseTime" requirement="readOnly"/>
+        <parameter ref="MinimumResponseTime" requirement="readOnly"/>
+        <parameter ref="MaximumResponseTime" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="Baseline:2" base="Baseline:1" dmr:version="2.2">
+      <object ref="Device.InterfaceStack.{i}." requirement="present">
+        <parameter ref="HigherLayer" requirement="readOnly"/>
+        <parameter ref="LowerLayer" requirement="readOnly"/>
+      </object>
+      <object ref="Device.DNS." requirement="present">
+        <parameter ref="SupportedRecordTypes" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" name="Baseline:1" dmr:version="2.0">
+      <object ref="Device." requirement="present">
+        <parameter ref="InterfaceStackNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.DeviceInfo." requirement="present">
+        <parameter ref="Manufacturer" requirement="readOnly"/>
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="ModelName" requirement="readOnly"/>
+        <parameter ref="Description" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+        <parameter ref="HardwareVersion" requirement="readOnly"/>
+        <parameter ref="SoftwareVersion" requirement="readOnly"/>
+        <parameter ref="ProvisioningCode" requirement="readWrite"/>
+        <parameter ref="UpTime" requirement="readOnly"/>
+      </object>
+      <object ref="Device.ManagementServer." requirement="present">
+        <parameter ref="URL" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="PeriodicInformEnable" requirement="readWrite"/>
+        <parameter ref="PeriodicInformInterval" requirement="readWrite"/>
+        <parameter ref="PeriodicInformTime" requirement="readWrite"/>
+        <parameter ref="ParameterKey" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestURL" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestUsername" requirement="readWrite"/>
+        <parameter ref="ConnectionRequestPassword" requirement="readWrite"/>
+        <parameter ref="UpgradesManaged" requirement="readWrite"/>
+      </object>
+      <object ref="Device.LANConfigSecurity." requirement="present">
+        <parameter ref="ConfigPassword" requirement="readWrite"/>
+      </object>
+      <object ref="Device.DNS." requirement="present"/>
+      <object ref="Device.DNS.Client." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="ServerNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.DNS.Client.Server.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="DNSServer" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Type" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</urn:document>

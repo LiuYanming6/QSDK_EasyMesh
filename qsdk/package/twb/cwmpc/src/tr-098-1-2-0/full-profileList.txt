@@ -1,0 +1,1073 @@
+Baseline:1
+	InternetGatewayDevice.
+		DeviceSummary     readOnly
+		LANDeviceNumberOfEntries     readOnly
+		WANDeviceNumberOfEntries     readOnly
+	InternetGatewayDevice.DeviceInfo.
+		Manufacturer     readOnly
+		ManufacturerOUI     readOnly
+		ModelName     readOnly
+		Description     readOnly
+		SerialNumber     readOnly
+		HardwareVersion     readOnly
+		SoftwareVersion     readOnly
+		SpecVersion     readOnly
+		ProvisioningCode     readWrite
+		UpTime     readOnly
+		DeviceLog     readOnly
+	InternetGatewayDevice.ManagementServer.
+		URL     readWrite
+		Username     readWrite
+		Password     readWrite
+		PeriodicInformEnable     readWrite
+		PeriodicInformInterval     readWrite
+		PeriodicInformTime     readWrite
+		ParameterKey     readOnly
+		ConnectionRequestURL     readOnly
+		ConnectionRequestUsername     readWrite
+		ConnectionRequestPassword     readWrite
+		UpgradesManaged     readWrite
+	InternetGatewayDevice.Layer3Forwarding.
+		DefaultConnectionService     readWrite
+		ForwardNumberOfEntries     readOnly
+	InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Type     readWrite
+		DestIPAddress     readWrite
+		DestSubnetMask     readWrite
+		SourceIPAddress     readWrite
+		SourceSubnetMask     readWrite
+		GatewayIPAddress     readWrite
+		Interface     readWrite
+		ForwardingMetric     readWrite
+	InternetGatewayDevice.LANConfigSecurity.
+		ConfigPassword     readWrite
+	InternetGatewayDevice.LANDevice.{i}.
+		LANEthernetInterfaceNumberOfEntries     readOnly
+		LANUSBInterfaceNumberOfEntries     readOnly
+		LANWLANConfigurationNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.
+		DHCPServerConfigurable     readWrite
+		DHCPServerEnable     readWrite
+		DHCPRelay     readOnly
+		MinAddress     readWrite
+		MaxAddress     readWrite
+		ReservedAddresses     readWrite
+		SubnetMask     readWrite
+		DNSServers     readWrite
+		DomainName     readWrite
+		IPRouters     readWrite
+		IPInterfaceNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.IPInterface.{i}.
+		Enable     readWrite
+		IPInterfaceIPAddress     readWrite
+		IPInterfaceSubnetMask     readWrite
+		IPInterfaceAddressingType     readWrite
+	InternetGatewayDevice.LANDevice.{i}.Hosts.
+		HostNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}.
+		IPAddress     readOnly
+		AddressSource     readOnly
+		LeaseTimeRemaining     readOnly
+		MACAddress     readOnly
+		HostName     readOnly
+		InterfaceType     readOnly
+		Active     readOnly
+	InternetGatewayDevice.WANDevice.{i}.
+		WANConnectionNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANCommonInterfaceConfig.
+		EnabledForInternet     readOnly
+		WANAccessType     readOnly
+		Layer1UpstreamMaxBitRate     readOnly
+		Layer1DownstreamMaxBitRate     readOnly
+		PhysicalLinkStatus     readOnly
+		TotalBytesSent     readOnly
+		TotalBytesReceived     readOnly
+		TotalPacketsSent     readOnly
+		TotalPacketsReceived     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.
+		WANIPConnectionNumberOfEntries     readOnly
+		WANPPPConnectionNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.
+		Enable     readWrite
+		ConnectionStatus     readOnly
+		PossibleConnectionTypes     readOnly
+		ConnectionType     readWrite
+		Name     readWrite
+		Uptime     readOnly
+		LastConnectionError     readOnly
+		RSIPAvailable     readOnly
+		NATEnabled     readWrite
+		AddressingType     readOnly
+		ExternalIPAddress     readOnly
+		SubnetMask     readOnly
+		DefaultGateway     readOnly
+		DNSEnabled     readOnly
+		DNSOverrideAllowed     readOnly
+		DNSServers     readOnly
+		MACAddress     readOnly
+		ConnectionTrigger     readWrite
+		RouteProtocolRx     readWrite
+		PortMappingNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.PortMapping.{i}.
+		PortMappingEnabled     readWrite
+		PortMappingLeaseDuration     readOnly
+		RemoteHost     readWrite
+		ExternalPort     readWrite
+		InternalPort     readWrite
+		PortMappingProtocol     readWrite
+		InternalClient     readWrite
+		PortMappingDescription     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats.
+		EthernetBytesSent     readOnly
+		EthernetBytesReceived     readOnly
+		EthernetPacketsSent     readOnly
+		EthernetPacketsReceived     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.
+		Enable     readWrite
+		ConnectionStatus     readOnly
+		PossibleConnectionTypes     readOnly
+		ConnectionType     readWrite
+		Name     readWrite
+		Uptime     readOnly
+		LastConnectionError     readOnly
+		RSIPAvailable     readOnly
+		NATEnabled     readWrite
+		Username     readWrite
+		Password     readWrite
+		ExternalIPAddress     readOnly
+		DNSEnabled     readOnly
+		DNSOverrideAllowed     readOnly
+		DNSServers     readOnly
+		MACAddress     readOnly
+		TransportType     readOnly
+		PPPoEACName     readWrite
+		PPPoEServiceName     readWrite
+		ConnectionTrigger     readWrite
+		RouteProtocolRx     readWrite
+		PortMappingNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.PortMapping.{i}.
+		PortMappingEnabled     readWrite
+		PortMappingLeaseDuration     readOnly
+		RemoteHost     readWrite
+		ExternalPort     readWrite
+		InternalPort     readWrite
+		PortMappingProtocol     readWrite
+		InternalClient     readWrite
+		PortMappingDescription     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats.
+		EthernetBytesSent     readOnly
+		EthernetBytesReceived     readOnly
+		EthernetPacketsSent     readOnly
+		EthernetPacketsReceived     readOnly
+EthernetLAN:1
+	InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.
+		Enable     readWrite
+		Status     readOnly
+		MACAddress     readOnly
+		MACAddressControlEnabled     readWrite
+		MaxBitRate     readWrite
+		DuplexMode     readWrite
+	InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+USBLAN:1
+	InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.
+		Enable     readWrite
+		Status     readOnly
+		MACAddress     readOnly
+		MACAddressControlEnabled     readWrite
+		Standard     readOnly
+		Type     readOnly
+		Rate     readOnly
+		Power     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		CellsSent     readOnly
+		CellsReceived     readOnly
+WiFiLAN:1
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.
+		Enable     readWrite
+		Status     readOnly
+		BSSID     readOnly
+		MaxBitRate     readWrite
+		Channel     readWrite
+		SSID     readWrite
+		BeaconType     readWrite
+		MACAddressControlEnabled     readWrite
+		Standard     readOnly
+		WEPKeyIndex     readWrite
+		KeyPassphrase     readWrite
+		WEPEncryptionLevel     readOnly
+		BasicEncryptionModes     readWrite
+		BasicAuthenticationMode     readWrite
+		WPAEncryptionModes     readWrite
+		WPAAuthenticationMode     readWrite
+		PossibleChannels     readOnly
+		BasicDataTransmitRates     readWrite
+		OperationalDataTransmitRates     readWrite
+		PossibleDataTransmitRates     readOnly
+		RadioEnabled     readWrite
+		AutoRateFallBackEnabled     readWrite
+		TotalBytesSent     readOnly
+		TotalBytesReceived     readOnly
+		TotalPacketsSent     readOnly
+		TotalPacketsReceived     readOnly
+		TotalAssociations     readOnly
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.AssociatedDevice.{i}.
+		AssociatedDeviceMACAddress     readOnly
+		AssociatedDeviceIPAddress     readOnly
+		AssociatedDeviceAuthenticationState     readOnly
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.WEPKey.{i}.
+		WEPKey     readWrite
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.PreSharedKey.{i}.
+		PreSharedKey     readWrite
+		KeyPassphrase     readWrite
+ADSLWAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.
+		Enable     readWrite
+		Status     readOnly
+		UpstreamCurrRate     readOnly
+		DownstreamCurrRate     readOnly
+		UpstreamMaxRate     readOnly
+		DownstreamMaxRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamAttenuation     readOnly
+		DownstreamAttenuation     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+		ATURVendor     readOnly
+		ATURCountry     readOnly
+		ATUCVendor     readOnly
+		ATUCCountry     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Total.
+		ReceiveBlocks     readOnly
+		TransmitBlocks     readOnly
+		CellDelin     readOnly
+		LinkRetrain     readOnly
+		InitErrors     readOnly
+		InitTimeouts     readOnly
+		LossOfFraming     readOnly
+		ErroredSecs     readOnly
+		SeverelyErroredSecs     readOnly
+		FECErrors     readOnly
+		ATUCFECErrors     readOnly
+		HECErrors     readOnly
+		ATUCHECErrors     readOnly
+		CRCErrors     readOnly
+		ATUCCRCErrors     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Showtime.
+		ReceiveBlocks     readOnly
+		TransmitBlocks     readOnly
+		CellDelin     readOnly
+		LinkRetrain     readOnly
+		InitErrors     readOnly
+		InitTimeouts     readOnly
+		LossOfFraming     readOnly
+		ErroredSecs     readOnly
+		SeverelyErroredSecs     readOnly
+		FECErrors     readOnly
+		ATUCFECErrors     readOnly
+		HECErrors     readOnly
+		ATUCHECErrors     readOnly
+		CRCErrors     readOnly
+		ATUCCRCErrors     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement.
+		ConnectionServiceNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement.ConnectionService.{i}.
+		WANConnectionDevice     readOnly
+		WANConnectionService     readOnly
+		DestinationAddress     readOnly
+		LinkType     readOnly
+		ConnectionType     readOnly
+		Name     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig.
+		Enable     readWrite
+		LinkStatus     readOnly
+		LinkType     readWrite
+		AutoConfig     readOnly
+		DestinationAddress     readWrite
+		ATMTransmittedBlocks     readOnly
+		ATMReceivedBlocks     readOnly
+		AAL5CRCErrors     readOnly
+		ATMCRCErrors     readOnly
+EthernetWAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig.
+		Enable     readWrite
+		Status     readOnly
+		MACAddress     readOnly
+		MaxBitRate     readWrite
+		DuplexMode     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANEthernetLinkConfig.
+		EthernetLinkStatus     readOnly
+POTSWAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPOTSLinkConfig.
+		Enable     readWrite
+		LinkStatus     readOnly
+		ISPPhoneNumber     readOnly
+		ISPInfo     readOnly
+		LinkType     readOnly
+		NumberOfRetries     readOnly
+		DelayBetweenRetries     readOnly
+QoS:1
+	InternetGatewayDevice.QueueManagement.
+		Enable     readWrite
+		MaxQueues     readOnly
+		MaxClassificationEntries     readOnly
+		ClassificationNumberOfEntries     readOnly
+		MaxAppEntries     readOnly
+		AppNumberOfEntries     readOnly
+		MaxFlowEntries     readOnly
+		FlowNumberOfEntries     readOnly
+		MaxPolicerEntries     readOnly
+		PolicerNumberOfEntries     readOnly
+		MaxQueueEntries     readOnly
+		QueueNumberOfEntries     readOnly
+		DefaultForwardingPolicy     readWrite
+		DefaultPolicer     readWrite
+		DefaultQueue     readWrite
+		DefaultDSCPMark     readWrite
+		DefaultEthernetPriorityMark     readWrite
+		AvailableAppList     readOnly
+	InternetGatewayDevice.QueueManagement.Classification.{i}.
+		ClassificationKey     readOnly
+		ClassificationEnable     readWrite
+		ClassificationStatus     readOnly
+		ClassificationOrder     readWrite
+		ClassInterface     readWrite
+		DestIP     readWrite
+		DestMask     readWrite
+		DestIPExclude     readWrite
+		SourceIP     readWrite
+		SourceMask     readWrite
+		SourceIPExclude     readWrite
+		Protocol     readWrite
+		ProtocolExclude     readWrite
+		DestPort     readWrite
+		DestPortRangeMax     readWrite
+		DestPortExclude     readWrite
+		SourcePort     readWrite
+		SourcePortRangeMax     readWrite
+		SourcePortExclude     readWrite
+		SourceMACAddress     readWrite
+		SourceMACExclude     readWrite
+		DestMACAddress     readWrite
+		DestMACExclude     readWrite
+		DSCPCheck     readWrite
+		DSCPExclude     readWrite
+		DSCPMark     readWrite
+		EthernetPriorityCheck     readWrite
+		EthernetPriorityExclude     readWrite
+		EthernetPriorityMark     readWrite
+		VLANIDCheck     readWrite
+		VLANIDExclude     readWrite
+		ForwardingPolicy     readWrite
+		ClassPolicer     readWrite
+		ClassQueue     readWrite
+	InternetGatewayDevice.QueueManagement.Policer.{i}.
+		PolicerKey     readOnly
+		PolicerEnable     readWrite
+		PolicerStatus     readOnly
+		CommittedRate     readWrite
+		CommittedBurstSize     readWrite
+		MeterType     readWrite
+		PossibleMeterTypes     readOnly
+		ConformingAction     readWrite
+		NonConformingAction     readWrite
+		CountedPackets     readOnly
+		CountedBytes     readOnly
+	InternetGatewayDevice.QueueManagement.Queue.{i}.
+		QueueKey     readOnly
+		QueueEnable     readWrite
+		QueueStatus     readOnly
+		QueueInterface     readWrite
+		QueueBufferLength     readOnly
+		QueueWeight     readWrite
+		QueuePrecedence     readWrite
+		REDThreshold     readWrite
+		REDPercentage     readWrite
+		DropAlgorithm     readWrite
+		SchedulerAlgorithm     readWrite
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+	InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}.
+		ForwardingPolicy     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+QoSDynamicFlow:1
+	InternetGatewayDevice.QueueManagement.App.{i}.
+		AppKey     readOnly
+		AppEnable     readWrite
+		AppStatus     readOnly
+		ProtocolIdentifier     readWrite
+		AppName     readWrite
+		AppDefaultForwardingPolicy     readWrite
+		AppDefaultPolicer     readWrite
+		AppDefaultQueue     readWrite
+		AppDefaultDSCPMark     readWrite
+		AppDefaultEthernetPriorityMark     readWrite
+	InternetGatewayDevice.QueueManagement.Flow.{i}.
+		FlowKey     readOnly
+		FlowEnable     readWrite
+		FlowStatus     readOnly
+		FlowType     readWrite
+		FlowTypeParameters     readWrite
+		FlowName     readWrite
+		AppIdentifier     readWrite
+		FlowForwardingPolicy     readWrite
+		FlowPolicer     readWrite
+		FlowQueue     readWrite
+		FlowDSCPMark     readWrite
+		FlowEthernetPriorityMark     readWrite
+	InternetGatewayDevice.QueueManagement.Classification.{i}.
+		ClassApp     readWrite
+Bridging:1
+	InternetGatewayDevice.Layer2Bridging.
+		MaxBridgeEntries     readOnly
+		MaxFilterEntries     readOnly
+		MaxMarkingEntries     readOnly
+		BridgeNumberOfEntries     readOnly
+		FilterNumberOfEntries     readOnly
+		MarkingNumberOfEntries     readOnly
+		AvailableInterfaceNumberOfEntries     readOnly
+	InternetGatewayDevice.Layer2Bridging.Bridge.{i}.
+		BridgeKey     readOnly
+		BridgeEnable     readWrite
+		BridgeStatus     readOnly
+		BridgeName     readWrite
+		VLANID     readWrite
+	InternetGatewayDevice.Layer2Bridging.Filter.{i}.
+		FilterKey     readOnly
+		FilterEnable     readWrite
+		FilterStatus     readOnly
+		FilterBridgeReference     readWrite
+		ExclusivityOrder     readWrite
+		FilterInterface     readWrite
+		VLANIDFilter     readWrite
+		AdmitOnlyVLANTagged     readWrite
+		EthertypeFilterList     readWrite
+		EthertypeFilterExclude     readWrite
+		SourceMACAddressFilterList     readWrite
+		SourceMACAddressFilterExclude     readWrite
+		DestMACAddressFilterList     readWrite
+		DestMACAddressFilterExclude     readWrite
+	InternetGatewayDevice.Layer2Bridging.Marking.{i}.
+		MarkingKey     readOnly
+		MarkingEnable     readWrite
+		MarkingStatus     readOnly
+		MarkingBridgeReference     readWrite
+		MarkingInterface     readWrite
+		VLANIDUntag     readWrite
+		VLANIDMark     readWrite
+		EthernetPriorityMark     readWrite
+		EthernetPriorityOverride     readWrite
+	InternetGatewayDevice.Layer2Bridging.AvailableInterface.{i}.
+		AvailableInterfaceKey     readOnly
+		InterfaceType     readOnly
+		InterfaceReference     readOnly
+Time:1
+	InternetGatewayDevice.Time.
+		NTPServer1     readWrite
+		NTPServer2     readWrite
+		CurrentLocalTime     readOnly
+		LocalTimeZone     readWrite
+		LocalTimeZoneName     readWrite
+		DaylightSavingsUsed     readWrite
+		DaylightSavingsStart     readWrite
+		DaylightSavingsEnd     readWrite
+IPPing:1
+	InternetGatewayDevice.IPPingDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		Host     readWrite
+		NumberOfRepetitions     readWrite
+		Timeout     readWrite
+		DataBlockSize     readWrite
+		DSCP     readWrite
+		SuccessCount     readOnly
+		FailureCount     readOnly
+		AverageResponseTime     readOnly
+		MinimumResponseTime     readOnly
+		MaximumResponseTime     readOnly
+ATMLoopback:1
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANATMF5LoopbackDiagnostics.
+		DiagnosticsState     readWrite
+		NumberOfRepetitions     readWrite
+		Timeout     readWrite
+		SuccessCount     readOnly
+		FailureCount     readOnly
+		AverageResponseTime     readOnly
+		MinimumResponseTime     readOnly
+		MaximumResponseTime     readOnly
+DSLDiagnostics:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics.
+		LoopDiagnosticsState     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINpsds     readOnly
+		QLNpsds     readOnly
+		SNRpsds     readOnly
+		BITSpsds     readOnly
+		GAINSpsds     readOnly
+DeviceAssociation:1
+	InternetGatewayDevice.ManagementServer.
+		ManageableDeviceNumberOfEntries     readOnly
+	InternetGatewayDevice.ManagementServer.ManageableDevice.{i}.
+		ManufacturerOUI     readOnly
+		SerialNumber     readOnly
+		ProductClass     readOnly
+UDPConnReq:1
+	InternetGatewayDevice.ManagementServer.
+		UDPConnectionRequestAddress     readOnly
+		UDPConnectionRequestAddressNotificationLimit     readWrite
+		STUNEnable     readWrite
+		STUNServerAddress     readWrite
+		STUNServerPort     readWrite
+		STUNUsername     readWrite
+		STUNPassword     readWrite
+		STUNMaximumKeepAlivePeriod     readWrite
+		STUNMinimumKeepAlivePeriod     readWrite
+		NATDetected     readOnly
+Download:1
+	InternetGatewayDevice.Capabilities.PerformanceDiagnostic.
+		DownloadTransports     readOnly
+	InternetGatewayDevice.DownloadDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		DownloadURL     readWrite
+		DSCP     readWrite
+		EthernetPriority     readWrite
+		ROMTime     readOnly
+		BOMTime     readOnly
+		EOMTime     readOnly
+		TestBytesReceived     readOnly
+		TotalBytesReceived     readOnly
+DownloadTCP:1
+	InternetGatewayDevice.DownloadDiagnostics.
+		TCPOpenRequestTime     readOnly
+		TCPOpenResponseTime     readOnly
+Upload:1
+	InternetGatewayDevice.Capabilities.PerformanceDiagnostic.
+		UploadTransports     readOnly
+	InternetGatewayDevice.UploadDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		UploadURL     readWrite
+		DSCP     readWrite
+		EthernetPriority     readWrite
+		ROMTime     readOnly
+		BOMTime     readOnly
+		EOMTime     readOnly
+		TestFileLength     readOnly
+		TotalBytesSent     readOnly
+UploadTCP:1
+	InternetGatewayDevice.UploadDiagnostics.
+		TCPOpenRequestTime     readOnly
+		TCPOpenResponseTime     readOnly
+UDPEcho:1
+	InternetGatewayDevice.UDPEchoConfig.
+		Enable     readWrite
+		Interface     readWrite
+		SourceIPAddress     readWrite
+		UDPPort     readWrite
+		PacketsReceived     readOnly
+		PacketsResponded     readOnly
+		BytesReceived     readOnly
+		BytesResponded     readOnly
+		TimeFirstPacketReceived     readOnly
+		TimeLastPacketReceived     readOnly
+		EchoPlusSupported     readOnly
+UDPEchoPlus:1
+	InternetGatewayDevice.UDPEchoConfig.
+		EchoPlusEnabled     readWrite
+Baseline:2
+	InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}.
+		StaticRoute     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.
+		MACAddress     readOnly
+	InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}.
+		Layer2Interface     readOnly
+	InternetGatewayDevice.LANInterfaces.
+		LANEthernetInterfaceNumberOfEntries     readOnly
+		LANUSBInterfaceNumberOfEntries     readOnly
+		LANWLANConfigurationNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.
+		Reset     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats.
+		EthernetErrorsSent     readOnly
+		EthernetErrorsReceived     readOnly
+		EthernetUnicastPacketsSent     readOnly
+		EthernetUnicastPacketsReceived     readOnly
+		EthernetDiscardPacketsSent     readOnly
+		EthernetDiscardPacketsReceived     readOnly
+		EthernetMulticastPacketsSent     readOnly
+		EthernetMulticastPacketsReceived     readOnly
+		EthernetBroadcastPacketsSent     readOnly
+		EthernetBroadcastPacketsReceived     readOnly
+		EthernetUnknownProtoPacketsReceived     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.
+		Reset     readWrite
+		PPPoESessionID     readOnly
+		DefaultGateway     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats.
+		EthernetErrorsSent     readOnly
+		EthernetErrorsReceived     readOnly
+		EthernetUnicastPacketsSent     readOnly
+		EthernetUnicastPacketsReceived     readOnly
+		EthernetDiscardPacketsSent     readOnly
+		EthernetDiscardPacketsReceived     readOnly
+		EthernetMulticastPacketsSent     readOnly
+		EthernetMulticastPacketsReceived     readOnly
+		EthernetBroadcastPacketsSent     readOnly
+		EthernetBroadcastPacketsReceived     readOnly
+		EthernetUnknownProtoPacketsReceived     readOnly
+EthernetLAN:2
+	InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.
+		Name     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.Stats.
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+USBLAN:2
+	InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.
+		Name     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.Stats.
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+WiFiLAN:2
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.
+		Name     readOnly
+		AutoChannelEnable     readWrite
+		SSIDAdvertisementEnabled     readWrite
+		TransmitPowerSupported     readOnly
+		TransmitPower     readWrite
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.Stats.
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+WiFiWMM:1
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.
+		WMMSupported     readOnly
+		UAPSDSupported     readOnly
+		WMMEnable     readWrite
+		UAPSDEnable     readWrite
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.APWMMParameter.{i}.
+		AIFSN     readWrite
+		ECWMin     readWrite
+		ECWMax     readWrite
+		TXOP     readWrite
+		AckPolicy     readWrite
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.STAWMMParameter.{i}.
+		AIFSN     readWrite
+		ECWMin     readWrite
+		ECWMax     readWrite
+		TXOP     readWrite
+		AckPolicy     readWrite
+WiFiWPS:1
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.WPS.
+		Enable     readWrite
+		DeviceName     readOnly
+		DevicePassword     readWrite
+		UUID     readOnly
+		Version     readOnly
+		ConfigMethodsSupported     readOnly
+		ConfigMethodsEnabled     readWrite
+		SetupLockedState     readOnly
+		SetupLock     readWrite
+		ConfigurationState     readOnly
+		LastConfigurationError     readOnly
+		RegistrarNumberOfEntries     readOnly
+		RegistrarEstablished     readOnly
+	InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.WPS.Registrar.{i}.
+		Enable     readWrite
+		UUID     readOnly
+		DeviceName     readOnly
+ADSL2WAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.
+		Enable     readWrite
+		Status     readOnly
+		LinkEncapsulationSupported     readOnly
+		LinkEncapsulationRequested     readWrite
+		LinkEncapsulationUsed     readOnly
+		StandardsSupported     readOnly
+		StandardUsed     readOnly
+		UpstreamMaxRate     readOnly
+		DownstreamMaxRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.TestParams.
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNds     readOnly
+		LATNus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig.
+		Enable     readWrite
+		LinkStatus     readOnly
+		LinkType     readWrite
+		AutoConfig     readOnly
+		DestinationAddress     readWrite
+		ATMTransmittedBlocks     readOnly
+		ATMReceivedBlocks     readOnly
+		ATMCRCErrors     readOnly
+VDSL2WAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.
+		Enable     readWrite
+		Status     readOnly
+		LinkEncapsulationSupported     readOnly
+		LinkEncapsulationRequested     readWrite
+		LinkEncapsulationUsed     readOnly
+		StandardsSupported     readOnly
+		StandardUsed     readOnly
+		AllowedProfiles     readOnly
+		CurrentProfile     readOnly
+		UPBOKLE     readOnly
+		UpstreamMaxRate     readOnly
+		DownstreamMaxRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamAttenuation     readOnly
+		DownstreamAttenuation     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+		TRELLISds     readOnly
+		TRELLISus     readOnly
+		ACTSNRMODEds     readOnly
+		ACTSNRMODEus     readOnly
+		ACTUALCE     readOnly
+		SNRMpbds     readOnly
+		SNRMpbus     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.TestParams.
+		HLOGGds     readOnly
+		HLOGGus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNGds     readOnly
+		QLNGus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRGds     readOnly
+		SNRGus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNds     readOnly
+		LATNus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig.
+		Enable     readWrite
+		LinkStatus     readOnly
+		LinkType     readWrite
+		AutoConfig     readOnly
+		DestinationAddress     readWrite
+		ATMTransmittedBlocks     readOnly
+		ATMReceivedBlocks     readOnly
+		ATMCRCErrors     readOnly
+PTMWAN:1
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPTMLinkConfig.
+		Enable     readWrite
+		LinkStatus     readOnly
+		MACAddress     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPTMLinkConfig.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		FramesSent     readOnly
+		FramesReceived     readOnly
+		OOSNearEnd     readOnly
+		OOSFarEnd     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+QoS:2
+	InternetGatewayDevice.QueueManagement.
+		DefaultTrafficClass     readWrite
+	InternetGatewayDevice.QueueManagement.Classification.{i}.
+		ClassificationKey     readOnly
+		TrafficClass     readWrite
+	InternetGatewayDevice.QueueManagement.Policer.{i}.
+		PolicerKey     readOnly
+		ExcessBurstSize     readWrite
+		PeakRate     readWrite
+		PeakBurstSize     readWrite
+		PartialConformingAction     readWrite
+	InternetGatewayDevice.QueueManagement.Queue.{i}.
+		QueueKey     readOnly
+		TrafficClasses     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig.
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+QoSDynamicFlow:2
+	InternetGatewayDevice.QueueManagement.App.{i}.
+		AppKey     readOnly
+		AppDefaultTrafficClass     readWrite
+	InternetGatewayDevice.QueueManagement.Flow.{i}.
+		FlowKey     readOnly
+		FlowTrafficClass     readWrite
+QoSStats:1
+	InternetGatewayDevice.QueueManagement.
+		QueueStatsNumberOfEntries     readOnly
+	InternetGatewayDevice.QueueManagement.Policer.{i}.
+		TotalCountedPackets     readOnly
+		TotalCountedBytes     readOnly
+		ConformingCountedPackets     readOnly
+		ConformingCountedBytes     readOnly
+		NonConformingCountedPackets     readOnly
+		NonConformingCountedBytes     readOnly
+	InternetGatewayDevice.QueueManagement.QueueStats.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Queue     readWrite
+		Interface     readWrite
+		OutputPackets     readOnly
+		OutputBytes     readOnly
+		DroppedPackets     readOnly
+		DroppedBytes     readOnly
+		QueueOccupancyPackets     readOnly
+		QueueOccupancyPercentage     readOnly
+Bridging:2
+	InternetGatewayDevice.Layer2Bridging.
+		MaxDBridgeEntries     readOnly
+		MaxQBridgeEntries     readOnly
+	InternetGatewayDevice.Layer2Bridging.Bridge.{i}.
+		BridgeStandard     readWrite
+	InternetGatewayDevice.Layer2Bridging.Marking.{i}.
+		VLANIDMarkOverride     readWrite
+BridgingPortVLAN:1
+	InternetGatewayDevice.Layer2Bridging.
+		MaxVLANEntries     readOnly
+	InternetGatewayDevice.Layer2Bridging.Bridge.{i}.
+		PortNumberOfEntries     readOnly
+		VLANNumberOfEntries     readOnly
+	InternetGatewayDevice.Layer2Bridging.Bridge.{i}.Port.{i}.
+		PortEnable     readWrite
+		PortInterface     readWrite
+		PortState     readOnly
+		PVID     readWrite
+		AcceptableFrameTypes     readWrite
+		IngressFiltering     readWrite
+	InternetGatewayDevice.Layer2Bridging.Bridge.{i}.VLAN.{i}.
+		VLANEnable     readWrite
+		VLANName     readWrite
+		VLANID     readWrite
+Time:2
+	InternetGatewayDevice.Time.
+		Enable     readWrite
+		Status     readOnly
+		LocalTimeZone     readWrite
+		LocalTimeZoneName     readWrite
+		DaylightSavingsUsed     readWrite
+		DaylightSavingsStart     readWrite
+		DaylightSavingsEnd     readWrite
+CaptivePortal:1
+	InternetGatewayDevice.CaptivePortal.
+		Enable     readWrite
+		Status     readOnly
+		AllowedList     readWrite
+		CaptivePortalURL     readWrite
+TraceRoute:1
+	InternetGatewayDevice.TraceRouteDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		Host     readWrite
+		NumberOfTries     readWrite
+		Timeout     readWrite
+		DataBlockSize     readWrite
+		DSCP     readWrite
+		MaxHopCount     readWrite
+		ResponseTime     readOnly
+		RouteHopsNumberOfEntries     readOnly
+	InternetGatewayDevice.TraceRouteDiagnostics.RouteHops.{i}.
+		HopHost     readOnly
+		HopHostAddress     readOnly
+		HopErrorCode     readOnly
+		HopRTTimes     readOnly
+ADSL2DSLDiagnostics:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics.
+		LoopDiagnosticsState     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINSCus     readOnly
+		HLINpsds     readOnly
+		HLINpsus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNpbds     readOnly
+		LATNpbus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+VDSL2DSLDiagnostics:1
+	InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics.
+		LoopDiagnosticsState     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINSCus     readOnly
+		HLINGds     readOnly
+		HLINGus     readOnly
+		HLINpsds     readOnly
+		HLINpsus     readOnly
+		HLOGGds     readOnly
+		HLOGGus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNGds     readOnly
+		QLNGus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRGds     readOnly
+		SNRGus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNpbds     readOnly
+		LATNpbus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+DeviceAssociation:2
+	InternetGatewayDevice.ManagementServer.ManageableDevice.{i}.
+		Host     readOnly
+DHCPCondServing:1
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.
+		DHCPConditionalPoolNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.DHCPConditionalServingPool.{i}.
+		Enable     readWrite
+		PoolOrder     readWrite
+		SourceInterface     readWrite
+		VendorClassID     readWrite
+		ClientID     readWrite
+		UserClassID     readWrite
+		Chaddr     readWrite
+		ChaddrMask     readWrite
+		LocallyServed     readWrite
+		MinAddress     readWrite
+		MaxAddress     readWrite
+		ReservedAddresses     readWrite
+		SubnetMask     readWrite
+		DNSServers     readWrite
+		DomainName     readWrite
+		IPRouters     readWrite
+		DHCPLeaseTime     readWrite
+		DHCPServerIPAddress     readWrite
+DHCPOption:1
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.
+		DHCPOptionNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.DHCPOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.DHCPConditionalServingPool.{i}.
+		DHCPOptionNumberOfEntries     readOnly
+	InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.DHCPConditionalServingPool.{i}.DHCPOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.DHCPClient.
+		SentDHCPOptionNumberOfEntries     readOnly
+		ReqDHCPOptionNumberOfEntries     readOnly
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.DHCPClient.SentDHCPOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+	InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.DHCPClient.ReqDHCPOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readOnly

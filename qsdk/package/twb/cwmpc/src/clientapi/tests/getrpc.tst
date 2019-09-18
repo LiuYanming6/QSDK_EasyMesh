@@ -1,0 +1,3 @@
+StartSession 2
+GetRPCMethods
+EndSession

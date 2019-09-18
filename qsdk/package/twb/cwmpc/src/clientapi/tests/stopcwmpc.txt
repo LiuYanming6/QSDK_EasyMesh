@@ -1,0 +1,2 @@
+StartSession 300
+StopCWMPc

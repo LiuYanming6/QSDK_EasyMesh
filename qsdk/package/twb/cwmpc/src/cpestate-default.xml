@@ -1,0 +1,8 @@
+<CPEState> 
+    <eventMask>0x0000</eventMask> 
+    <acsURL>https://acs.oss.jio.com:8443/ftacs-digest/ACS</acsURL> 
+    <acsUser></acsUser> 
+    <acsPW></acsPW>
+    <informEnabled>1</informEnabled> 
+    <informInterval>84000</informInterval> 
+</CPEState>

@@ -1,0 +1,3 @@
+StartSession 10
+GetParameterValue Device.ManagementServer.URL
+EndSession

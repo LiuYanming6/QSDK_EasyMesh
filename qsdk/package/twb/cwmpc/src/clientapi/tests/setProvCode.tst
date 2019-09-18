@@ -1,0 +1,4 @@
+StartSession 5
+SetPath Device.DeviceInfo.
+SetParameterValue ProvisioningCode P888899345
+EndSession

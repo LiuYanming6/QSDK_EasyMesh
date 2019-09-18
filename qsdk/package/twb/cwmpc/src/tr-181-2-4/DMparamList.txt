@@ -1,0 +1,2732 @@
+Device.
+	RootDataModelVersion
+	InterfaceStackNumberOfEntries
+Device.ATM.
+	LinkNumberOfEntries
+Device.ATM.Diagnostics.
+Device.ATM.Diagnostics.F5Loopback.
+	DiagnosticsState
+	Interface
+	NumberOfRepetitions
+	Timeout
+	SuccessCount
+	FailureCount
+	AverageResponseTime
+	MinimumResponseTime
+	MaximumResponseTime
+Device.ATM.Link.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	LinkType
+	AutoConfig
+	DestinationAddress
+	Encapsulation
+	FCSPreserved
+	VCSearchList
+	AAL
+Device.ATM.Link.{i}.QoS.
+	QoSClass
+	PeakCellRate
+	MaximumBurstSize
+	SustainableCellRate
+Device.ATM.Link.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+	TransmittedBlocks
+	ReceivedBlocks
+	CRCErrors
+	HECErrors
+Device.Bridging.
+	MaxBridgeEntries
+	MaxDBridgeEntries
+	MaxQBridgeEntries
+	MaxVLANEntries
+	MaxFilterEntries
+	BridgeNumberOfEntries
+	FilterNumberOfEntries
+Device.Bridging.Bridge.{i}.
+	Enable
+	Status
+	Alias
+	Standard
+	PortNumberOfEntries
+	VLANNumberOfEntries
+	VLANPortNumberOfEntries
+Device.Bridging.Bridge.{i}.Port.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	ManagementPort
+	DefaultUserPriority
+	PriorityRegeneration
+	PortState
+	PVID
+	AcceptableFrameTypes
+	IngressFiltering
+	PriorityTagging
+Device.Bridging.Bridge.{i}.Port.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.Bridging.Bridge.{i}.VLAN.{i}.
+	Enable
+	Alias
+	Name
+	VLANID
+Device.Bridging.Bridge.{i}.VLANPort.{i}.
+	Enable
+	Alias
+	VLAN
+	Port
+	Untagged
+Device.Bridging.Filter.{i}.
+	Enable
+	Alias
+	Status
+	Bridge
+	Order
+	Interface
+	DHCPType
+	VLANIDFilter
+	EthertypeFilterList
+	EthertypeFilterExclude
+	SourceMACAddressFilterList
+	SourceMACAddressFilterExclude
+	DestMACAddressFilterList
+	DestMACAddressFilterExclude
+	SourceMACFromVendorClassIDFilter
+	SourceMACFromVendorClassIDFilterv6
+	SourceMACFromVendorClassIDFilterExclude
+	SourceMACFromVendorClassIDMode
+	DestMACFromVendorClassIDFilter
+	DestMACFromVendorClassIDFilterv6
+	DestMACFromVendorClassIDFilterExclude
+	DestMACFromVendorClassIDMode
+	SourceMACFromClientIDFilter
+	SourceMACFromClientIDFilterExclude
+	DestMACFromClientIDFilter
+	DestMACFromClientIDFilterExclude
+	SourceMACFromUserClassIDFilter
+	SourceMACFromUserClassIDFilterExclude
+	DestMACFromUserClassIDFilter
+	DestMACFromUserClassIDFilterExclude
+Device.CaptivePortal.
+	Enable
+	Status
+	AllowedList
+	URL
+Device.DHCPv4.
+	ClientNumberOfEntries
+Device.DHCPv4.Client.{i}.
+	Enable
+	Alias
+	Interface
+	Status
+	DHCPStatus
+	Renew
+	IPAddress
+	SubnetMask
+	IPRouters
+	DNSServers
+	LeaseTimeRemaining
+	DHCPServer
+	PassthroughEnable
+	PassthroughDHCPPool
+	SentOptionNumberOfEntries
+	ReqOptionNumberOfEntries
+Device.DHCPv4.Client.{i}.ReqOption.{i}.
+	Enable
+	Order
+	Alias
+	Tag
+	Value
+Device.DHCPv4.Client.{i}.SentOption.{i}.
+	Enable
+	Alias
+	Tag
+	Value
+Device.DHCPv4.Relay.
+	Enable
+	Status
+	ForwardingNumberOfEntries
+Device.DHCPv4.Relay.Forwarding.{i}.
+	Enable
+	Status
+	Alias
+	Order
+	Interface
+	VendorClassID
+	VendorClassIDExclude
+	VendorClassIDMode
+	ClientID
+	ClientIDExclude
+	UserClassID
+	UserClassIDExclude
+	Chaddr
+	ChaddrMask
+	ChaddrExclude
+	LocallyServed
+	DHCPServerIPAddress
+Device.DHCPv4.Server.
+	Enable
+	PoolNumberOfEntries
+Device.DHCPv4.Server.Pool.{i}.
+	Enable
+	Status
+	Alias
+	Order
+	Interface
+	VendorClassID
+	VendorClassIDExclude
+	VendorClassIDMode
+	ClientID
+	ClientIDExclude
+	UserClassID
+	UserClassIDExclude
+	Chaddr
+	ChaddrMask
+	ChaddrExclude
+	MinAddress
+	MaxAddress
+	ReservedAddresses
+	SubnetMask
+	DNSServers
+	DomainName
+	IPRouters
+	LeaseTime
+	StaticAddressNumberOfEntries
+	OptionNumberOfEntries
+	ClientNumberOfEntries
+Device.DHCPv4.Server.Pool.{i}.Client.{i}.
+	Alias
+	Chaddr
+	Active
+	IPv4AddressNumberOfEntries
+	OptionNumberOfEntries
+Device.DHCPv4.Server.Pool.{i}.Client.{i}.IPv4Address.{i}.
+	IPAddress
+	LeaseTimeRemaining
+Device.DHCPv4.Server.Pool.{i}.Client.{i}.Option.{i}.
+	Tag
+	Value
+Device.DHCPv4.Server.Pool.{i}.Option.{i}.
+	Enable
+	Alias
+	Tag
+	Value
+Device.DHCPv4.Server.Pool.{i}.StaticAddress.{i}.
+	Enable
+	Alias
+	Chaddr
+	Yiaddr
+Device.DHCPv6.
+	ClientNumberOfEntries
+Device.DHCPv6.Client.{i}.
+	Enable
+	Alias
+	Interface
+	Status
+	DUID
+	RequestAddresses
+	RequestPrefixes
+	RapidCommit
+	Renew
+	SuggestedT1
+	SuggestedT2
+	SupportedOptions
+	RequestedOptions
+	ServerNumberOfEntries
+	SentOptionNumberOfEntries
+	ReceivedOptionNumberOfEntries
+Device.DHCPv6.Client.{i}.ReceivedOption.{i}.
+	Tag
+	Value
+	Server
+Device.DHCPv6.Client.{i}.SentOption.{i}.
+	Enable
+	Alias
+	Tag
+	Value
+Device.DHCPv6.Client.{i}.Server.{i}.
+	SourceAddress
+	DUID
+	InformationRefreshTime
+Device.DHCPv6.Server.
+	Enable
+	PoolNumberOfEntries
+Device.DHCPv6.Server.Pool.{i}.
+	Enable
+	Status
+	Alias
+	Order
+	Interface
+	DUID
+	DUIDExclude
+	VendorClassID
+	VendorClassIDExclude
+	UserClassID
+	UserClassIDExclude
+	SourceAddress
+	SourceAddressMask
+	SourceAddressExclude
+	IANAEnable
+	IANAManualPrefixes
+	IANAPrefixes
+	IAPDEnable
+	IAPDManualPrefixes
+	IAPDPrefixes
+	IAPDAddLength
+	ClientNumberOfEntries
+	OptionNumberOfEntries
+Device.DHCPv6.Server.Pool.{i}.Client.{i}.
+	Alias
+	SourceAddress
+	Active
+	IPv6AddressNumberOfEntries
+	IPv6PrefixNumberOfEntries
+	OptionNumberOfEntries
+Device.DHCPv6.Server.Pool.{i}.Client.{i}.IPv6Address.{i}.
+	IPAddress
+	PreferredLifetime
+	ValidLifetime
+Device.DHCPv6.Server.Pool.{i}.Client.{i}.IPv6Prefix.{i}.
+	Prefix
+	PreferredLifetime
+	ValidLifetime
+Device.DHCPv6.Server.Pool.{i}.Client.{i}.Option.{i}.
+	Tag
+	Value
+Device.DHCPv6.Server.Pool.{i}.Option.{i}.
+	Enable
+	Alias
+	Tag
+	Value
+	PassthroughClient
+Device.DLNA.
+Device.DLNA.Capabilities.
+	HNDDeviceClass
+	DeviceCapability
+	HIDDeviceClass
+	ImageClassProfileID
+	AudioClassProfileID
+	AVClassProfileID
+	MediaCollectionProfileID
+	PrinterClassProfileID
+Device.DNS.
+	SupportedRecordTypes
+Device.DNS.Client.
+	Enable
+	Status
+	ServerNumberOfEntries
+Device.DNS.Client.Server.{i}.
+	Enable
+	Status
+	Alias
+	DNSServer
+	Interface
+	Type
+Device.DNS.Diagnostics.
+Device.DNS.Diagnostics.NSLookupDiagnostics.
+	DiagnosticsState
+	Interface
+	HostName
+	DNSServer
+	Timeout
+	NumberOfRepetitions
+	SuccessCount
+	ResultNumberOfEntries
+Device.DNS.Diagnostics.NSLookupDiagnostics.Result.{i}.
+	Status
+	AnswerType
+	HostNameReturned
+	IPAddresses
+	DNSServerIP
+	ResponseTime
+Device.DNS.Relay.
+	Enable
+	Status
+	ForwardNumberOfEntries
+Device.DNS.Relay.Forwarding.{i}.
+	Enable
+	Status
+	Alias
+	DNSServer
+	Interface
+	Type
+Device.DSL.
+	LineNumberOfEntries
+	ChannelNumberOfEntries
+	BondingGroupNumberOfEntries
+Device.DSL.BondingGroup.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	GroupStatus
+	GroupID
+	BondSchemesSupported
+	BondScheme
+	GroupCapacity
+	RunningTime
+	TargetUpRate
+	TargetDownRate
+	ThreshLowUpRate
+	ThreshLowDownRate
+	UpstreamDifferentialDelayTolerance
+	DownstreamDifferentialDelayTolerance
+	BondedChannelNumberOfEntries
+Device.DSL.BondingGroup.{i}.BondedChannel.{i}.
+	Alias
+	Channel
+Device.DSL.BondingGroup.{i}.BondedChannel.{i}.Ethernet.
+Device.DSL.BondingGroup.{i}.BondedChannel.{i}.Ethernet.Stats.
+	UnderflowErrorsSent
+	CRCErrorsReceived
+	AlignmentErrorsReceived
+	ShortPacketsReceived
+	LongPacketsReceived
+	OverflowErrorsReceived
+	PauseFramesReceived
+	FramesDropped
+Device.DSL.BondingGroup.{i}.Ethernet.
+Device.DSL.BondingGroup.{i}.Ethernet.Stats.
+	PAFErrors
+	PAFSmallFragments
+	PAFLargeFragments
+	PAFBadFragments
+	PAFLostFragments
+	PAFLateFragments
+	PAFLostStarts
+	PAFLostEnds
+	PAFOverflows
+	PauseFramesSent
+	CRCErrorsReceived
+	AlignmentErrorsReceived
+	ShortPacketsReceived
+	LongPacketsReceived
+	OverflowErrorsReceived
+	FramesDropped
+Device.DSL.BondingGroup.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+	TotalStart
+	CurrentDayStart
+	QuarterHourStart
+Device.DSL.BondingGroup.{i}.Stats.CurrentDay.
+	FailureReasons
+	UpstreamRate
+	DownstreamRate
+	UpstreamPacketLoss
+	DownstreamPacketLoss
+	UpstreamDifferentialDelay
+	DownstreamDifferentialDelay
+	FailureCount
+	ErroredSeconds
+	SeverelyErroredSeconds
+	UnavailableSeconds
+Device.DSL.BondingGroup.{i}.Stats.QuarterHour.
+	FailureReasons
+	UpstreamRate
+	DownstreamRate
+	UpstreamPacketLoss
+	DownstreamPacketLoss
+	UpstreamDifferentialDelay
+	DownstreamDifferentialDelay
+	FailureCount
+	ErroredSeconds
+	SeverelyErroredSeconds
+	UnavailableSeconds
+Device.DSL.BondingGroup.{i}.Stats.Total.
+	FailureReasons
+	UpstreamRate
+	DownstreamRate
+	UpstreamPacketLoss
+	DownstreamPacketLoss
+	UpstreamDifferentialDelay
+	DownstreamDifferentialDelay
+	FailureCount
+	ErroredSeconds
+	SeverelyErroredSeconds
+	UnavailableSeconds
+Device.DSL.Channel.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	LinkEncapsulationSupported
+	LinkEncapsulationUsed
+	LPATH
+	INTLVDEPTH
+	INTLVBLOCK
+	ActualInterleavingDelay
+	ACTINP
+	INPREPORT
+	NFEC
+	RFEC
+	LSYMB
+	UpstreamCurrRate
+	DownstreamCurrRate
+Device.DSL.Channel.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	TotalStart
+	ShowtimeStart
+	LastShowtimeStart
+	CurrentDayStart
+	QuarterHourStart
+Device.DSL.Channel.{i}.Stats.CurrentDay.
+	XTURFECErrors
+	XTUCFECErrors
+	XTURHECErrors
+	XTUCHECErrors
+	XTURCRCErrors
+	XTUCCRCErrors
+Device.DSL.Channel.{i}.Stats.LastShowtime.
+	XTURFECErrors
+	XTUCFECErrors
+	XTURHECErrors
+	XTUCHECErrors
+	XTURCRCErrors
+	XTUCCRCErrors
+Device.DSL.Channel.{i}.Stats.QuarterHour.
+	XTURFECErrors
+	XTUCFECErrors
+	XTURHECErrors
+	XTUCHECErrors
+	XTURCRCErrors
+	XTUCCRCErrors
+Device.DSL.Channel.{i}.Stats.Showtime.
+	XTURFECErrors
+	XTUCFECErrors
+	XTURHECErrors
+	XTUCHECErrors
+	XTURCRCErrors
+	XTUCCRCErrors
+Device.DSL.Channel.{i}.Stats.Total.
+	XTURFECErrors
+	XTUCFECErrors
+	XTURHECErrors
+	XTUCHECErrors
+	XTURCRCErrors
+	XTUCCRCErrors
+Device.DSL.Diagnostics.
+Device.DSL.Diagnostics.ADSLLineTest.
+	DiagnosticsState
+	Interface
+	ACTPSDds
+	ACTPSDus
+	ACTATPds
+	ACTATPus
+	HLINSCds
+	HLINSCus
+	HLINGds
+	HLINGus
+	HLOGGds
+	HLOGGus
+	HLOGpsds
+	HLOGpsus
+	HLOGMTds
+	HLOGMTus
+	LATNpbds
+	LATNpbus
+	SATNds
+	SATNus
+	HLINpsds
+	HLINpsus
+	QLNGds
+	QLNGus
+	QLNpsds
+	QLNpsus
+	QLNMTds
+	QLNMTus
+	SNRGds
+	SNRGus
+	SNRpsds
+	SNRpsus
+	SNRMTds
+	SNRMTus
+	BITSpsds
+	BITSpsus
+Device.DSL.Line.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	FirmwareVersion
+	LinkStatus
+	StandardsSupported
+	StandardUsed
+	LineEncoding
+	AllowedProfiles
+	CurrentProfile
+	PowerManagementState
+	SuccessFailureCause
+	LastStateTransmittedDownstream
+	LastStateTransmittedUpstream
+	UPBOKLE
+	MREFPSDds
+	MREFPSDus
+	LIMITMASK
+	US0MASK
+	TRELLISds
+	TRELLISus
+	ACTSNRMODEds
+	ACTSNRMODEus
+	VirtualNoisePSDds
+	VirtualNoisePSDus
+	ACTUALCE
+	LineNumber
+	UpstreamMaxBitRate
+	DownstreamMaxBitRate
+	UpstreamNoiseMargin
+	DownstreamNoiseMargin
+	SNRMpbus
+	SNRMpbds
+	INMIATOds
+	INMIATSds
+	INMCCds
+	INMINPEQMODEds
+	UpstreamAttenuation
+	DownstreamAttenuation
+	UpstreamPower
+	DownstreamPower
+	XTURVendor
+	XTURCountry
+	XTURANSIStd
+	XTURANSIRev
+	XTUCVendor
+	XTUCCountry
+	XTUCANSIStd
+	XTUCANSIRev
+Device.DSL.Line.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	TotalStart
+	ShowtimeStart
+	LastShowtimeStart
+	CurrentDayStart
+	QuarterHourStart
+Device.DSL.Line.{i}.Stats.CurrentDay.
+	ErroredSecs
+	SeverelyErroredSecs
+Device.DSL.Line.{i}.Stats.LastShowtime.
+	ErroredSecs
+	SeverelyErroredSecs
+Device.DSL.Line.{i}.Stats.QuarterHour.
+	ErroredSecs
+	SeverelyErroredSecs
+Device.DSL.Line.{i}.Stats.Showtime.
+	ErroredSecs
+	SeverelyErroredSecs
+Device.DSL.Line.{i}.Stats.Total.
+	ErroredSecs
+	SeverelyErroredSecs
+Device.DSL.Line.{i}.TestParams.
+	HLOGGds
+	HLOGGus
+	HLOGpsds
+	HLOGpsus
+	HLOGMTds
+	HLOGMTus
+	QLNGds
+	QLNGus
+	QLNpsds
+	QLNpsus
+	QLNMTds
+	QLNMTus
+	SNRGds
+	SNRGus
+	SNRpsds
+	SNRpsus
+	SNRMTds
+	SNRMTus
+	LATNds
+	LATNus
+	SATNds
+	SATNus
+Device.DSLite.
+	Enable
+	InterfaceSettingNumberOfEntries
+Device.DSLite.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	EndpointAssignmentPrecedence
+	EndpointName
+	EndpointAddress
+	Origin
+	TunnelInterface
+	TunneledInterface
+Device.DeviceInfo.
+	Manufacturer
+	ManufacturerOUI
+	ModelName
+	Description
+	ProductClass
+	SerialNumber
+	HardwareVersion
+	SoftwareVersion
+	AdditionalHardwareVersion
+	AdditionalSoftwareVersion
+	ProvisioningCode
+	UpTime
+	FirstUseDate
+	VendorConfigFileNumberOfEntries
+	SupportedDataModelNumberOfEntries
+	ProcessorNumberOfEntries
+	VendorLogFileNumberOfEntries
+	LocationNumberOfEntries
+Device.DeviceInfo.Location.{i}.
+	Source
+	AcquiredTime
+	ExternalSource
+	ExternalProtocol
+	DataObject
+Device.DeviceInfo.MemoryStatus.
+	Total
+	Free
+Device.DeviceInfo.NetworkProperties.
+	MaxTCPWindowSize
+	TCPImplementation
+Device.DeviceInfo.ProcessStatus.
+	CPUUsage
+	ProcessNumberOfEntries
+Device.DeviceInfo.ProcessStatus.Process.{i}.
+	PID
+	Command
+	Size
+	Priority
+	CPUTime
+	State
+Device.DeviceInfo.Processor.{i}.
+	Alias
+	Architecture
+Device.DeviceInfo.ProxierInfo.
+	ManufacturerOUI
+	ProductClass
+	SerialNumber
+	ProxyProtocol
+Device.DeviceInfo.SupportedDataModel.{i}.
+	Alias
+	URL
+	URN
+	Features
+Device.DeviceInfo.TemperatureStatus.
+	TemperatureSensorNumberOfEntries
+Device.DeviceInfo.TemperatureStatus.TemperatureSensor.{i}.
+	Alias
+	Enable
+	Status
+	Reset
+	ResetTime
+	Name
+	Value
+	LastUpdate
+	MinValue
+	MinTime
+	MaxValue
+	MaxTime
+	LowAlarmValue
+	LowAlarmTime
+	HighAlarmValue
+	PollingInterval
+	HighAlarmTime
+Device.DeviceInfo.VendorConfigFile.{i}.
+	Alias
+	Name
+	Version
+	Date
+	Description
+Device.DeviceInfo.VendorLogFile.{i}.
+	Alias
+	Name
+	MaximumSize
+	Persistent
+Device.Ethernet.
+	InterfaceNumberOfEntries
+	LinkNumberOfEntries
+	VLANTerminationNumberOfEntries
+	RMONStatsNumberOfEntries
+Device.Ethernet.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	MaxBitRate
+	DuplexMode
+Device.Ethernet.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.Ethernet.Link.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	MACAddress
+	PriorityTagging
+Device.Ethernet.Link.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.Ethernet.RMONStats.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	Interface
+	VLANID
+	Queue
+	AllQueues
+	DropEvents
+	Bytes
+	Packets
+	BroadcastPackets
+	MulticastPackets
+	CRCErroredPackets
+	UndersizePackets
+	OversizePackets
+	Packets64Bytes
+	Packets65to127Bytes
+	Packets128to255Bytes
+	Packets256to511Bytes
+	Packets512to1023Bytes
+	Packets1024to1518Bytes
+Device.Ethernet.VLANTermination.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	VLANID
+Device.Ethernet.VLANTermination.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.FAP.
+Device.FAP.ApplicationPlatform.
+	Version
+	Enable
+	Status
+	MaxNumberOfApplications
+	CurrentNumberofApplications
+Device.FAP.ApplicationPlatform.Capabilities.
+	PresenceApplicationSupport
+	FemtoAwarenessAPISupport
+	SMSAPISupport
+	SubscribeToNotificationsOfSMSSentToApplicationSupport
+	QuerySMSDeliveryStatusSupport
+	MMSAPISupport
+	QueryMMSDeliveryStatusSupport
+	SubscribeToNotificationsOfMMSSentToApplicationSupport
+	TerminalLocationAPISupport
+	AuthenticationMethodsSupported
+	AccessLevelsSupported
+	SendSMSTargetAddressType
+	SendMMSTargetAddressType
+Device.FAP.ApplicationPlatform.Control.
+	AuthenticationMethod
+	TunnelInst
+Device.FAP.ApplicationPlatform.Control.FemtoAwareness.
+	APIEnable
+	QueueEnable
+	Queueing
+	MaxAPIUsersNumber
+	FemtozoneID
+	NotificationsUserIdentifierMSISDN
+	SubscribeToNotificationsResponseCallbackData
+	QueryFemtocellResponseTimezone
+Device.FAP.ApplicationPlatform.Control.MMS.
+	APIEnable
+	QueueEnable
+	Queueing
+	MaxAPIUsersNumber
+	MinSendMMSTimeInterval
+	EnableQueryMMSDeliveryStatus
+	EnableSubscribeToNotificationsOfMessageSentToApplication
+Device.FAP.ApplicationPlatform.Control.SMS.
+	APIEnable
+	QueueEnable
+	Queueing
+	MaxAPIUsersNumber
+	MinSendSMSTimeInterval
+	EnableQuerySMSDeliveryStatus
+	EnableSubscribeToNotificationsOfMessageSentToApplication
+Device.FAP.ApplicationPlatform.Control.TerminalLocation.
+	APIEnable
+	QueueEnable
+	Queueing
+	MaxAPIUsersNumber
+	QueryMobileLocationResponseAddress
+	QueryMobileLocationResponseLongitudeLatitude
+	QueryMobileLocationResponseAltitude
+	QueryMobileLocationResponseTimestamp
+Device.FAP.ApplicationPlatform.Monitoring.
+	Enable
+	MonitoringInterval
+	AuthenticationRequestsReceived
+	AuthenticationRequestsRejected
+Device.FAP.ApplicationPlatform.Monitoring.FemtoAwareness.
+	APIAvailable
+	APIUsers
+	QueueState
+	QueueNum
+	QueueReceived
+	QueueDiscarded
+Device.FAP.ApplicationPlatform.Monitoring.MMS.
+	APIAvailable
+	APIUsers
+	QueueState
+	QueueNum
+	QueueReceived
+	QueueDiscarded
+Device.FAP.ApplicationPlatform.Monitoring.SMS.
+	APIAvailable
+	APIUsers
+	QueueState
+	QueueNum
+	QueueReceived
+	QueueDiscarded
+Device.FAP.ApplicationPlatform.Monitoring.TerminalLocation.
+	APIAvailable
+	APIUsers
+	QueueState
+	QueueNum
+	QueueReceived
+	QueueDiscarded
+Device.FAP.GPS.
+	ScanOnBoot
+	ScanPeriodically
+	PeriodicInterval
+	PeriodicTime
+	ContinuousGPS
+	ScanTimeout
+	ScanStatus
+	ErrorDetails
+	LastScanTime
+	LastSuccessfulScanTime
+	LockedLatitude
+	LockedLongitude
+	NumberOfSatellites
+	GPSReset
+Device.FAP.GPS.AGPSServerConfig.
+	Enable
+	ServerURL
+	ServerPort
+	Username
+	Password
+	ReferenceLatitude
+	ReferenceLongitude
+	ServerInUse
+Device.FAP.GPS.ContinuousGPSStatus.
+	CurrentFix
+	GotFix
+	TimingGood
+	Latitude
+	Longitude
+	Elevation
+	LastFixTime
+	LastFixDuration
+	FirstFixTimeout
+	SatellitesTracked
+	SatelliteTrackingInterval
+	ReceiverStatus
+	LocationType
+	LockTimeOutDuration
+Device.FAP.PerfMgmt.
+	ConfigNumberOfEntries
+Device.FAP.PerfMgmt.Config.{i}.
+	Enable
+	Alias
+	URL
+	Username
+	Password
+	PeriodicUploadInterval
+	PeriodicUploadTime
+Device.FaultMgmt.
+	SupportedAlarmNumberOfEntries
+	MaxCurrentAlarmEntries
+	CurrentAlarmNumberOfEntries
+	HistoryEventNumberOfEntries
+	ExpeditedEventNumberOfEntries
+	QueuedEventNumberOfEntries
+Device.FaultMgmt.CurrentAlarm.{i}.
+	AlarmIdentifier
+	AlarmRaisedTime
+	AlarmChangedTime
+	ManagedObjectInstance
+	EventType
+	ProbableCause
+	SpecificProblem
+	PerceivedSeverity
+	AdditionalText
+	AdditionalInformation
+Device.FaultMgmt.ExpeditedEvent.{i}.
+	EventTime
+	AlarmIdentifier
+	NotificationType
+	ManagedObjectInstance
+	EventType
+	ProbableCause
+	SpecificProblem
+	PerceivedSeverity
+	AdditionalText
+	AdditionalInformation
+Device.FaultMgmt.HistoryEvent.{i}.
+	EventTime
+	AlarmIdentifier
+	NotificationType
+	ManagedObjectInstance
+	EventType
+	ProbableCause
+	SpecificProblem
+	PerceivedSeverity
+	AdditionalText
+	AdditionalInformation
+Device.FaultMgmt.QueuedEvent.{i}.
+	EventTime
+	AlarmIdentifier
+	NotificationType
+	ManagedObjectInstance
+	EventType
+	ProbableCause
+	SpecificProblem
+	PerceivedSeverity
+	AdditionalText
+	AdditionalInformation
+Device.FaultMgmt.SupportedAlarm.{i}.
+	EventType
+	ProbableCause
+	SpecificProblem
+	PerceivedSeverity
+	ReportingMechanism
+Device.Firewall.
+	Enable
+	Config
+	AdvancedLevel
+	Type
+	Version
+	LastChange
+	LevelNumberOfEntries
+	ChainNumberOfEntries
+Device.Firewall.Chain.{i}.
+	Enable
+	Alias
+	Name
+	Creator
+	RuleNumberOfEntries
+Device.Firewall.Chain.{i}.Rule.{i}.
+	Enable
+	Status
+	Order
+	Alias
+	Description
+	Target
+	TargetChain
+	Log
+	CreationDate
+	ExpiryDate
+	SourceInterface
+	SourceInterfaceExclude
+	SourceAllInterfaces
+	DestInterface
+	DestInterfaceExclude
+	DestAllInterfaces
+	IPVersion
+	DestIP
+	DestMask
+	DestIPExclude
+	SourceIP
+	SourceMask
+	SourceIPExclude
+	Protocol
+	ProtocolExclude
+	DestPort
+	DestPortRangeMax
+	DestPortExclude
+	SourcePort
+	SourcePortRangeMax
+	SourcePortExclude
+	DSCP
+	DSCPExclude
+Device.Firewall.Level.{i}.
+	Alias
+	Name
+	Description
+	Order
+	Chain
+	PortMappingEnabled
+	DefaultPolicy
+	DefaultLogPolicy
+Device.GatewayInfo.
+	ManufacturerOUI
+	ProductClass
+	SerialNumber
+Device.Ghn.
+	InterfaceNumberOfEntries
+Device.Ghn.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	FirmwareVersion
+	ConnectionType
+	TargetDomainNames
+	DomainName
+	DomainNameIdentifier
+	DomainId
+	DeviceId
+	MaxBitRate
+	NodeTypeDMCapable
+	NodeTypeSCCapable
+	NodeTypeDMConfig
+	NodeTypeDMStatus
+	NodeTypeSCStatus
+	AssociatedDeviceNumberOfEntries
+Device.Ghn.Interface.{i}.AssociatedDevice.{i}.
+	MACAddress
+	DeviceId
+	TxPhyRate
+	RxPhyRate
+	Active
+Device.Ghn.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.HPNA.
+	InterfaceNumberOfEntries
+Device.HPNA.Diagnostics.
+Device.HPNA.Diagnostics.PHYThroughput.
+	DiagnosticsState
+	Interface
+	NumPacketsInBurst
+	BurstInterval
+	TestPacketPayloadLength
+	PayloadEncoding
+	PayloadDataGen
+	PayloadType
+	PriorityLevel
+	ResultNumberOfEntries
+Device.HPNA.Diagnostics.PHYThroughput.Result.{i}.
+	SrcMACAddress
+	DestMACAddress
+	PHYRate
+	BaudRate
+	SNR
+	PacketsReceived
+	Attenuation
+Device.HPNA.Diagnostics.PerformanceMonitoring.
+	DiagnosticsState
+	Interface
+	SampleInterval
+Device.HPNA.Diagnostics.PerformanceMonitoring.Channels.
+	TimeStamp
+	ChannelNumberOfEntries
+Device.HPNA.Diagnostics.PerformanceMonitoring.Channels.Channel.{i}.
+	HostSrcMACAddress
+	HostDestMACAddress
+	HPNASrcMACAddress
+	HPNADestMACAddress
+	PHYRate
+	BaudRate
+	SNR
+	PacketsSent
+	PacketsReceived
+	LARQPacketsReceived
+	FlowSpec
+Device.HPNA.Diagnostics.PerformanceMonitoring.Nodes.
+	CurrentStart
+	CurrentEnd
+	NodeNumberOfEntries
+Device.HPNA.Diagnostics.PerformanceMonitoring.Nodes.Node.{i}.
+	MACAddress
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	PacketsCrcErrored
+	PacketsCrcErroredHost
+	PacketsShortErrored
+	PacketsShortErroredHost
+	RxPacketsDropped
+	TxPacketsDropped
+	ControlRequestLocal
+	ControlReplyLocal
+	ControlRequestRemote
+	ControlReplyRemote
+	PacketsSentWire
+	BroadcastPacketsSentWire
+	MulticastPacketsSentWire
+	PacketsInternalControl
+	BroadcastPacketsInternalControl
+	PacketsReceivedQueued
+	PacketsReceivedForwardUnknown
+	NodeUtilization
+Device.HPNA.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	FirmwareVersion
+	NodeID
+	IsMaster
+	Synced
+	TotalSyncTime
+	MaxBitRate
+	NetworkUtilization
+	PossibleConnectionTypes
+	ConnectionType
+	PossibleSpectralModes
+	SpectralMode
+	MTU
+	NoiseMargin
+	DefaultNonLARQPER
+	LARQEnable
+	MinMulticastRate
+	NegMulticastRate
+	MasterSelectionMode
+	AssociatedDeviceNumberOfEntries
+Device.HPNA.Interface.{i}.AssociatedDevice.{i}.
+	MACAddress
+	NodeID
+	IsMaster
+	Synced
+	TotalSyncTime
+	MaxBitRate
+	PHYDiagnosticsEnable
+	Active
+Device.HPNA.Interface.{i}.QoS.
+	FlowSpecNumberOfEntries
+Device.HPNA.Interface.{i}.QoS.FlowSpec.{i}.
+	Enable
+	Status
+	Alias
+	TrafficClasses
+	FlowType
+	Priority
+	Latency
+	Jitter
+	PacketSize
+	MinRate
+	AvgRate
+	MaxRate
+	PER
+	Timeout
+Device.HPNA.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.HomePlug.
+	InterfaceNumberOfEntries
+Device.HomePlug.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	LogicalNetwork
+	Version
+	FirmwareVersion
+	ForceCCo
+	NetworkPassword
+	OtherNetworksPresent
+	MaxBitRate
+	AssociatedDeviceNumberOfEntries
+Device.HomePlug.Interface.{i}.AssociatedDevice.{i}.
+	MACAddress
+	TxPhyRate
+	RxPhyRate
+	SNRPerTone
+	AvgAttenuation
+	EndStationMACs
+	Active
+Device.HomePlug.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+	MPDUTxAck
+	MPDUTxCol
+	MPDUTxFailed
+	MPDURxAck
+	MPDURxFailed
+Device.Hosts.
+	HostNumberOfEntries
+Device.Hosts.Host.{i}.
+	Alias
+	PhysAddress
+	IPAddress
+	AddressSource
+	DHCPClient
+	LeaseTimeRemaining
+	AssociatedDevice
+	Layer1Interface
+	Layer3Interface
+	VendorClassID
+	ClientID
+	UserClassID
+	HostName
+	Active
+	IPv4AddressNumberOfEntries
+	IPv6AddressNumberOfEntries
+Device.Hosts.Host.{i}.IPv4Address.{i}.
+	IPAddress
+Device.Hosts.Host.{i}.IPv6Address.{i}.
+	IPAddress
+Device.IEEE8021x.
+	SupplicantNumberOfEntries
+Device.IEEE8021x.Supplicant.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	PAEState
+	EAPIdentity
+	MaxStart
+	StartPeriod
+	HeldPeriod
+	AuthPeriod
+	AuthenticationCapabilities
+	StartFailurePolicy
+	AuthenticationSuccessPolicy
+	Reset
+	Disconnect
+Device.IEEE8021x.Supplicant.{i}.EAPMD5.
+	Enable
+	SharedSecret
+Device.IEEE8021x.Supplicant.{i}.EAPTLS.
+	Enable
+	MutualAuthenticationEnable
+Device.IEEE8021x.Supplicant.{i}.Stats.
+	ReceivedFrames
+	TransmittedFrames
+	TransmittedStartFrames
+	TransmittedLogoffFrames
+	TransmittedResponseIdFrames
+	TransmittedResponseFrames
+	ReceivedRequestIdFrames
+	ReceivedRequestFrames
+	ReceivedInvalidFrames
+	ReceivedLengthErrorFrames
+	LastFrameVersion
+	LastFrameSourceMACAddress
+Device.IP.
+	IPv4Capable
+	IPv4Enable
+	IPv4Status
+	IPv6Capable
+	IPv6Enable
+	IPv6Status
+	ULAPrefix
+	InterfaceNumberOfEntries
+	ActivePortNumberOfEntries
+Device.IP.ActivePort.{i}.
+	LocalIPAddress
+	LocalPort
+	RemoteIPAddress
+	RemotePort
+	Status
+Device.IP.Diagnostics.
+Device.IP.Diagnostics.DownloadDiagnostics.
+	DiagnosticsState
+	Interface
+	DownloadURL
+	DownloadTransports
+	DSCP
+	EthernetPriority
+	ROMTime
+	BOMTime
+	EOMTime
+	TestBytesReceived
+	TotalBytesReceived
+	TCPOpenRequestTime
+	TCPOpenResponseTime
+Device.IP.Diagnostics.IPPing.
+	DiagnosticsState
+	Interface
+	Host
+	NumberOfRepetitions
+	Timeout
+	DataBlockSize
+	DSCP
+	SuccessCount
+	FailureCount
+	AverageResponseTime
+	MinimumResponseTime
+	MaximumResponseTime
+Device.IP.Diagnostics.TraceRoute.
+	DiagnosticsState
+	Interface
+	Host
+	NumberOfTries
+	Timeout
+	DataBlockSize
+	DSCP
+	MaxHopCount
+	ResponseTime
+	RouteHopsNumberOfEntries
+Device.IP.Diagnostics.TraceRoute.RouteHops.{i}.
+	Host
+	HostAddress
+	ErrorCode
+	RTTimes
+Device.IP.Diagnostics.UDPEchoConfig.
+	Enable
+	Interface
+	SourceIPAddress
+	UDPPort
+	EchoPlusEnabled
+	EchoPlusSupported
+	PacketsReceived
+	PacketsResponded
+	BytesReceived
+	BytesResponded
+	TimeFirstPacketReceived
+	TimeLastPacketReceived
+Device.IP.Diagnostics.UploadDiagnostics.
+	DiagnosticsState
+	Interface
+	UploadURL
+	UploadTransports
+	DSCP
+	EthernetPriority
+	TestFileLength
+	ROMTime
+	BOMTime
+	EOMTime
+	TotalBytesSent
+	TCPOpenRequestTime
+	TCPOpenResponseTime
+Device.IP.Interface.{i}.
+	Enable
+	IPv4Enable
+	IPv6Enable
+	ULAEnable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Router
+	Reset
+	MaxMTUSize
+	Type
+	Loopback
+	IPv4AddressNumberOfEntries
+	IPv6AddressNumberOfEntries
+	IPv6PrefixNumberOfEntries
+	AutoIPEnable
+Device.IP.Interface.{i}.IPv4Address.{i}.
+	Enable
+	Status
+	Alias
+	IPAddress
+	SubnetMask
+	AddressingType
+Device.IP.Interface.{i}.IPv6Address.{i}.
+	Enable
+	Status
+	IPAddressStatus
+	Alias
+	IPAddress
+	Origin
+	Prefix
+	PreferredLifetime
+	ValidLifetime
+	Anycast
+Device.IP.Interface.{i}.IPv6Prefix.{i}.
+	Enable
+	Status
+	PrefixStatus
+	Alias
+	Prefix
+	Origin
+	StaticType
+	ParentPrefix
+	ChildPrefixBits
+	OnLink
+	Autonomous
+	PreferredLifetime
+	ValidLifetime
+Device.IP.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.IPv6rd.
+	Enable
+	InterfaceSettingNumberOfEntries
+Device.IPv6rd.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	BorderRelayIPv4Addresses
+	AllTrafficToBorderRelay
+	SPIPv6Prefix
+	IPv4MaskLength
+	AddressSource
+	TunnelInterface
+	TunneledInterface
+Device.InterfaceStack.{i}.
+	Alias
+	HigherLayer
+	LowerLayer
+	HigherAlias
+	LowerAlias
+Device.LANConfigSecurity.
+	ConfigPassword
+Device.ManagementServer.
+	EnableCWMP
+	URL
+	Username
+	Password
+	PeriodicInformEnable
+	PeriodicInformInterval
+	PeriodicInformTime
+	ParameterKey
+	ConnectionRequestURL
+	ConnectionRequestUsername
+	ConnectionRequestPassword
+	UpgradesManaged
+	KickURL
+	DownloadProgressURL
+	DefaultActiveNotificationThrottle
+	CWMPRetryMinimumWaitInterval
+	CWMPRetryIntervalMultiplier
+	UDPConnectionRequestAddress
+	STUNEnable
+	STUNServerAddress
+	STUNServerPort
+	STUNUsername
+	STUNPassword
+	STUNMaximumKeepAlivePeriod
+	STUNMinimumKeepAlivePeriod
+	NATDetected
+	AliasBasedAddressing
+	InstanceMode
+	AutoCreateInstances
+	ManageableDeviceNumberOfEntries
+	EmbeddedDeviceNumberOfEntries
+	VirtualDeviceNumberOfEntries
+Device.ManagementServer.AutonomousTransferCompletePolicy.
+	Enable
+	TransferTypeFilter
+	ResultTypeFilter
+	FileTypeFilter
+Device.ManagementServer.DUStateChangeComplPolicy.
+	Enable
+	OperationTypeFilter
+	ResultTypeFilter
+	FaultCodeFilter
+Device.ManagementServer.DownloadAvailability.
+Device.ManagementServer.DownloadAvailability.Announcement.
+	Enable
+	Status
+	GroupNumberOfEntries
+Device.ManagementServer.DownloadAvailability.Announcement.Group.{i}.
+	Alias
+	Enable
+	Status
+	URL
+Device.ManagementServer.DownloadAvailability.Query.
+	Enable
+	Status
+	URL
+Device.ManagementServer.EmbeddedDevice.{i}.
+	ControllerID
+	ProxiedDeviceID
+	Reference
+	SupportedDataModel
+	Host
+	ProxyProtocol
+	CommandProcessed
+	CommandProcessingErrMsg
+	LastSyncTime
+Device.ManagementServer.ManageableDevice.{i}.
+	Alias
+	ManufacturerOUI
+	SerialNumber
+	ProductClass
+	Host
+Device.ManagementServer.VirtualDevice.{i}.
+	ManufacturerOUI
+	ProductClass
+	SerialNumber
+	Host
+	ProxyProtocol
+Device.MoCA.
+	InterfaceNumberOfEntries
+Device.MoCA.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	FirmwareVersion
+	MaxBitRate
+	MaxIngressBW
+	MaxEgressBW
+	HighestVersion
+	CurrentVersion
+	NetworkCoordinator
+	NodeID
+	MaxNodes
+	PreferredNC
+	BackupNC
+	PrivacyEnabledSetting
+	PrivacyEnabled
+	FreqCapabilityMask
+	FreqCurrentMaskSetting
+	FreqCurrentMask
+	CurrentOperFreq
+	LastOperFreq
+	KeyPassphrase
+	TxPowerLimit
+	PowerCntlPhyTarget
+	BeaconPowerLimit
+	NetworkTabooMask
+	NodeTabooMask
+	TxBcastRate
+	TxBcastPowerReduction
+	QAM256Capable
+	PacketAggregationCapability
+	AssociatedDeviceNumberOfEntries
+Device.MoCA.Interface.{i}.AssociatedDevice.{i}.
+	MACAddress
+	NodeID
+	PreferredNC
+	HighestVersion
+	PHYTxRate
+	PHYRxRate
+	TxPowerControlReduction
+	RxPowerLevel
+	TxBcastRate
+	RxBcastPowerLevel
+	TxPackets
+	RxPackets
+	RxErroredAndMissedPackets
+	QAM256Capable
+	PacketAggregationCapability
+	RxSNR
+	Active
+Device.MoCA.Interface.{i}.QoS.
+	EgressNumFlows
+	IngressNumFlows
+	FlowStatsNumberOfEntries
+Device.MoCA.Interface.{i}.QoS.FlowStats.{i}.
+	FlowID
+	PacketDA
+	MaxRate
+	MaxBurstSize
+	LeaseTime
+	LeaseTimeLeft
+	FlowPackets
+Device.MoCA.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.NAT.
+	InterfaceSettingNumberOfEntries
+	PortMappingNumberOfEntries
+Device.NAT.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+Device.NAT.PortMapping.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	AllInterfaces
+	LeaseDuration
+	RemoteHost
+	ExternalPort
+	ExternalPortEndRange
+	InternalPort
+	Protocol
+	InternalClient
+	Description
+Device.NeighborDiscovery.
+	Enable
+	InterfaceSettingNumberOfEntries
+Device.NeighborDiscovery.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	RetransTimer
+	RtrSolicitationInterval
+	MaxRtrSolicitations
+	NUDEnable
+	RSEnable
+Device.Optical.
+	InterfaceNumberOfEntries
+Device.Optical.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	OpticalSignalLevel
+	LowerOpticalThreshold
+	UpperOpticalThreshold
+	TransmitOpticalLevel
+	LowerTransmitPowerThreshold
+	UpperTransmitPowerThreshold
+Device.Optical.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+Device.PPP.
+	InterfaceNumberOfEntries
+	SupportedNCPs
+Device.PPP.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Reset
+	ConnectionStatus
+	LastConnectionError
+	AutoDisconnectTime
+	IdleDisconnectTime
+	WarnDisconnectDelay
+	Username
+	Password
+	EncryptionProtocol
+	CompressionProtocol
+	AuthenticationProtocol
+	MaxMRUSize
+	CurrentMRUSize
+	ConnectionTrigger
+	LCPEcho
+	LCPEchoRetry
+	IPCPEnable
+	IPv6CPEnable
+Device.PPP.Interface.{i}.IPCP.
+	LocalIPAddress
+	RemoteIPAddress
+	DNSServers
+	PassthroughEnable
+	PassthroughDHCPPool
+Device.PPP.Interface.{i}.IPv6CP.
+	LocalInterfaceIdentifier
+	RemoteInterfaceIdentifier
+Device.PPP.Interface.{i}.PPPoA.
+Device.PPP.Interface.{i}.PPPoE.
+	SessionID
+	ACName
+	ServiceName
+Device.PPP.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.PTM.
+	LinkNumberOfEntries
+Device.PTM.Link.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	MACAddress
+Device.PTM.Link.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.PeriodicStatistics.
+	MinSampleInterval
+	MaxReportSamples
+	SampleSetNumberOfEntries
+Device.PeriodicStatistics.SampleSet.{i}.
+	Alias
+	Enable
+	Status
+	Name
+	SampleInterval
+	ReportSamples
+	TimeReference
+	FetchSamples
+	ForceSample
+	ReportStartTime
+	ReportEndTime
+	SampleSeconds
+	ParameterNumberOfEntries
+Device.PeriodicStatistics.SampleSet.{i}.Parameter.{i}.
+	Alias
+	Enable
+	Reference
+	SampleMode
+	CalculationMode
+	LowThreshold
+	HighThreshold
+	SampleSeconds
+	SuspectData
+	Values
+	Failures
+Device.QoS.
+	MaxClassificationEntries
+	ClassificationNumberOfEntries
+	MaxAppEntries
+	AppNumberOfEntries
+	MaxFlowEntries
+	FlowNumberOfEntries
+	MaxPolicerEntries
+	PolicerNumberOfEntries
+	MaxQueueEntries
+	QueueNumberOfEntries
+	QueueStatsNumberOfEntries
+	MaxShaperEntries
+	ShaperNumberOfEntries
+	DefaultForwardingPolicy
+	DefaultTrafficClass
+	DefaultPolicer
+	DefaultQueue
+	DefaultDSCPMark
+	DefaultEthernetPriorityMark
+	AvailableAppList
+Device.QoS.App.{i}.
+	Enable
+	Status
+	Alias
+	ProtocolIdentifier
+	Name
+	DefaultForwardingPolicy
+	DefaultTrafficClass
+	DefaultPolicer
+	DefaultDSCPMark
+	DefaultEthernetPriorityMark
+Device.QoS.Classification.{i}.
+	Enable
+	Status
+	Order
+	Alias
+	DHCPType
+	Interface
+	AllInterfaces
+	DestIP
+	DestMask
+	DestIPExclude
+	SourceIP
+	SourceMask
+	SourceIPExclude
+	Protocol
+	ProtocolExclude
+	DestPort
+	DestPortRangeMax
+	DestPortExclude
+	SourcePort
+	SourcePortRangeMax
+	SourcePortExclude
+	SourceMACAddress
+	SourceMACMask
+	SourceMACExclude
+	DestMACAddress
+	DestMACMask
+	DestMACExclude
+	Ethertype
+	EthertypeExclude
+	SSAP
+	SSAPExclude
+	DSAP
+	DSAPExclude
+	LLCControl
+	LLCControlExclude
+	SNAPOUI
+	SNAPOUIExclude
+	SourceVendorClassID
+	SourceVendorClassIDv6
+	SourceVendorClassIDExclude
+	SourceVendorClassIDMode
+	DestVendorClassID
+	DestVendorClassIDv6
+	DestVendorClassIDExclude
+	DestVendorClassIDMode
+	SourceClientID
+	SourceClientIDExclude
+	DestClientID
+	DestClientIDExclude
+	SourceUserClassID
+	SourceUserClassIDExclude
+	DestUserClassID
+	DestUserClassIDExclude
+	SourceVendorSpecificInfo
+	SourceVendorSpecificInfoExclude
+	SourceVendorSpecificInfoEnterprise
+	SourceVendorSpecificInfoSubOption
+	DestVendorSpecificInfo
+	DestVendorSpecificInfoExclude
+	DestVendorSpecificInfoEnterprise
+	DestVendorSpecificInfoSubOption
+	TCPACK
+	TCPACKExclude
+	IPLengthMin
+	IPLengthMax
+	IPLengthExclude
+	DSCPCheck
+	DSCPExclude
+	DSCPMark
+	EthernetPriorityCheck
+	EthernetPriorityExclude
+	EthernetPriorityMark
+	VLANIDCheck
+	VLANIDExclude
+	OutOfBandInfo
+	ForwardingPolicy
+	TrafficClass
+	Policer
+	App
+Device.QoS.Flow.{i}.
+	Enable
+	Status
+	Alias
+	Type
+	TypeParameters
+	Name
+	App
+	ForwardingPolicy
+	TrafficClass
+	Policer
+	DSCPMark
+	EthernetPriorityMark
+Device.QoS.Policer.{i}.
+	Enable
+	Status
+	Alias
+	CommittedRate
+	CommittedBurstSize
+	ExcessBurstSize
+	PeakRate
+	PeakBurstSize
+	MeterType
+	PossibleMeterTypes
+	ConformingAction
+	PartialConformingAction
+	NonConformingAction
+	TotalCountedPackets
+	TotalCountedBytes
+	ConformingCountedPackets
+	ConformingCountedBytes
+	PartiallyConformingCountedPackets
+	PartiallyConformingCountedBytes
+	NonConformingCountedPackets
+	NonConformingCountedBytes
+Device.QoS.Queue.{i}.
+	Enable
+	Status
+	Alias
+	TrafficClasses
+	Interface
+	AllInterfaces
+	HardwareAssisted
+	BufferLength
+	Weight
+	Precedence
+	REDThreshold
+	REDPercentage
+	DropAlgorithm
+	SchedulerAlgorithm
+	ShapingRate
+	ShapingBurstSize
+Device.QoS.QueueStats.{i}.
+	Enable
+	Status
+	Alias
+	Queue
+	Interface
+	OutputPackets
+	OutputBytes
+	DroppedPackets
+	DroppedBytes
+	QueueOccupancyPackets
+	QueueOccupancyPercentage
+Device.QoS.Shaper.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	ShapingRate
+	ShapingBurstSize
+Device.RouterAdvertisement.
+	Enable
+	InterfaceSettingNumberOfEntries
+Device.RouterAdvertisement.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	ManualPrefixes
+	Prefixes
+	MaxRtrAdvInterval
+	MinRtrAdvInterval
+	AdvDefaultLifetime
+	AdvManagedFlag
+	AdvOtherConfigFlag
+	AdvMobileAgentFlag
+	AdvPreferredRouterFlag
+	AdvNDProxyFlag
+	AdvLinkMTU
+	AdvReachableTime
+	AdvRetransTimer
+	AdvCurHopLimit
+	OptionNumberOfEntries
+Device.RouterAdvertisement.InterfaceSetting.{i}.Option.{i}.
+	Enable
+	Alias
+	Tag
+	Value
+Device.Routing.
+	RouterNumberOfEntries
+Device.Routing.RIP.
+	Enable
+	SupportedModes
+	InterfaceSettingNumberOfEntries
+Device.Routing.RIP.InterfaceSetting.{i}.
+	Enable
+	Status
+	Alias
+	Interface
+	Version
+	AcceptRA
+	SendRA
+Device.Routing.RouteInformation.
+	Enable
+	InterfaceSettingNumberOfEntries
+Device.Routing.RouteInformation.InterfaceSetting.{i}.
+	Status
+	Interface
+	SourceRouter
+	PreferredRouteFlag
+	Prefix
+	RouteLifetime
+Device.Routing.Router.{i}.
+	Enable
+	Status
+	Alias
+	IPv4ForwardingNumberOfEntries
+	IPv6ForwardingNumberOfEntries
+Device.Routing.Router.{i}.IPv4Forwarding.{i}.
+	Enable
+	Status
+	Alias
+	StaticRoute
+	DestIPAddress
+	DestSubnetMask
+	ForwardingPolicy
+	GatewayIPAddress
+	Interface
+	Origin
+	ForwardingMetric
+Device.Routing.Router.{i}.IPv6Forwarding.{i}.
+	Enable
+	Status
+	Alias
+	DestIPPrefix
+	ForwardingPolicy
+	NextHop
+	Interface
+	Origin
+	ForwardingMetric
+	ExpirationTime
+Device.Security.
+	CertificateNumberOfEntries
+Device.Security.Certificate.{i}.
+	Enable
+	LastModif
+	SerialNumber
+	Issuer
+	NotBefore
+	NotAfter
+	Subject
+	SubjectAlt
+	SignatureAlgorithm
+Device.SelfTestDiagnostics.
+	DiagnosticsState
+	Results
+Device.Services.
+Device.SmartCardReaders.
+	SmartCardReaderNumberOfEntries
+Device.SmartCardReaders.SmartCardReader.{i}.
+	Alias
+	Enable
+	Status
+	Name
+	Reset
+	ResetTime
+	DecryptionFailedCounter
+	DecryptionFailedNoKeyCounter
+Device.SmartCardReaders.SmartCardReader.{i}.SmartCard.
+	Status
+	Type
+	Application
+	SerialNumber
+	ATR
+Device.SoftwareModules.
+	ExecEnvNumberOfEntries
+	DeploymentUnitNumberOfEntries
+	ExecutionUnitNumberOfEntries
+Device.SoftwareModules.DeploymentUnit.{i}.
+	UUID
+	DUID
+	Alias
+	Name
+	Status
+	Resolved
+	URL
+	Description
+	Vendor
+	Version
+	VendorLogList
+	VendorConfigList
+	ExecutionUnitList
+	ExecutionEnvRef
+Device.SoftwareModules.ExecEnv.{i}.
+	Enable
+	Status
+	Reset
+	Alias
+	Name
+	Type
+	InitialRunLevel
+	RequestedRunLevel
+	CurrentRunLevel
+	InitialExecutionUnitRunLevel
+	Vendor
+	Version
+	ParentExecEnv
+	AllocatedDiskSpace
+	AvailableDiskSpace
+	AllocatedMemory
+	AvailableMemory
+	ActiveExecutionUnits
+	ProcessorRefList
+Device.SoftwareModules.ExecutionUnit.{i}.
+	EUID
+	Alias
+	Name
+	ExecEnvLabel
+	Status
+	RequestedState
+	ExecutionFaultCode
+	ExecutionFaultMessage
+	AutoStart
+	RunLevel
+	Vendor
+	Version
+	Description
+	DiskSpaceInUse
+	MemoryInUse
+	References
+	AssociatedProcessList
+	VendorLogList
+	VendorConfigList
+	SupportedDataModelList
+	ExecutionEnvRef
+Device.SoftwareModules.ExecutionUnit.{i}.Extensions.
+Device.Time.
+	Enable
+	Status
+	NTPServer1
+	NTPServer2
+	NTPServer3
+	NTPServer4
+	NTPServer5
+	CurrentLocalTime
+	LocalTimeZone
+Device.UPA.
+	InterfaceNumberOfEntries
+Device.UPA.Diagnostics.
+Device.UPA.Diagnostics.InterfaceMeasurement.
+	DiagnosticsState
+	Type
+	Interface
+	Port
+	Measurements
+	RxGain
+Device.UPA.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	FirmwareVersion
+	MaxBitRate
+	NodeType
+	LogicalNetwork
+	EncryptionMethod
+	EncryptionKey
+	PowerBackoffEnabled
+	PowerBackoffMechanismActive
+	EstApplicationThroughput
+	ActiveNotchEnable
+	ActiveNotchNumberOfEntries
+	AssociatedDeviceNumberOfEntries
+	BridgeForNumberOfEntries
+Device.UPA.Interface.{i}.ActiveNotch.{i}.
+	Enable
+	Alias
+	StartFreq
+	StopFreq
+	Depth
+Device.UPA.Interface.{i}.AssociatedDevice.{i}.
+	MACAddress
+	Port
+	LogicalNetwork
+	PhyTxThroughput
+	PhyRxThroughput
+	RealPhyRxThroughput
+	EstimatedPLR
+	MeanEstimatedAtt
+	SmartRouteIntermediatePLCMAC
+	DirectRoute
+	Active
+Device.UPA.Interface.{i}.BridgeFor.{i}.
+	Alias
+	MACAddress
+	Port
+Device.UPA.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.UPnP.
+Device.UPnP.Device.
+	Enable
+	UPnPMediaServer
+	UPnPMediaRenderer
+	UPnPWLANAccessPoint
+	UPnPQoSDevice
+	UPnPQoSPolicyHolder
+	UPnPIGD
+	UPnPDMBasicMgmt
+	UPnPDMConfigurationMgmt
+	UPnPDMSoftwareMgmt
+Device.UPnP.Device.Capabilities.
+	UPnPArchitecture
+	UPnPArchitectureMinorVer
+	UPnPMediaServer
+	UPnPMediaRenderer
+	UPnPWLANAccessPoint
+	UPnPBasicDevice
+	UPnPQoSDevice
+	UPnPQoSPolicyHolder
+	UPnPIGD
+	UPnPDMBasicMgmt
+	UPnPDMConfigurationMgmt
+	UPnPDMSoftwareMgmt
+Device.UPnP.Discovery.
+	RootDeviceNumberOfEntries
+	DeviceNumberOfEntries
+	ServiceNumberOfEntries
+Device.UPnP.Discovery.Device.{i}.
+	Status
+	UUID
+	USN
+	LeaseTime
+	Location
+	Server
+	Host
+Device.UPnP.Discovery.RootDevice.{i}.
+	Status
+	UUID
+	USN
+	LeaseTime
+	Location
+	Server
+	Host
+Device.UPnP.Discovery.Service.{i}.
+	Status
+	USN
+	LeaseTime
+	Location
+	Server
+	Host
+Device.USB.
+	InterfaceNumberOfEntries
+	PortNumberOfEntries
+Device.USB.Interface.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MACAddress
+	MaxBitRate
+	Port
+Device.USB.Interface.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived
+Device.USB.Port.{i}.
+	Alias
+	Name
+	Standard
+	Type
+	Receptacle
+	Rate
+	Power
+Device.USB.USBHosts.
+	HostNumberOfEntries
+Device.USB.USBHosts.Host.{i}.
+	Alias
+	Enable
+	Name
+	Type
+	Reset
+	PowerManagementEnable
+	USBVersion
+	DeviceNumberOfEntries
+Device.USB.USBHosts.Host.{i}.Device.{i}.
+	DeviceNumber
+	USBVersion
+	DeviceClass
+	DeviceSubClass
+	DeviceVersion
+	DeviceProtocol
+	ProductID
+	VendorID
+	Manufacturer
+	ProductClass
+	SerialNumber
+	Port
+	USBPort
+	Rate
+	Parent
+	MaxChildren
+	IsSuspended
+	IsSelfPowered
+	ConfigurationNumberOfEntries
+Device.USB.USBHosts.Host.{i}.Device.{i}.Configuration.{i}.
+	ConfigurationNumber
+	InterfaceNumberOfEntries
+Device.USB.USBHosts.Host.{i}.Device.{i}.Configuration.{i}.Interface.{i}.
+	InterfaceNumber
+	InterfaceClass
+	InterfaceSubClass
+	InterfaceProtocol
+Device.UserInterface.
+	PasswordRequired
+	PasswordUserSelectable
+	PasswordReset
+	UpgradeAvailable
+	WarrantyDate
+	ISPName
+	ISPHelpDesk
+	ISPHomePage
+	ISPHelpPage
+	ISPLogo
+	ISPLogoSize
+	ISPMailServer
+	ISPNewsServer
+	TextColor
+	BackgroundColor
+	ButtonColor
+	ButtonTextColor
+	AutoUpdateServer
+	UserUpdateServer
+	AvailableLanguages
+	CurrentLanguage
+Device.UserInterface.LocalDisplay.
+	Movable
+	Resizable
+	PosX
+	PosY
+	Width
+	Height
+	DisplayWidth
+	DisplayHeight
+Device.UserInterface.RemoteAccess.
+	Enable
+	Port
+	SupportedProtocols
+	Protocol
+Device.Users.
+	UserNumberOfEntries
+Device.Users.User.{i}.
+	Alias
+	Enable
+	RemoteAccessCapable
+	Username
+	Password
+	Language
+Device.WiFi.
+	RadioNumberOfEntries
+	SSIDNumberOfEntries
+	AccessPointNumberOfEntries
+	EndPointNumberOfEntries
+Device.WiFi.AccessPoint.{i}.
+	Enable
+	Status
+	Alias
+	SSIDReference
+	SSIDAdvertisementEnabled
+	RetryLimit
+	WMMCapability
+	UAPSDCapability
+	WMMEnable
+	UAPSDEnable
+	AssociatedDeviceNumberOfEntries
+	MaxAssociatedDevices
+	IsolationEnable
+Device.WiFi.AccessPoint.{i}.AssociatedDevice.{i}.
+	MACAddress
+	AuthenticationState
+	LastDataDownlinkRate
+	LastDataUplinkRate
+	SignalStrength
+	Retransmissions
+	Active
+Device.WiFi.AccessPoint.{i}.Security.
+	Reset
+	ModesSupported
+	ModeEnabled
+	WEPKey
+	PreSharedKey
+	KeyPassphrase
+	RekeyingInterval
+	RadiusServerIPAddr
+	RadiusServerPort
+	RadiusSecret
+Device.WiFi.AccessPoint.{i}.WPS.
+	Enable
+	ConfigMethodsSupported
+	ConfigMethodsEnabled
+Device.WiFi.EndPoint.{i}.
+	Enable
+	Status
+	Alias
+	ProfileReference
+	SSIDReference
+	ProfileNumberOfEntries
+Device.WiFi.EndPoint.{i}.Profile.{i}.
+	Enable
+	Status
+	Alias
+	SSID
+	Location
+	Priority
+Device.WiFi.EndPoint.{i}.Profile.{i}.Security.
+	ModeEnabled
+	WEPKey
+	PreSharedKey
+	KeyPassphrase
+Device.WiFi.EndPoint.{i}.Security.
+	ModesSupported
+Device.WiFi.EndPoint.{i}.Stats.
+	LastDataDownlinkRate
+	LastDataUplinkRate
+	SignalStrength
+	Retransmissions
+Device.WiFi.EndPoint.{i}.WPS.
+	Enable
+	ConfigMethodsSupported
+	ConfigMethodsEnabled
+Device.WiFi.Radio.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	Upstream
+	MaxBitRate
+	SupportedFrequencyBands
+	OperatingFrequencyBand
+	SupportedStandards
+	OperatingStandards
+	PossibleChannels
+	ChannelsInUse
+	Channel
+	AutoChannelSupported
+	AutoChannelEnable
+	AutoChannelRefreshPeriod
+	OperatingChannelBandwidth
+	ExtensionChannel
+	GuardInterval
+	MCS
+	TransmitPowerSupported
+	TransmitPower
+	IEEE80211hSupported
+	IEEE80211hEnabled
+	RegulatoryDomain
+Device.WiFi.Radio.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+Device.WiFi.SSID.{i}.
+	Enable
+	Status
+	Alias
+	Name
+	LastChange
+	LowerLayers
+	BSSID
+	MACAddress
+	SSID
+Device.WiFi.SSID.{i}.Stats.
+	BytesSent
+	BytesReceived
+	PacketsSent
+	PacketsReceived
+	ErrorsSent
+	ErrorsReceived
+	UnicastPacketsSent
+	UnicastPacketsReceived
+	DiscardPacketsSent
+	DiscardPacketsReceived
+	MulticastPacketsSent
+	MulticastPacketsReceived
+	BroadcastPacketsSent
+	BroadcastPacketsReceived
+	UnknownProtoPacketsReceived

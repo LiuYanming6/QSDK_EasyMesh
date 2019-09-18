@@ -1,0 +1,59 @@
+################################################################################
+#        Copyright (c) 2017 TWin Advanced Technology Corp., Ltd.
+#        All rights reserved.
+#
+#       THIS WORK IS AN UNPUBLISHED WORK AND CONTAINS CONFIDENTIAL,
+#       PROPRIETARY AND TRADESECRET INFORMATION OF T&W INCORPORATED.
+#       ACCESS TO THIS WORK IS RESTRICTED TO (I) T&W EMPLOYEES WHO HAVE A
+#       NEED TO KNOW TO PERFORM TASKS WITHIN THE SCOPE OF THEIR ASSIGNMENTS
+#       AND (II) ENTITIES OTHER THAN T&W WHO HAVE ENTERED INTO APPROPRIATE
+#       LICENSE AGREEMENTS.  NO PART OF THIS WORK MAY BE USED, PRACTICED,
+#       PERFORMED, COPIED, DISTRIBUTED, REVISED, MODIFIED, TRANSLATED,
+#       ABBRIDGED, CONDENSED, EXPANDED, COLLECTED, COMPILED, LINKED, RECAST,
+#       TRANSFORMED OR ADAPTED WITHOUT THE PRIOR WRITTEN CONSENT OF T&W.
+#       ANY USE OR EXPLOITATION OF THIS WORK WITHOUT AUTHORIZATION COULD
+#       SUBJECT THE PERPERTRATOR TO CRIMINAL AND CIVIL LIABILITY.
+#       ------------------------------------------------------------------------------
+#    Project : cwmpc-5.3.x
+#    File    :  Makefile.$(ENV_CB)
+#    Abstract: Build instructions
+#
+#    Modification History:
+################################################################################
+ENV_UTIL_CHK_y +=
+CROSS_UTIL_CHK_y += openssl
+################################################################################
+ENV_PATH_TOP ?= $(shell cd ../../;pwd)
+ENV_MAKEFILE ?= $(ENV_PATH_TOP)/config/config_env.make
+include $(ENV_MAKEFILE)
+export ENV_MAKEFILE
+################################################################################
+ENV_MAKE = $(MAKE)
+FILTER_FLAG = -Werror
+#FILTER_FLAG = -Wno-maybe-uninitialized
+CROSS_LDFLAGS_y           += -ldl -lssl -lcrypto
+################################################################################
+PROG = cwmpc
+FILE = cpestate-default.xml
+
+menu:
+
+all: clean build
+
+init:
+
+clean:
+	$(ENV_Q)$(call make_do,clean)
+
+#TODO(SOMEONE):openssl path is not correct in include/board,need check.
+build:
+	$(ENV_Q)$(call make_do,testbox\
+		,EXTRA_LDFLAGS="$(CROSS_LDFLAGS)" \
+		,EXTRA_CFLAGS="$(CROSS_CFLAGS) $(FILTER_FLAG)" \
+	)
+	$(ENV_Q)$(call target_file_existed,$(PROG),y)
+
+install:
+	$(call target_file_install,$(PROG),$(INSTALL_PATH_SBIN),755,$(STRIP))
+	$(call target_file_install,$(FILE),$(INSTALL_PATH_ETC),644,$(STRIP))
+

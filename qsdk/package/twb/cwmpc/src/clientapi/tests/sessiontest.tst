@@ -1,0 +1,10 @@
+StartSession 300
+SetPath Device.ManagementServer.
+GetParameterValue PeriodicInformInterval
+GetParameterValue ConnectionRequestURL
+GetParameterValue PeriodicInformEnable
+SetParameterValue PeriodicInformEnable true
+GetParameterValue PeriodicInformEnable
+SetParameterValue PeriodicInformInterval 3444
+GetParameterValue PeriodicInformInterval
+EndSession

@@ -1,0 +1,10 @@
+menu "Configuration"
+        depends on PACKAGE_cwmpc
+
+config CWMPC_AUTO_SECRET
+        bool
+        prompt "Enable auto secret"
+        help
+                Enable auto secret
+
+endmenu

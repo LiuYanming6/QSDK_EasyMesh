@@ -1,0 +1,9 @@
+This directory contains files that may be used to
+resolve references with the gslib. For example,
+dns_lookup takes the place of the non-blocking
+interface to dnsmasq that is used by the THN 
+application. 
+
+CWMP uses this interface API to resolve hostnames.
+ 
+

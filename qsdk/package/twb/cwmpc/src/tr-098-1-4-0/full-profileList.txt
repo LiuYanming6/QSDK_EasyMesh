@@ -1,0 +1,2399 @@
+Download:1
+	Device.IP.Diagnostics.DownloadDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		DownloadURL     readWrite
+		DownloadTransports     readOnly
+		DSCP     readWrite
+		EthernetPriority     readWrite
+		ROMTime     readOnly
+		BOMTime     readOnly
+		EOMTime     readOnly
+		TestBytesReceived     readOnly
+		TotalBytesReceived     readOnly
+DownloadTCP:1
+	Device.IP.Diagnostics.DownloadDiagnostics.
+		TCPOpenRequestTime     readOnly
+		TCPOpenResponseTime     readOnly
+Upload:1
+	Device.IP.Diagnostics.UploadDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		UploadURL     readWrite
+		UploadTransports     readOnly
+		DSCP     readWrite
+		EthernetPriority     readWrite
+		ROMTime     readOnly
+		BOMTime     readOnly
+		EOMTime     readOnly
+		TestFileLength     readOnly
+		TotalBytesSent     readOnly
+UploadTCP:1
+	Device.IP.Diagnostics.UploadDiagnostics.
+		TCPOpenRequestTime     readOnly
+		TCPOpenResponseTime     readOnly
+UDPEcho:1
+	Device.IP.Diagnostics.UDPEchoConfig.
+		Enable     readWrite
+		Interface     readWrite
+		SourceIPAddress     readWrite
+		UDPPort     readWrite
+		PacketsReceived     readOnly
+		PacketsResponded     readOnly
+		BytesReceived     readOnly
+		BytesResponded     readOnly
+		TimeFirstPacketReceived     readOnly
+		TimeLastPacketReceived     readOnly
+		EchoPlusSupported     readOnly
+UDPEchoPlus:1
+	Device.IP.Diagnostics.UDPEchoConfig.
+		EchoPlusEnabled     readWrite
+SupportedDataModel:1
+	Device.DeviceInfo.
+		SupportedDataModelNumberOfEntries     readOnly
+	Device.DeviceInfo.SupportedDataModel.{i}.
+		URL     readOnly
+		URN     readOnly
+		Features     readOnly
+MemoryStatus:1
+	Device.DeviceInfo.MemoryStatus.
+		Total     readOnly
+		Free     readOnly
+ProcessStatus:1
+	Device.DeviceInfo.ProcessStatus.
+		CPUUsage     readOnly
+		ProcessNumberOfEntries     readOnly
+	Device.DeviceInfo.ProcessStatus.Process.{i}.
+		PID     readOnly
+		Command     readOnly
+		Size     readOnly
+		Priority     readOnly
+		CPUTime     readOnly
+		State     readOnly
+TempStatus:1
+	Device.DeviceInfo.TemperatureStatus.
+		TemperatureSensorNumberOfEntries     readOnly
+	Device.DeviceInfo.TemperatureStatus.TemperatureSensor.{i}.
+		Enable     readWrite
+		Status     readOnly
+		ResetTime     readOnly
+		Name     readOnly
+		Value     readOnly
+		LastUpdate     readOnly
+		MinValue     readOnly
+		MinTime     readOnly
+		MaxValue     readOnly
+		MaxTime     readOnly
+TempStatusAdv:1
+	Device.DeviceInfo.TemperatureStatus.TemperatureSensor.{i}.
+		Reset     readWrite
+		LowAlarmValue     readWrite
+		LowAlarmTime     readOnly
+		HighAlarmValue     readWrite
+		HighAlarmTime     readOnly
+TempStatusAdv:2
+	Device.DeviceInfo.TemperatureStatus.TemperatureSensor.{i}.
+		PollingInterval     readWrite
+AutonXferComplPolicy:1
+	Device.ManagementServer.AutonomousTransferCompletePolicy.
+		Enable     readWrite
+		TransferTypeFilter     readWrite
+		FileTypeFilter     readWrite
+User:1
+	Device.Users.
+		UserNumberOfEntries     readOnly
+	Device.Users.User.{i}.
+		Enable     readWrite
+		Username     readWrite
+		Password     readWrite
+UPnPDev:1
+	Device.UPnP.
+	Device.UPnP.Device.
+		Enable     readWrite
+		UPnPMediaServer     readWrite
+		UPnPMediaRenderer     readWrite
+		UPnPWLANAccessPoint     readWrite
+		UPnPQoSDevice     readWrite
+		UPnPQoSPolicyHolder     readWrite
+		UPnPIGD     readWrite
+	Device.UPnP.Device.Capabilities.
+		UPnPArchitecture     readOnly
+		UPnPMediaServer     readOnly
+		UPnPMediaRenderer     readOnly
+		UPnPWLANAccessPoint     readOnly
+		UPnPBasicDevice     readOnly
+		UPnPQoSDevice     readOnly
+		UPnPQoSPolicyHolder     readOnly
+		UPnPIGD     readOnly
+UPnPDiscBasic:1
+	Device.UPnP.
+	Device.UPnP.Discovery.
+		RootDeviceNumberOfEntries     readOnly
+	Device.UPnP.Discovery.RootDevice.{i}.
+		Status     readOnly
+		UUID     readOnly
+		USN     readOnly
+		LeaseTime     readOnly
+		Location     readOnly
+		Server     readOnly
+UPnPDiscAdv:1
+	Device.UPnP.Discovery.
+		DeviceNumberOfEntries     readOnly
+		ServiceNumberOfEntries     readOnly
+	Device.UPnP.Discovery.Device.{i}.
+		Status     readOnly
+		UUID     readOnly
+		USN     readOnly
+		LeaseTime     readOnly
+		Location     readOnly
+		Server     readOnly
+	Device.UPnP.Discovery.Service.{i}.
+		Status     readOnly
+		USN     readOnly
+		LeaseTime     readOnly
+		Location     readOnly
+		Server     readOnly
+SelfTestDiag:1
+	Device.SelfTestDiagnostics.
+		DiagnosticsState     readWrite
+		Results     readOnly
+NSLookupDiag:1
+	Device.DNS.Diagnostics.NSLookupDiagnostics.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		HostName     readWrite
+		DNSServer     readWrite
+		Timeout     readWrite
+		NumberOfRepetitions     readWrite
+		SuccessCount     readOnly
+		ResultNumberOfEntries     readOnly
+	Device.DNS.Diagnostics.NSLookupDiagnostics.Result.{i}.
+		Status     readOnly
+		AnswerType     readOnly
+		HostNameReturned     readOnly
+		IPAddresses     readOnly
+		DNSServerIP     readOnly
+		ResponseTime     readOnly
+SimpleFirewall:1
+	Device.Firewall.
+		Config     readWrite
+		Version     readOnly
+		LastChange     readOnly
+AdvancedFirewall:1
+	Device.Firewall.
+		AdvancedLevel     readWrite
+		Type     readOnly
+		LevelNumberOfEntries     readOnly
+		ChainNumberOfEntries     readOnly
+	Device.Firewall.Level.{i}.
+		Alias     readWrite
+		Name     readOnly
+		Order     readWrite
+		Chain     readOnly
+		PortMappingEnabled     readWrite
+		DefaultPolicy     readWrite
+		DefaultLogPolicy     readWrite
+	Device.Firewall.Chain.{i}.
+		Enable     readWrite
+		Alias     readWrite
+		Name     readWrite
+		Creator     readOnly
+		RuleNumberOfEntries     readOnly
+	Device.Firewall.Chain.{i}.Rule.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Order     readWrite
+		Alias     readWrite
+		Target     readWrite
+		TargetChain     readWrite
+		SourceInterface     readWrite
+		SourceInterfaceExclude     readWrite
+		SourceAllInterfaces     readWrite
+		DestInterface     readWrite
+		DestInterfaceExclude     readWrite
+		DestAllInterfaces     readWrite
+		IPVersion     readWrite
+		DestIP     readWrite
+		DestMask     readWrite
+		DestIPExclude     readWrite
+		SourceIP     readWrite
+		SourceMask     readWrite
+		SourceIPExclude     readWrite
+		Protocol     readWrite
+		ProtocolExclude     readWrite
+		DestPort     readWrite
+		DestPortRangeMax     readWrite
+		DestPortExclude     readWrite
+		SourcePort     readWrite
+		SourcePortRangeMax     readWrite
+		SourcePortExclude     readWrite
+USBHostsBasic:1
+	Device.USB.USBHosts.
+		HostNumberOfEntries     readOnly
+	Device.USB.USBHosts.Host.{i}.
+		Enable     readWrite
+		Name     readOnly
+		Type     readOnly
+		USBVersion     readOnly
+		DeviceNumberOfEntries     readOnly
+	Device.USB.USBHosts.Host.{i}.Device.{i}.
+		DeviceNumber     readOnly
+		USBVersion     readOnly
+		DeviceClass     readOnly
+		DeviceSubClass     readOnly
+		DeviceVersion     readOnly
+		DeviceProtocol     readOnly
+		ProductID     readOnly
+		VendorID     readOnly
+		Manufacturer     readOnly
+		ProductClass     readOnly
+		SerialNumber     readOnly
+		Port     readOnly
+		Rate     readOnly
+		Parent     readOnly
+		MaxChildren     readOnly
+USBHostsAdv:1
+	Device.USB.USBHosts.Host.{i}.
+		Reset     readWrite
+		PowerManagementEnable     readWrite
+	Device.USB.USBHosts.Host.{i}.Device.{i}.
+		IsSuspended     readOnly
+		IsSelfPowered     readOnly
+		ConfigurationNumberOfEntries     readOnly
+	Device.USB.USBHosts.Host.{i}.Device.{i}.Configuration.{i}.
+		ConfigurationNumber     readOnly
+		InterfaceNumberOfEntries     readOnly
+	Device.USB.USBHosts.Host.{i}.Device.{i}.Configuration.{i}.Interface.{i}.
+		InterfaceNumber     readOnly
+		InterfaceClass     readOnly
+		InterfaceSubClass     readOnly
+		InterfaceProtocol     readOnly
+PeriodicStatsBase:1
+	Device.PeriodicStatistics.
+		MinSampleInterval     readOnly
+		MaxReportSamples     readOnly
+		SampleSetNumberOfEntries     readOnly
+	Device.PeriodicStatistics.SampleSet.{i}.
+		Name     readWrite
+		SampleInterval     readWrite
+		ReportSamples     readWrite
+		ReportStartTime     readOnly
+		ReportEndTime     readOnly
+		SampleSeconds     readOnly
+		ParameterNumberOfEntries     readOnly
+	Device.PeriodicStatistics.SampleSet.{i}.Parameter.{i}.
+		Reference     readWrite
+		SampleSeconds     readOnly
+		SuspectData     readOnly
+		Values     readOnly
+PeriodicStatsAdv:1
+	Device.PeriodicStatistics.SampleSet.{i}.
+		Enable     readWrite
+		Status     readOnly
+		TimeReference     readWrite
+		FetchSamples     readWrite
+		ForceSample     readWrite
+	Device.PeriodicStatistics.SampleSet.{i}.Parameter.{i}.
+		Enable     readWrite
+		SampleMode     readWrite
+		CalculationMode     readWrite
+		LowThreshold     readWrite
+		HighThreshold     readWrite
+		Failures     readOnly
+DownloadAnnounce:1
+	Device.ManagementServer.DownloadAvailability.
+	Device.ManagementServer.DownloadAvailability.Announcement.
+		Enable     readWrite
+		Status     readOnly
+		GroupNumberOfEntries     readOnly
+	Device.ManagementServer.DownloadAvailability.Announcement.Group.{i}.
+		Enable     readWrite
+		Status     readOnly
+		URL     readWrite
+DownloadQuery:1
+	Device.ManagementServer.DownloadAvailability.
+	Device.ManagementServer.DownloadAvailability.Query.
+		Enable     readWrite
+		Status     readOnly
+		URL     readWrite
+Baseline:1
+	Device.
+		InterfaceStackNumberOfEntries     readOnly
+	Device.DeviceInfo.
+		Manufacturer     readOnly
+		ManufacturerOUI     readOnly
+		ModelName     readOnly
+		Description     readOnly
+		SerialNumber     readOnly
+		HardwareVersion     readOnly
+		SoftwareVersion     readOnly
+		ProvisioningCode     readWrite
+		UpTime     readOnly
+	Device.ManagementServer.
+		URL     readWrite
+		Username     readWrite
+		Password     readWrite
+		PeriodicInformEnable     readWrite
+		PeriodicInformInterval     readWrite
+		PeriodicInformTime     readWrite
+		ParameterKey     readOnly
+		ConnectionRequestURL     readOnly
+		ConnectionRequestUsername     readWrite
+		ConnectionRequestPassword     readWrite
+		UpgradesManaged     readWrite
+	Device.LANConfigSecurity.
+		ConfigPassword     readWrite
+	Device.DNS.
+	Device.DNS.Client.
+		Enable     readWrite
+		Status     readOnly
+		ServerNumberOfEntries     readOnly
+	Device.DNS.Client.Server.{i}.
+		Enable     readWrite
+		Status     readOnly
+		DNSServer     readWrite
+		Interface     readWrite
+		Type     readOnly
+Baseline:2
+	Device.InterfaceStack.{i}.
+		HigherLayer     readOnly
+		LowerLayer     readOnly
+	Device.DNS.
+		SupportedRecordTypes     readOnly
+Baseline:3
+	Device.
+		RootDataModelVersion     readOnly
+Optical:1
+	Device.Optical.
+		InterfaceNumberOfEntries     readOnly
+	Device.Optical.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		OpticalSignalLevel     readOnly
+		TransmitOpticalLevel     readOnly
+	Device.Optical.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+EthernetRMONStats:1
+	Device.Ethernet.
+		RMONStatsNumberOfEntries     readOnly
+	Device.Ethernet.RMONStats.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readOnly
+		Bytes     readOnly
+		Packets     readOnly
+		CRCErroredPackets     readOnly
+Ghn:1
+	Device.Ghn.
+		InterfaceNumberOfEntries     readOnly
+	Device.Ghn.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		FirmwareVersion     readOnly
+		TargetDomainNames     readWrite
+		DomainName     readOnly
+		DomainNameIdentifier     readOnly
+		DomainId     readOnly
+		DeviceId     readOnly
+		MaxBitRate     readOnly
+		NodeTypeDMCapable     readOnly
+		NodeTypeSCCapable     readOnly
+		NodeTypeDMConfig     readOnly
+		NodeTypeDMStatus     readOnly
+		NodeTypeSCStatus     readOnly
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.Ghn.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+	Device.Ghn.Interface.{i}.AssociatedDevice.{i}.
+		MACAddress     readOnly
+		DeviceId     readOnly
+		TxPhyRate     readOnly
+		RxPhyRate     readOnly
+		Active     readOnly
+DNSRelay:1
+	Device.DNS.
+	Device.DNS.Relay.
+		Enable     readWrite
+		Status     readOnly
+		ForwardNumberOfEntries     readOnly
+	Device.DNS.Relay.Forwarding.{i}.
+		Enable     readWrite
+		Status     readOnly
+		DNSServer     readWrite
+		Interface     readWrite
+		Type     readOnly
+Routing:1
+	Device.Routing.
+		RouterNumberOfEntries     readOnly
+	Device.Routing.RIP.
+		Enable     readWrite
+		SupportedModes     readOnly
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.Routing.RIP.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		Version     readWrite
+		AcceptRA     readWrite
+		SendRA     readWrite
+	Device.Routing.Router.{i}.
+		Enable     readWrite
+		Status     readOnly
+		IPv4ForwardingNumberOfEntries     readOnly
+	Device.Routing.Router.{i}.IPv4Forwarding.{i}.
+		Enable     readWrite
+		Status     readOnly
+		DestIPAddress     readWrite
+		DestSubnetMask     readWrite
+		GatewayIPAddress     readWrite
+		Interface     readWrite
+		ForwardingMetric     readWrite
+		StaticRoute     readOnly
+Routing:2
+	Device.Routing.Router.{i}.IPv4Forwarding.{i}.
+		Origin     readOnly
+IPv6Routing:1
+	Device.Routing.
+		RouterNumberOfEntries     readOnly
+	Device.Routing.RIP.
+		Enable     readWrite
+		SupportedModes     readOnly
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.Routing.RIP.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		Version     readWrite
+		AcceptRA     readWrite
+		SendRA     readWrite
+	Device.Routing.RouteInformation.
+		Enable     readWrite
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.Routing.RouteInformation.InterfaceSetting.{i}.
+		Status     readOnly
+		Interface     readOnly
+		SourceRouter     readOnly
+		PreferredRouteFlag     readOnly
+		Prefix     readOnly
+		RouteLifetime     readOnly
+	Device.Routing.Router.{i}.
+		Enable     readWrite
+		Status     readOnly
+		IPv6ForwardingNumberOfEntries     readOnly
+	Device.Routing.Router.{i}.IPv6Forwarding.{i}.
+		Enable     readWrite
+		Status     readOnly
+		DestIPPrefix     readWrite
+		NextHop     readWrite
+		Interface     readWrite
+		ForwardingMetric     readWrite
+		Origin     readOnly
+IPInterface:1
+	Device.IP.
+		InterfaceNumberOfEntries     readOnly
+	Device.IP.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		Type     readOnly
+		Reset     readWrite
+		IPv4AddressNumberOfEntries     readOnly
+	Device.IP.Interface.{i}.IPv4Address.{i}.
+		Enable     readWrite
+		IPAddress     readWrite
+		SubnetMask     readWrite
+		AddressingType     readOnly
+	Device.IP.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+IPInterface:2
+	Device.IP.
+		IPv4Enable     readWrite
+		IPv4Status     readOnly
+	Device.IP.Interface.{i}.
+		IPv4Enable     readWrite
+	Device.IP.Interface.{i}.IPv4Address.{i}.
+		Status     readOnly
+IPv6Interface:1
+	Device.IP.
+		IPv6Capable     readOnly
+		IPv6Enable     readWrite
+		IPv6Status     readOnly
+		ULAPrefix     readWrite
+		InterfaceNumberOfEntries     readOnly
+	Device.IP.Interface.{i}.
+		Enable     readWrite
+		IPv6Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		Type     readOnly
+		ULAEnable     readWrite
+		Reset     readWrite
+		IPv6AddressNumberOfEntries     readOnly
+		IPv6PrefixNumberOfEntries     readOnly
+	Device.IP.Interface.{i}.IPv6Address.{i}.
+		Enable     readWrite
+		Status     readOnly
+		IPAddressStatus     readOnly
+		IPAddress     readWrite
+		Origin     readOnly
+		Prefix     readWrite
+		PreferredLifetime     readWrite
+		ValidLifetime     readWrite
+	Device.IP.Interface.{i}.IPv6Prefix.{i}.
+		Enable     readWrite
+		Status     readOnly
+		PrefixStatus     readOnly
+		Prefix     readWrite
+		Origin     readOnly
+		OnLink     readWrite
+		Autonomous     readWrite
+		PreferredLifetime     readWrite
+		ValidLifetime     readWrite
+	Device.IP.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+PPPInterface:1
+	Device.PPP.
+		InterfaceNumberOfEntries     readOnly
+	Device.PPP.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		Reset     readWrite
+		Username     readWrite
+		Password     readWrite
+		ConnectionTrigger     readWrite
+	Device.PPP.Interface.{i}.PPPoE.
+		SessionID     readOnly
+		ACName     readWrite
+		ServiceName     readWrite
+	Device.PPP.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+PPPInterface:2
+	Device.PPP.
+		SupportedNCPs     readOnly
+	Device.PPP.Interface.{i}.
+		IPv6CPEnable     readWrite
+	Device.PPP.Interface.{i}.IPv6CP.
+		LocalInterfaceIdentifier     readOnly
+		RemoteInterfaceIdentifier     readOnly
+VLANTermination:1
+	Device.Ethernet.
+		VLANTerminationNumberOfEntries     readOnly
+	Device.Ethernet.VLANTermination.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		VLANID     readWrite
+	Device.Ethernet.VLANTermination.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+EthernetLink:1
+	Device.Ethernet.
+		LinkNumberOfEntries     readOnly
+	Device.Ethernet.Link.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		MACAddress     readOnly
+	Device.Ethernet.Link.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+Bridge:1
+	Device.Bridging.
+		MaxBridgeEntries     readOnly
+		MaxDBridgeEntries     readOnly
+		BridgeNumberOfEntries     readOnly
+	Device.Bridging.Bridge.{i}.
+		Enable     readWrite
+		Status     readOnly
+		PortNumberOfEntries     readOnly
+	Device.Bridging.Bridge.{i}.Port.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		ManagementPort     readWrite
+		PortState     readOnly
+	Device.Bridging.Bridge.{i}.Port.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+VLANBridge:1
+	Device.Bridging.
+		MaxBridgeEntries     readOnly
+		MaxDBridgeEntries     readOnly
+		MaxQBridgeEntries     readOnly
+		MaxVLANEntries     readOnly
+		BridgeNumberOfEntries     readOnly
+	Device.Bridging.Bridge.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Standard     readWrite
+		PortNumberOfEntries     readOnly
+		VLANNumberOfEntries     readOnly
+		VLANPortNumberOfEntries     readOnly
+	Device.Bridging.Bridge.{i}.Port.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		ManagementPort     readWrite
+		DefaultUserPriority     readWrite
+		PriorityRegeneration     readWrite
+		PortState     readOnly
+		PVID     readWrite
+		AcceptableFrameTypes     readWrite
+		IngressFiltering     readWrite
+		PriorityTagging     readWrite
+	Device.Bridging.Bridge.{i}.Port.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+	Device.Bridging.Bridge.{i}.VLAN.{i}.
+		Enable     readWrite
+		Name     readWrite
+		VLANID     readWrite
+	Device.Bridging.Bridge.{i}.VLANPort.{i}.
+		Enable     readWrite
+		VLAN     readWrite
+		Port     readWrite
+		Untagged     readWrite
+BridgeFilter:1
+	Device.Bridging.
+		MaxFilterEntries     readOnly
+		FilterNumberOfEntries     readOnly
+	Device.Bridging.Filter.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Bridge     readWrite
+		Order     readWrite
+		Interface     readWrite
+		VLANIDFilter     readWrite
+		EthertypeFilterList     readWrite
+		EthertypeFilterExclude     readWrite
+		SourceMACAddressFilterList     readWrite
+		SourceMACAddressFilterExclude     readWrite
+		DestMACAddressFilterList     readWrite
+		DestMACAddressFilterExclude     readWrite
+		SourceMACFromVendorClassIDFilter     readWrite
+		SourceMACFromVendorClassIDFilterExclude     readWrite
+		SourceMACFromVendorClassIDMode     readWrite
+		DestMACFromVendorClassIDFilter     readWrite
+		DestMACFromVendorClassIDFilterExclude     readWrite
+		DestMACFromVendorClassIDMode     readWrite
+		SourceMACFromClientIDFilter     readWrite
+		SourceMACFromClientIDFilterExclude     readWrite
+		DestMACFromClientIDFilter     readWrite
+		DestMACFromClientIDFilterExclude     readWrite
+		SourceMACFromUserClassIDFilter     readWrite
+		SourceMACFromUserClassIDFilterExclude     readWrite
+		DestMACFromUserClassIDFilter     readWrite
+		DestMACFromUserClassIDFilterExclude     readWrite
+BridgeFilter:2
+	Device.Bridging.Filter.{i}.
+		DHCPType     readWrite
+		SourceMACFromVendorClassIDFilter     readWrite
+		DestMACFromVendorClassIDFilter     readWrite
+		SourceMACFromVendorClassIDFilterv6     readWrite
+		DestMACFromVendorClassIDFilterv6     readWrite
+ATMLink:1
+	Device.ATM.
+		LinkNumberOfEntries     readOnly
+	Device.ATM.Link.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		LinkType     readWrite
+		DestinationAddress     readWrite
+		Encapsulation     readWrite
+		FCSPreserved     readWrite
+		VCSearchList     readWrite
+		AAL     readOnly
+	Device.ATM.Link.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+		TransmittedBlocks     readOnly
+		ReceivedBlocks     readOnly
+		CRCErrors     readOnly
+		HECErrors     readOnly
+PTMLink:1
+	Device.PTM.
+		LinkNumberOfEntries     readOnly
+	Device.PTM.Link.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readWrite
+		MACAddress     readOnly
+	Device.PTM.Link.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+EthernetInterface:1
+	Device.Ethernet.
+		InterfaceNumberOfEntries     readOnly
+	Device.Ethernet.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		MaxBitRate     readWrite
+		DuplexMode     readWrite
+	Device.Ethernet.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+ADSL:1
+	Device.DSL.
+		LineNumberOfEntries     readOnly
+		ChannelNumberOfEntries     readOnly
+	Device.DSL.Line.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		UpstreamMaxBitRate     readOnly
+		DownstreamMaxBitRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamAttenuation     readOnly
+		DownstreamAttenuation     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+		XTURVendor     readOnly
+		XTURCountry     readOnly
+		XTUCVendor     readOnly
+		XTUCCountry     readOnly
+	Device.DSL.Line.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+	Device.DSL.Line.{i}.Stats.Total.
+		ErroredSecs     readOnly
+		SeverelyErroredSecs     readOnly
+	Device.DSL.Line.{i}.Stats.Showtime.
+		ErroredSecs     readOnly
+		SeverelyErroredSecs     readOnly
+	Device.DSL.Channel.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		UpstreamCurrRate     readOnly
+		DownstreamCurrRate     readOnly
+	Device.DSL.Channel.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+	Device.DSL.Channel.{i}.Stats.Total.
+		XTURFECErrors     readOnly
+		XTUCFECErrors     readOnly
+		XTURHECErrors     readOnly
+		XTUCHECErrors     readOnly
+		XTURCRCErrors     readOnly
+		XTUCCRCErrors     readOnly
+	Device.DSL.Channel.{i}.Stats.Showtime.
+		XTURFECErrors     readOnly
+		XTUCFECErrors     readOnly
+		XTURHECErrors     readOnly
+		XTUCHECErrors     readOnly
+		XTURCRCErrors     readOnly
+		XTUCCRCErrors     readOnly
+ADSL2:1
+	Device.DSL.
+		LineNumberOfEntries     readOnly
+		ChannelNumberOfEntries     readOnly
+	Device.DSL.Line.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		StandardsSupported     readOnly
+		StandardUsed     readOnly
+		UpstreamMaxBitRate     readOnly
+		DownstreamMaxBitRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+	Device.DSL.Line.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+	Device.DSL.Line.{i}.TestParams.
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNds     readOnly
+		LATNus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+	Device.DSL.Channel.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LinkEncapsulationSupported     readOnly
+		LinkEncapsulationUsed     readOnly
+	Device.DSL.Channel.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+VDSL2:1
+	Device.DSL.
+		LineNumberOfEntries     readOnly
+		ChannelNumberOfEntries     readOnly
+	Device.DSL.Line.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		StandardsSupported     readOnly
+		StandardUsed     readOnly
+		AllowedProfiles     readOnly
+		CurrentProfile     readOnly
+		UPBOKLE     readOnly
+		UpstreamMaxBitRate     readOnly
+		DownstreamMaxBitRate     readOnly
+		UpstreamNoiseMargin     readOnly
+		DownstreamNoiseMargin     readOnly
+		UpstreamAttenuation     readOnly
+		DownstreamAttenuation     readOnly
+		UpstreamPower     readOnly
+		DownstreamPower     readOnly
+		TRELLISds     readOnly
+		TRELLISus     readOnly
+		ACTSNRMODEds     readOnly
+		ACTSNRMODEus     readOnly
+		ACTUALCE     readOnly
+		SNRMpbds     readOnly
+		SNRMpbus     readOnly
+	Device.DSL.Line.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+	Device.DSL.Line.{i}.TestParams.
+		HLOGGds     readOnly
+		HLOGGus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNGds     readOnly
+		QLNGus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRGds     readOnly
+		SNRGus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNds     readOnly
+		LATNus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+	Device.DSL.Channel.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LinkEncapsulationSupported     readOnly
+		LinkEncapsulationUsed     readOnly
+	Device.DSL.Channel.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		TotalStart     readOnly
+		ShowtimeStart     readOnly
+BondedDSL:1
+	Device.DSL.
+		BondingGroupNumberOfEntries     readOnly
+	Device.DSL.BondingGroup.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		LowerLayers     readOnly
+		GroupStatus     readOnly
+		BondScheme     readOnly
+		GroupCapacity     readOnly
+		RunningTime     readOnly
+		BondedChannelNumberOfEntries     readOnly
+	Device.DSL.BondingGroup.{i}.BondedChannel.{i}.
+		Channel     readOnly
+	Device.DSL.BondingGroup.{i}.BondedChannel.{i}.Ethernet.
+	Device.DSL.BondingGroup.{i}.BondedChannel.{i}.Ethernet.Stats.
+		UnderflowErrorsSent     readOnly
+		CRCErrorsReceived     readOnly
+		AlignmentErrorsReceived     readOnly
+		ShortPacketsReceived     readOnly
+		LongPacketsReceived     readOnly
+		OverflowErrorsReceived     readOnly
+		PauseFramesReceived     readOnly
+		FramesDropped     readOnly
+	Device.DSL.BondingGroup.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		TotalStart     readOnly
+		CurrentDayStart     readOnly
+		QuarterHourStart     readOnly
+	Device.DSL.BondingGroup.{i}.Stats.Total.
+		FailureReasons     readOnly
+		UpstreamRate     readOnly
+		DownstreamRate     readOnly
+		UpstreamPacketLoss     readOnly
+		DownstreamPacketLoss     readOnly
+		FailureCount     readOnly
+		ErroredSeconds     readOnly
+		SeverelyErroredSeconds     readOnly
+		UnavailableSeconds     readOnly
+	Device.DSL.BondingGroup.{i}.Stats.CurrentDay.
+		FailureReasons     readOnly
+		UpstreamRate     readOnly
+		DownstreamRate     readOnly
+		UpstreamPacketLoss     readOnly
+		DownstreamPacketLoss     readOnly
+		FailureCount     readOnly
+		ErroredSeconds     readOnly
+		SeverelyErroredSeconds     readOnly
+		UnavailableSeconds     readOnly
+	Device.DSL.BondingGroup.{i}.Stats.QuarterHour.
+		FailureReasons     readOnly
+		UpstreamRate     readOnly
+		DownstreamRate     readOnly
+		UpstreamPacketLoss     readOnly
+		DownstreamPacketLoss     readOnly
+		FailureCount     readOnly
+		ErroredSeconds     readOnly
+		SeverelyErroredSeconds     readOnly
+		UnavailableSeconds     readOnly
+	Device.DSL.BondingGroup.{i}.Ethernet.
+	Device.DSL.BondingGroup.{i}.Ethernet.Stats.
+		PAFErrors     readOnly
+		PAFSmallFragments     readOnly
+		PAFLargeFragments     readOnly
+		PAFBadFragments     readOnly
+		PAFLostFragments     readOnly
+		PAFLateFragments     readOnly
+		PAFLostStarts     readOnly
+		PAFLostEnds     readOnly
+		PAFOverflows     readOnly
+		PauseFramesSent     readOnly
+		CRCErrorsReceived     readOnly
+		AlignmentErrorsReceived     readOnly
+		ShortPacketsReceived     readOnly
+		LongPacketsReceived     readOnly
+		OverflowErrorsReceived     readOnly
+		FramesDropped     readOnly
+HPNA:1
+	Device.HPNA.
+		InterfaceNumberOfEntries     readOnly
+	Device.HPNA.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		FirmwareVersion     readOnly
+		MaxBitRate     readOnly
+		NetworkUtilization     readOnly
+		PossibleConnectionTypes     readOnly
+		ConnectionType     readOnly
+		PossibleSpectralModes     readOnly
+		SpectralMode     readOnly
+		MTU     readOnly
+		NoiseMargin     readOnly
+		MinMulticastRate     readOnly
+		NegMulticastRate     readOnly
+		MasterSelectionMode     readOnly
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.HPNA.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+	Device.HPNA.Interface.{i}.AssociatedDevice.{i}.
+		MACAddress     readOnly
+		NodeID     readOnly
+		IsMaster     readOnly
+		Synced     readOnly
+		TotalSyncTime     readOnly
+		Active     readOnly
+		MaxBitRate     readOnly
+		PHYDiagnosticsEnable     readWrite
+HPNADiagnostics:1
+	Device.HPNA.Diagnostics.PerformanceMonitoring.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		SampleInterval     readOnly
+	Device.HPNA.Diagnostics.PerformanceMonitoring.Nodes.
+		CurrentStart     readOnly
+		CurrentEnd     readOnly
+		NodeNumberOfEntries     readOnly
+	Device.HPNA.Diagnostics.PerformanceMonitoring.Nodes.Node.{i}.
+		MACAddress     readOnly
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		PacketsCrcErrored     readOnly
+		PacketsCrcErroredHost     readOnly
+		PacketsShortErrored     readOnly
+		PacketsShortErroredHost     readOnly
+		RxPacketsDropped     readOnly
+		TxPacketsDropped     readOnly
+		ControlRequestLocal     readOnly
+		ControlReplyLocal     readOnly
+		ControlRequestRemote     readOnly
+	Device.HPNA.Diagnostics.PerformanceMonitoring.Channels.
+		TimeStamp     readOnly
+		ChannelNumberOfEntries     readOnly
+	Device.HPNA.Diagnostics.PerformanceMonitoring.Channels.Channel.{i}.
+		HPNASrcMACAddress     readOnly
+		HPNADestMACAddress     readOnly
+		HostSrcMACAddress     readOnly
+		HostDestMACAddress     readOnly
+		PHYRate     readOnly
+		BaudRate     readOnly
+		SNR     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+	Device.HPNA.Diagnostics.PHYThroughput.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		NumPacketsInBurst     readWrite
+		BurstInterval     readWrite
+		TestPacketPayloadLength     readWrite
+		PayloadEncoding     readWrite
+		PayloadDataGen     readWrite
+		PayloadType     readWrite
+		PriorityLevel     readWrite
+		ResultNumberOfEntries     readOnly
+	Device.HPNA.Diagnostics.PHYThroughput.Result.{i}.
+		SrcMACAddress     readOnly
+		DestMACAddress     readOnly
+		PHYRate     readOnly
+		BaudRate     readOnly
+		SNR     readOnly
+		PacketsReceived     readOnly
+HPNAQoS:1
+	Device.HPNA.Interface.{i}.QoS.
+		FlowSpecNumberOfEntries     readOnly
+	Device.HPNA.Interface.{i}.QoS.FlowSpec.{i}.
+		FlowType     readWrite
+		Priority     readWrite
+		Latency     readWrite
+		Jitter     readWrite
+		PacketSize     readWrite
+		MinRate     readWrite
+		AvgRate     readWrite
+		MaxRate     readWrite
+		PER     readWrite
+		Timeout     readWrite
+	Device.HPNA.Diagnostics.PerformanceMonitoring.Channels.Channel.{i}.
+		FlowSpec     readOnly
+HomePlug:1
+	Device.HomePlug.
+		InterfaceNumberOfEntries     readOnly
+	Device.HomePlug.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		LogicalNetwork     readWrite
+		Version     readOnly
+		FirmwareVersion     readOnly
+		ForceCCo     readWrite
+		NetworkPassword     readWrite
+		OtherNetworksPresent     readOnly
+		MaxBitRate     readOnly
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.HomePlug.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		MPDUTxAck     readOnly
+		MPDUTxCol     readOnly
+		MPDUTxFailed     readOnly
+		MPDURxAck     readOnly
+		MPDURxFailed     readOnly
+	Device.HomePlug.Interface.{i}.AssociatedDevice.{i}.
+		MACAddress     readOnly
+		TxPhyRate     readOnly
+		RxPhyRate     readOnly
+		SNRPerTone     readOnly
+		AvgAttenuation     readOnly
+		EndStationMACs     readOnly
+		Active     readOnly
+MoCA:1
+	Device.MoCA.
+		InterfaceNumberOfEntries     readOnly
+	Device.MoCA.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		FirmwareVersion     readOnly
+		MaxBitRate     readOnly
+		HighestVersion     readOnly
+		CurrentVersion     readOnly
+		NetworkCoordinator     readOnly
+		PrivacyEnabledSetting     readWrite
+		PrivacyEnabled     readOnly
+		FreqCapabilityMask     readOnly
+		FreqCurrentMaskSetting     readWrite
+		FreqCurrentMask     readOnly
+		CurrentOperFreq     readOnly
+		KeyPassphrase     readWrite
+		NodeID     readOnly
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.MoCA.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+UPA:1
+	Device.UPA.
+		InterfaceNumberOfEntries     readOnly
+	Device.UPA.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		FirmwareVersion     readOnly
+		MaxBitRate     readOnly
+		NodeType     readWrite
+		LogicalNetwork     readWrite
+		EncryptionMethod     readWrite
+		EncryptionKey     readWrite
+		EstApplicationThroughput     readOnly
+		ActiveNotchEnable     readWrite
+		ActiveNotchNumberOfEntries     readOnly
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.UPA.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+	Device.UPA.Interface.{i}.ActiveNotch.{i}.
+		Enable     readWrite
+		StartFreq     readWrite
+		StopFreq     readWrite
+		Depth     readWrite
+	Device.UPA.Interface.{i}.AssociatedDevice.{i}.
+		MACAddress     readOnly
+		Port     readOnly
+		LogicalNetwork     readOnly
+		PhyTxThroughput     readOnly
+		PhyRxThroughput     readOnly
+		RealPhyRxThroughput     readOnly
+		EstimatedPLR     readOnly
+		MeanEstimatedAtt     readOnly
+		Active     readOnly
+UPADiagnostics:1
+	Device.UPA.Diagnostics.InterfaceMeasurement.
+		DiagnosticsState     readWrite
+		Type     readWrite
+		Interface     readWrite
+		Port     readWrite
+		Measurements     readOnly
+		RxGain     readOnly
+WiFiRadio:1
+	Device.WiFi.
+		RadioNumberOfEntries     readOnly
+	Device.WiFi.Radio.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		Upstream     readOnly
+		MaxBitRate     readOnly
+		SupportedFrequencyBands     readOnly
+		OperatingFrequencyBand     readWrite
+		SupportedStandards     readOnly
+		OperatingStandards     readWrite
+		RegulatoryDomain     readWrite
+		PossibleChannels     readOnly
+		Channel     readWrite
+		AutoChannelSupported     readOnly
+		AutoChannelEnable     readWrite
+		TransmitPowerSupported     readOnly
+		TransmitPower     readWrite
+		ExtensionChannel     readWrite
+		GuardInterval     readWrite
+		MCS     readWrite
+		IEEE80211hSupported     readOnly
+		IEEE80211hEnabled     readWrite
+		ChannelsInUse     readOnly
+	Device.WiFi.Radio.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+WiFiSSID:1
+	Device.WiFi.
+		SSIDNumberOfEntries     readOnly
+	Device.WiFi.SSID.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LowerLayers     readWrite
+		BSSID     readOnly
+		MACAddress     readOnly
+		SSID     readWrite
+	Device.WiFi.SSID.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+WiFiAccessPoint:1
+	Device.WiFi.
+		AccessPointNumberOfEntries     readOnly
+	Device.WiFi.AccessPoint.{i}.
+		Enable     readWrite
+		Status     readOnly
+		SSIDReference     readWrite
+		SSIDAdvertisementEnabled     readWrite
+		WMMCapability     readOnly
+		UAPSDCapability     readOnly
+		WMMEnable     readWrite
+		UAPSDEnable     readWrite
+		AssociatedDeviceNumberOfEntries     readOnly
+	Device.WiFi.AccessPoint.{i}.Security.
+		ModesSupported     readOnly
+		ModeEnabled     readWrite
+		WEPKey     readWrite
+		PreSharedKey     readWrite
+		KeyPassphrase     readWrite
+		RekeyingInterval     readWrite
+		RadiusServerIPAddr     readWrite
+		RadiusServerPort     readWrite
+		RadiusSecret     readWrite
+	Device.WiFi.AccessPoint.{i}.WPS.
+		Enable     readWrite
+		ConfigMethodsSupported     readOnly
+		ConfigMethodsEnabled     readWrite
+	Device.WiFi.AccessPoint.{i}.AssociatedDevice.{i}.
+		MACAddress     readOnly
+		AuthenticationState     readOnly
+		LastDataDownlinkRate     readOnly
+		LastDataUplinkRate     readOnly
+WiFiEndPoint:1
+	Device.WiFi.
+		EndPointNumberOfEntries     readOnly
+	Device.WiFi.EndPoint.{i}.
+		Enable     readWrite
+		Status     readOnly
+		ProfileReference     readWrite
+		SSIDReference     readOnly
+		ProfileNumberOfEntries     readOnly
+	Device.WiFi.EndPoint.{i}.Stats.
+		LastDataDownlinkRate     readOnly
+		LastDataUplinkRate     readOnly
+	Device.WiFi.EndPoint.{i}.Security.
+		ModesSupported     readOnly
+	Device.WiFi.EndPoint.{i}.Profile.{i}.
+		Enable     readWrite
+		Status     readOnly
+		SSID     readWrite
+		Location     readWrite
+		Priority     readWrite
+	Device.WiFi.EndPoint.{i}.Profile.{i}.Security.
+		ModeEnabled     readWrite
+		WEPKey     readWrite
+		PreSharedKey     readWrite
+		KeyPassphrase     readWrite
+	Device.WiFi.EndPoint.{i}.WPS.
+		Enable     readWrite
+		ConfigMethodsSupported     readOnly
+		ConfigMethodsEnabled     readWrite
+USBInterface:1
+	Device.USB.
+		InterfaceNumberOfEntries     readOnly
+	Device.USB.Interface.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Alias     readWrite
+		Name     readOnly
+		LastChange     readOnly
+		Upstream     readOnly
+		MACAddress     readOnly
+		MaxBitRate     readOnly
+		Port     readOnly
+	Device.USB.Interface.{i}.Stats.
+		BytesSent     readOnly
+		BytesReceived     readOnly
+		PacketsSent     readOnly
+		PacketsReceived     readOnly
+		ErrorsSent     readOnly
+		ErrorsReceived     readOnly
+		UnicastPacketsSent     readOnly
+		UnicastPacketsReceived     readOnly
+		DiscardPacketsSent     readOnly
+		DiscardPacketsReceived     readOnly
+		MulticastPacketsSent     readOnly
+		MulticastPacketsReceived     readOnly
+		BroadcastPacketsSent     readOnly
+		BroadcastPacketsReceived     readOnly
+		UnknownProtoPacketsReceived     readOnly
+USBPort:1
+	Device.USB.
+		PortNumberOfEntries     readOnly
+	Device.USB.Port.{i}.
+		Name     readOnly
+		Standard     readOnly
+		Type     readOnly
+		Receptacle     readOnly
+		Rate     readOnly
+		Power     readOnly
+NAT:1
+	Device.NAT.
+		InterfaceSettingNumberOfEntries     readOnly
+		PortMappingNumberOfEntries     readOnly
+	Device.NAT.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+	Device.NAT.PortMapping.{i}.
+		Enable     readWrite
+		Interface     readWrite
+		AllInterfaces     readWrite
+		LeaseDuration     readOnly
+		RemoteHost     readWrite
+		ExternalPort     readWrite
+		InternalPort     readWrite
+		Protocol     readWrite
+		InternalClient     readWrite
+		Description     readWrite
+QoS:1
+	Device.QoS.
+		MaxClassificationEntries     readOnly
+		ClassificationNumberOfEntries     readOnly
+		MaxAppEntries     readOnly
+		AppNumberOfEntries     readOnly
+		MaxFlowEntries     readOnly
+		FlowNumberOfEntries     readOnly
+		MaxPolicerEntries     readOnly
+		PolicerNumberOfEntries     readOnly
+		MaxQueueEntries     readOnly
+		QueueNumberOfEntries     readOnly
+		ShaperNumberOfEntries     readOnly
+		DefaultForwardingPolicy     readWrite
+		DefaultPolicer     readWrite
+		DefaultQueue     readWrite
+		DefaultDSCPMark     readWrite
+		DefaultEthernetPriorityMark     readWrite
+		AvailableAppList     readOnly
+		DefaultTrafficClass     readWrite
+	Device.QoS.Classification.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Order     readWrite
+		Interface     readWrite
+		AllInterfaces     readWrite
+		DestIP     readWrite
+		DestMask     readWrite
+		DestIPExclude     readWrite
+		SourceIP     readWrite
+		SourceMask     readWrite
+		SourceIPExclude     readWrite
+		Protocol     readWrite
+		ProtocolExclude     readWrite
+		DestPort     readWrite
+		DestPortRangeMax     readWrite
+		DestPortExclude     readWrite
+		SourcePort     readWrite
+		SourcePortRangeMax     readWrite
+		SourcePortExclude     readWrite
+		SourceMACAddress     readWrite
+		SourceMACExclude     readWrite
+		DestMACAddress     readWrite
+		DestMACExclude     readWrite
+		DSCPCheck     readWrite
+		DSCPExclude     readWrite
+		DSCPMark     readWrite
+		EthernetPriorityCheck     readWrite
+		EthernetPriorityExclude     readWrite
+		EthernetPriorityMark     readWrite
+		VLANIDCheck     readWrite
+		VLANIDExclude     readWrite
+		ForwardingPolicy     readWrite
+		Policer     readWrite
+		TrafficClass     readWrite
+	Device.QoS.Policer.{i}.
+		Enable     readWrite
+		Status     readOnly
+		CommittedRate     readWrite
+		CommittedBurstSize     readWrite
+		MeterType     readWrite
+		PossibleMeterTypes     readOnly
+		ConformingAction     readWrite
+		NonConformingAction     readWrite
+		TotalCountedPackets     readOnly
+		TotalCountedBytes     readOnly
+		ExcessBurstSize     readWrite
+		PeakRate     readWrite
+		PeakBurstSize     readWrite
+		PartialConformingAction     readWrite
+	Device.QoS.Queue.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		AllInterfaces     readWrite
+		BufferLength     readOnly
+		Weight     readWrite
+		Precedence     readWrite
+		REDThreshold     readWrite
+		REDPercentage     readWrite
+		DropAlgorithm     readWrite
+		SchedulerAlgorithm     readWrite
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+		TrafficClasses     readWrite
+	Device.QoS.Shaper.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		ShapingRate     readWrite
+		ShapingBurstSize     readWrite
+	Device.Routing.Router.{i}.IPv4Forwarding.{i}.
+		ForwardingPolicy     readWrite
+QoS:2
+	Device.Routing.Router.{i}.IPv4Forwarding.{i}.
+	Device.Routing.Router.{i}.IPv6Forwarding.{i}.
+		ForwardingPolicy     readWrite
+QoSDynamicFlow:1
+	Device.QoS.App.{i}.
+		Enable     readWrite
+		Status     readOnly
+		ProtocolIdentifier     readWrite
+		Name     readWrite
+		DefaultForwardingPolicy     readWrite
+		DefaultPolicer     readWrite
+		DefaultDSCPMark     readWrite
+		DefaultEthernetPriorityMark     readWrite
+		DefaultTrafficClass     readWrite
+	Device.QoS.Flow.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Type     readWrite
+		TypeParameters     readWrite
+		Name     readWrite
+		App     readWrite
+		ForwardingPolicy     readWrite
+		Policer     readWrite
+		DSCPMark     readWrite
+		EthernetPriorityMark     readWrite
+		TrafficClass     readWrite
+	Device.QoS.Classification.{i}.
+		App     readWrite
+QoSStats:1
+	Device.QoS.
+		QueueStatsNumberOfEntries     readOnly
+	Device.QoS.Policer.{i}.
+		TotalCountedPackets     readOnly
+		TotalCountedBytes     readOnly
+		ConformingCountedPackets     readOnly
+		ConformingCountedBytes     readOnly
+		NonConformingCountedPackets     readOnly
+		NonConformingCountedBytes     readOnly
+	Device.QoS.QueueStats.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Queue     readWrite
+		Interface     readWrite
+		OutputPackets     readOnly
+		OutputBytes     readOnly
+		DroppedPackets     readOnly
+		DroppedBytes     readOnly
+		QueueOccupancyPackets     readOnly
+		QueueOccupancyPercentage     readOnly
+NeighborDiscovery:1
+	Device.NeighborDiscovery.
+		Enable     readWrite
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.NeighborDiscovery.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		RetransTimer     readWrite
+		RtrSolicitationInterval     readWrite
+		MaxRtrSolicitations     readWrite
+		NUDEnable     readWrite
+		RSEnable     readWrite
+RouterAdvertisement:1
+	Device.RouterAdvertisement.
+		Enable     readWrite
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.RouterAdvertisement.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		MaxRtrAdvInterval     readWrite
+		MinRtrAdvInterval     readWrite
+		AdvDefaultLifetime     readWrite
+		AdvManagedFlag     readWrite
+		AdvOtherConfigFlag     readWrite
+		AdvMobileAgentFlag     readWrite
+		AdvPreferredRouterFlag     readWrite
+		AdvNDProxyFlag     readWrite
+		AdvLinkMTU     readWrite
+		AdvReachableTime     readWrite
+		AdvRetransTimer     readWrite
+		AdvCurHopLimit     readWrite
+		OptionNumberOfEntries     readOnly
+	Device.RouterAdvertisement.InterfaceSetting.{i}.Option.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+IPv6rd:1
+	Device.IPv6rd.
+		Enable     readWrite
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.IPv6rd.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		BorderRelayIPv4Addresses     readWrite
+		AllTrafficToBorderRelay     readWrite
+		SPIPv6Prefix     readWrite
+		IPv4MaskLength     readWrite
+		AddressSource     readWrite
+		TunnelInterface     readOnly
+		TunneledInterface     readOnly
+DSLite:1
+	Device.DSLite.
+		Enable     readWrite
+		InterfaceSettingNumberOfEntries     readOnly
+	Device.DSLite.InterfaceSetting.{i}.
+		Enable     readWrite
+		Status     readOnly
+		EndpointAssignmentPrecedence     readWrite
+		EndpointName     readWrite
+		EndpointAddress     readWrite
+		Origin     readOnly
+		TunnelInterface     readOnly
+		TunneledInterface     readOnly
+Hosts:1
+	Device.Hosts.
+		HostNumberOfEntries     readOnly
+	Device.Hosts.Host.{i}.
+		IPAddress     readOnly
+		AddressSource     readOnly
+		LeaseTimeRemaining     readOnly
+		PhysAddress     readOnly
+		HostName     readOnly
+		Active     readOnly
+		Layer1Interface     readOnly
+		Layer3Interface     readOnly
+Hosts:2
+	Device.Hosts.Host.{i}.
+		DHCPClient     readOnly
+		AssociatedDevice     readOnly
+		IPv4AddressNumberOfEntries     readOnly
+		IPv6AddressNumberOfEntries     readOnly
+	Device.Hosts.Host.{i}.IPv4Address.{i}.
+		IPAddress     readOnly
+	Device.Hosts.Host.{i}.IPv6Address.{i}.
+		IPAddress     readOnly
+GatewayInfo:1
+	Device.GatewayInfo.
+		ManufacturerOUI     readOnly
+		ProductClass     readOnly
+		SerialNumber     readOnly
+DeviceAssociation:1
+	Device.ManagementServer.
+		ManageableDeviceNumberOfEntries     readOnly
+	Device.ManagementServer.ManageableDevice.{i}.
+		ManufacturerOUI     readOnly
+		SerialNumber     readOnly
+		ProductClass     readOnly
+		Host     readOnly
+UDPConnReq:1
+	Device.ManagementServer.
+		UDPConnectionRequestAddress     readOnly
+		STUNEnable     readWrite
+		STUNServerAddress     readWrite
+		STUNServerPort     readWrite
+		STUNUsername     readWrite
+		STUNPassword     readWrite
+		STUNMaximumKeepAlivePeriod     readWrite
+		STUNMinimumKeepAlivePeriod     readWrite
+		NATDetected     readOnly
+CaptivePortal:1
+	Device.CaptivePortal.
+		Enable     readWrite
+		Status     readOnly
+		AllowedList     readWrite
+		URL     readWrite
+Time:1
+	Device.Time.
+		Enable     readWrite
+		Status     readOnly
+		NTPServer1     readWrite
+		NTPServer2     readWrite
+		CurrentLocalTime     readOnly
+		LocalTimeZone     readWrite
+IEEE8021xAuthentication:1
+	Device.IEEE8021x.
+		SupplicantNumberOfEntries     readOnly
+	Device.IEEE8021x.Supplicant.{i}.
+		Enable     readWrite
+		Status     readOnly
+		PAEState     readOnly
+		EAPIdentity     readWrite
+		MaxStart     readWrite
+		StartPeriod     readWrite
+		HeldPeriod     readWrite
+		AuthPeriod     readWrite
+		AuthenticationCapabilities     readOnly
+	Device.IEEE8021x.Supplicant.{i}.Stats.
+		ReceivedFrames     readOnly
+		TransmittedFrames     readOnly
+		TransmittedStartFrames     readOnly
+		TransmittedLogoffFrames     readOnly
+		TransmittedResponseIdFrames     readOnly
+		TransmittedResponseFrames     readOnly
+		ReceivedRequestIdFrames     readOnly
+		ReceivedRequestFrames     readOnly
+		ReceivedInvalidFrames     readOnly
+		ReceivedLengthErrorFrames     readOnly
+		LastFrameVersion     readOnly
+		LastFrameSourceMACAddress     readOnly
+	Device.IEEE8021x.Supplicant.{i}.EAPMD5.
+		Enable     readWrite
+		SharedSecret     readWrite
+	Device.IEEE8021x.Supplicant.{i}.EAPTLS.
+		Enable     readWrite
+		MutualAuthenticationEnable     readWrite
+IPPing:1
+	Device.IP.Diagnostics.IPPing.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		Host     readWrite
+		NumberOfRepetitions     readWrite
+		Timeout     readWrite
+		DataBlockSize     readWrite
+		DSCP     readWrite
+		SuccessCount     readOnly
+		FailureCount     readOnly
+		AverageResponseTime     readOnly
+		MinimumResponseTime     readOnly
+		MaximumResponseTime     readOnly
+TraceRoute:1
+	Device.IP.Diagnostics.TraceRoute.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		Host     readWrite
+		NumberOfTries     readWrite
+		Timeout     readWrite
+		DataBlockSize     readWrite
+		DSCP     readWrite
+		MaxHopCount     readWrite
+		ResponseTime     readOnly
+		RouteHopsNumberOfEntries     readOnly
+	Device.IP.Diagnostics.TraceRoute.RouteHops.{i}.
+		Host     readOnly
+		HostAddress     readOnly
+		ErrorCode     readOnly
+		RTTimes     readOnly
+ATMLoopback:1
+	Device.ATM.Diagnostics.F5Loopback.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		NumberOfRepetitions     readWrite
+		Timeout     readWrite
+		SuccessCount     readOnly
+		FailureCount     readOnly
+		AverageResponseTime     readOnly
+		MinimumResponseTime     readOnly
+		MaximumResponseTime     readOnly
+DSLDiagnostics:1
+	Device.DSL.Diagnostics.ADSLLineTest.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINpsds     readOnly
+		QLNpsds     readOnly
+		SNRpsds     readOnly
+		BITSpsds     readOnly
+ADSL2Diagnostics:1
+	Device.DSL.Diagnostics.ADSLLineTest.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINSCus     readOnly
+		HLINpsds     readOnly
+		HLINpsus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNpbds     readOnly
+		LATNpbus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+VDSL2Diagnostics:1
+	Device.DSL.Diagnostics.ADSLLineTest.
+		DiagnosticsState     readWrite
+		Interface     readWrite
+		ACTPSDds     readOnly
+		ACTPSDus     readOnly
+		ACTATPds     readOnly
+		ACTATPus     readOnly
+		HLINSCds     readOnly
+		HLINSCus     readOnly
+		HLINGds     readOnly
+		HLINGus     readOnly
+		HLINpsds     readOnly
+		HLINpsus     readOnly
+		HLOGGds     readOnly
+		HLOGGus     readOnly
+		HLOGpsds     readOnly
+		HLOGpsus     readOnly
+		HLOGMTds     readOnly
+		HLOGMTus     readOnly
+		QLNGds     readOnly
+		QLNGus     readOnly
+		QLNpsds     readOnly
+		QLNpsus     readOnly
+		QLNMTds     readOnly
+		QLNMTus     readOnly
+		SNRGds     readOnly
+		SNRGus     readOnly
+		SNRpsds     readOnly
+		SNRpsus     readOnly
+		SNRMTds     readOnly
+		SNRMTus     readOnly
+		LATNpbds     readOnly
+		LATNpbus     readOnly
+		SATNds     readOnly
+		SATNus     readOnly
+DHCPv4Client:1
+	Device.DHCPv4.
+		ClientNumberOfEntries     readOnly
+	Device.DHCPv4.Client.{i}.
+		Enable     readWrite
+		Interface     readWrite
+		Status     readOnly
+		Renew     readWrite
+		IPAddress     readOnly
+		SubnetMask     readOnly
+		IPRouters     readOnly
+		DNSServers     readOnly
+		LeaseTimeRemaining     readOnly
+		DHCPServer     readOnly
+		SentOptionNumberOfEntries     readOnly
+		ReqOptionNumberOfEntries     readOnly
+	Device.DHCPv4.Client.{i}.SentOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+	Device.DHCPv4.Client.{i}.ReqOption.{i}.
+		Enable     readWrite
+		Order     readWrite
+		Tag     readWrite
+		Value     readOnly
+DHCPv4Server:1
+	Device.DHCPv4.
+	Device.DHCPv4.Server.
+		Enable     readWrite
+		PoolNumberOfEntries     readOnly
+	Device.DHCPv4.Server.Pool.{i}.
+		Enable     readWrite
+		Order     readWrite
+		Interface     readWrite
+		MinAddress     readWrite
+		MaxAddress     readWrite
+		ReservedAddresses     readWrite
+		SubnetMask     readWrite
+		DNSServers     readWrite
+		DomainName     readWrite
+		IPRouters     readWrite
+		LeaseTime     readWrite
+		OptionNumberOfEntries     readOnly
+	Device.DHCPv4.Server.Pool.{i}.Option.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+DHCPv4CondServing:1
+	Device.DHCPv4.Server.Pool.{i}.
+		VendorClassID     readWrite
+		ClientID     readWrite
+		UserClassID     readWrite
+		Chaddr     readWrite
+		ChaddrMask     readWrite
+DHCPv4Relay:1
+	Device.DHCPv4.
+	Device.DHCPv4.Relay.
+		Enable     readWrite
+		ForwardingNumberOfEntries     readOnly
+	Device.DHCPv4.Relay.Forwarding.{i}.
+		Enable     readWrite
+		Order     readWrite
+		Interface     readWrite
+		LocallyServed     readWrite
+		DHCPServerIPAddress     readWrite
+		VendorClassID     readWrite
+		ClientID     readWrite
+		UserClassID     readWrite
+		Chaddr     readWrite
+		ChaddrMask     readWrite
+DHCPv4ServerClientInfo:1
+	Device.DHCPv4.Server.Pool.{i}.
+		ClientNumberOfEntries     readOnly
+	Device.DHCPv4.Server.Pool.{i}.Client.{i}.
+		Alias     readWrite
+		Chaddr     readOnly
+		Active     readOnly
+		IPv4AddressNumberOfEntries     readOnly
+		OptionNumberOfEntries     readOnly
+	Device.DHCPv4.Server.Pool.{i}.Client.{i}.IPv4Address.{i}.
+		IPAddress     readOnly
+		LeaseTimeRemaining     readOnly
+	Device.DHCPv4.Server.Pool.{i}.Client.{i}.Option.{i}.
+		Tag     readOnly
+		Value     readOnly
+DHCPv6Client:1
+	Device.DHCPv6.
+		ClientNumberOfEntries     readOnly
+	Device.DHCPv6.Client.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Interface     readWrite
+		DUID     readOnly
+		RequestAddresses     readWrite
+		RequestPrefixes     readWrite
+		RapidCommit     readWrite
+		Renew     readWrite
+		SuggestedT1     readWrite
+		SuggestedT2     readWrite
+		SupportedOptions     readOnly
+		RequestedOptions     readWrite
+		SentOptionNumberOfEntries     readOnly
+		ReceivedOptionNumberOfEntries     readOnly
+	Device.DHCPv6.Client.{i}.SentOption.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+	Device.DHCPv6.Client.{i}.ReceivedOption.{i}.
+		Tag     readOnly
+		Value     readOnly
+DHCPv6ClientServerIdentity:1
+	Device.DHCPv6.Client.{i}.
+		ServerNumberOfEntries     readOnly
+	Device.DHCPv6.Client.{i}.Server.{i}.
+		SourceAddress     readOnly
+		DUID     readOnly
+		InformationRefreshTime     readOnly
+	Device.DHCPv6.Client.{i}.ReceivedOption.{i}.
+		Server     readOnly
+DHCPv6Server:1
+	Device.DHCPv6.
+	Device.DHCPv6.Server.
+		Enable     readWrite
+		PoolNumberOfEntries     readOnly
+	Device.DHCPv6.Server.Pool.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Order     readWrite
+		Interface     readWrite
+		IANAEnable     readWrite
+		IAPDEnable     readWrite
+		IANAPrefixes     readOnly
+		IAPDAddLength     readWrite
+		OptionNumberOfEntries     readOnly
+	Device.DHCPv6.Server.Pool.{i}.Option.{i}.
+		Enable     readWrite
+		Tag     readWrite
+		Value     readWrite
+DHCPv6ServerAdv:1
+	Device.DHCPv6.Server.Pool.{i}.
+		DUID     readWrite
+		VendorClassID     readWrite
+		UserClassID     readWrite
+		SourceAddress     readWrite
+		SourceAddressMask     readWrite
+DHCPv6ServerClientInfo:1
+	Device.DHCPv6.Server.Pool.{i}.
+		ClientNumberOfEntries     readOnly
+	Device.DHCPv6.Server.Pool.{i}.Client.{i}.
+		SourceAddress     readOnly
+		Active     readOnly
+		IPv6AddressNumberOfEntries     readOnly
+		IPv6PrefixNumberOfEntries     readOnly
+		OptionNumberOfEntries     readOnly
+	Device.DHCPv6.Server.Pool.{i}.Client.{i}.IPv6Address.{i}.
+		IPAddress     readOnly
+		PreferredLifetime     readOnly
+		ValidLifetime     readOnly
+	Device.DHCPv6.Server.Pool.{i}.Client.{i}.IPv6Prefix.{i}.
+		Prefix     readOnly
+		PreferredLifetime     readOnly
+		ValidLifetime     readOnly
+	Device.DHCPv6.Server.Pool.{i}.Client.{i}.Option.{i}.
+		Tag     readOnly
+		Value     readOnly
+Processors:1
+	Device.DeviceInfo.Processor.{i}.
+		Architecture     readOnly
+VendorLogFiles:1
+	Device.DeviceInfo.VendorLogFile.{i}.
+		Name     readOnly
+		MaximumSize     readOnly
+		Persistent     readOnly
+DUStateChngComplPolicy:1
+	Device.ManagementServer.DUStateChangeComplPolicy.
+		Enable     readWrite
+		OperationTypeFilter     readWrite
+		ResultTypeFilter     readWrite
+SM_ExecEnvs:1
+	Device.SoftwareModules.
+		ExecEnvNumberOfEntries     readOnly
+	Device.SoftwareModules.ExecEnv.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Name     readOnly
+		Type     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		AllocatedDiskSpace     readOnly
+		AvailableDiskSpace     readOnly
+		AllocatedMemory     readOnly
+		AvailableMemory     readOnly
+		ActiveExecutionUnits     readOnly
+SM_DeployAndExecUnits:1
+	Device.SoftwareModules.
+		DeploymentUnitNumberOfEntries     readOnly
+		ExecutionUnitNumberOfEntries     readOnly
+	Device.SoftwareModules.DeploymentUnit.{i}.
+		UUID     readOnly
+		DUID     readOnly
+		Name     readOnly
+		Status     readOnly
+		Resolved     readOnly
+		URL     readOnly
+		Description     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		VendorLogList     readOnly
+		VendorConfigList     readOnly
+		ExecutionUnitList     readOnly
+		ExecutionEnvRef     readOnly
+	Device.SoftwareModules.ExecutionUnit.{i}.
+		EUID     readOnly
+		Name     readOnly
+		ExecEnvLabel     readOnly
+		Status     readOnly
+		RequestedState     readWrite
+		ExecutionFaultCode     readOnly
+		ExecutionFaultMessage     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		Description     readOnly
+		References     readOnly
+		AssociatedProcessList     readOnly
+		VendorLogList     readOnly
+		VendorConfigList     readOnly
+		SupportedDataModelList     readOnly
+		ExecutionEnvRef     readOnly
+	Device.SoftwareModules.ExecutionUnit.{i}.Extensions.
+SM_Baseline:1
+	Device.SoftwareModules.
+		ExecEnvNumberOfEntries     readOnly
+		DeploymentUnitNumberOfEntries     readOnly
+		ExecutionUnitNumberOfEntries     readOnly
+	Device.SoftwareModules.ExecEnv.{i}.
+		Enable     readWrite
+		Status     readOnly
+		Name     readOnly
+		Type     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		ActiveExecutionUnits     readOnly
+	Device.SoftwareModules.DeploymentUnit.{i}.
+		UUID     readOnly
+		DUID     readOnly
+		Name     readOnly
+		Status     readOnly
+		Resolved     readOnly
+		URL     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		ExecutionUnitList     readOnly
+		ExecutionEnvRef     readOnly
+	Device.SoftwareModules.ExecutionUnit.{i}.
+		EUID     readOnly
+		Name     readOnly
+		ExecEnvLabel     readOnly
+		Status     readOnly
+		RequestedState     readWrite
+		ExecutionFaultCode     readOnly
+		ExecutionFaultMessage     readOnly
+		Vendor     readOnly
+		Version     readOnly
+		References     readOnly
+		SupportedDataModelList     readOnly
+	Device.SoftwareModules.ExecutionUnit.{i}.Extensions.
+Location:1
+	Device.DeviceInfo.
+		LocationNumberOfEntries     readOnly
+	Device.DeviceInfo.Location.{i}.
+		Source     readOnly
+		AcquiredTime     readOnly
+		ExternalSource     readOnly
+		ExternalProtocol     readOnly
+		DataObject     readWrite
+FaultMgmtSupportedAlarms:1
+	Device.FaultMgmt.
+		SupportedAlarmNumberOfEntries     readOnly
+	Device.FaultMgmt.SupportedAlarm.{i}.
+		EventType     readOnly
+		ProbableCause     readOnly
+		SpecificProblem     readOnly
+		PerceivedSeverity     readOnly
+		ReportingMechanism     readWrite
+FaultMgmtActive:1
+	Device.FaultMgmt.
+		CurrentAlarmNumberOfEntries     readOnly
+	Device.FaultMgmt.CurrentAlarm.{i}.
+		AlarmIdentifier     readOnly
+		AlarmRaisedTime     readOnly
+		AlarmChangedTime     readOnly
+		EventType     readOnly
+		ProbableCause     readOnly
+		PerceivedSeverity     readOnly
+FaultMgmtHistory:1
+	Device.FaultMgmt.
+		HistoryEventNumberOfEntries     readOnly
+	Device.FaultMgmt.HistoryEvent.{i}.
+		EventTime     readOnly
+		AlarmIdentifier     readOnly
+		NotificationType     readOnly
+		EventType     readOnly
+		ProbableCause     readOnly
+		PerceivedSeverity     readOnly
+FaultMgmtExpedited:1
+	Device.FaultMgmt.
+		ExpeditedEventNumberOfEntries     readOnly
+	Device.FaultMgmt.ExpeditedEvent.{i}.
+		EventTime     readOnly
+		AlarmIdentifier     readOnly
+		NotificationType     readOnly
+		EventType     readOnly
+		ProbableCause     readOnly
+		PerceivedSeverity     readOnly
+FaultMgmtQueued:1
+	Device.FaultMgmt.
+		QueuedEventNumberOfEntries     readOnly
+	Device.FaultMgmt.QueuedEvent.{i}.
+		EventTime     readOnly
+		AlarmIdentifier     readOnly
+		NotificationType     readOnly
+		EventType     readOnly
+		ProbableCause     readOnly
+		PerceivedSeverity     readOnly
+FAP_GPS:1
+	Device.FAP.GPS.
+		ScanOnBoot     readWrite
+		ScanPeriodically     readWrite
+		PeriodicInterval     readWrite
+		PeriodicTime     readWrite
+		ContinuousGPS     readWrite
+		ScanTimeout     readWrite
+		ScanStatus     readOnly
+		ErrorDetails     readOnly
+		LastScanTime     readOnly
+		LastSuccessfulScanTime     readOnly
+		LockedLatitude     readOnly
+		LockedLongitude     readOnly
+		NumberOfSatellites     readOnly
+FAP_PerfMgmt:1
+	Device.FAP.PerfMgmt.
+		ConfigNumberOfEntries     readOnly
+	Device.FAP.PerfMgmt.Config.{i}.
+		Enable     readWrite
+		URL     readWrite
+		Username     readWrite
+		Password     readWrite
+		PeriodicUploadInterval     readWrite
+		PeriodicUploadTime     readWrite
+FAP_ApplicationPlatform:1
+	Device.FAP.ApplicationPlatform.
+		Version     readOnly
+		Enable     readWrite
+		MaxNumberOfApplications     readOnly
+	Device.FAP.ApplicationPlatform.Control.
+		AuthenticationMethod     readWrite
+	Device.FAP.ApplicationPlatform.Control.FemtoAwareness.
+		APIEnable     readWrite
+		MaxAPIUsersNumber     readWrite
+		FemtozoneID     readWrite
+	Device.FAP.ApplicationPlatform.Control.SMS.
+		APIEnable     readWrite
+		MaxAPIUsersNumber     readWrite
+		MinSendSMSTimeInterval     readWrite
+	Device.FAP.ApplicationPlatform.Control.MMS.
+		APIEnable     readWrite
+		MaxAPIUsersNumber     readWrite
+		MinSendMMSTimeInterval     readWrite
+	Device.FAP.ApplicationPlatform.Control.TerminalLocation.
+		APIEnable     readWrite
+		MaxAPIUsersNumber     readWrite
+		QueryMobileLocationResponseAddress     readWrite
+		QueryMobileLocationResponseLongitudeLatitude     readWrite

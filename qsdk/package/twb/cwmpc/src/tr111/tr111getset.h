@@ -1,0 +1,25 @@
+#ifndef TR111GETSET_H_
+#define TR111GETSET_H_
+
+
+CPEGETFUNC(getManagementServer_UDPConnectionRequestAddress);
+CPEGETFUNC(getManagementServer_UDPConnectionRequestAddressNotificationLimit);
+CPESETFUNC(setManagementServer_UDPConnectionRequestAddressNotificationLimit);
+CPEGETFUNC(getManagementServer_STUNEnable );
+CPESETFUNC(setManagementServer_STUNEnable );
+CPEGETFUNC(getManagementServer_STUNServerAddress );
+CPESETFUNC(setManagementServer_STUNServerAddress );
+CPEGETFUNC(getManagementServer_STUNServerPort );
+CPESETFUNC(setManagementServer_STUNServerPort );
+CPEGETFUNC(getManagementServer_STUNUsername );
+CPESETFUNC(setManagementServer_STUNUsername );
+CPEGETFUNC(getManagementServer_STUNPassword );
+CPESETFUNC(setManagementServer_STUNPassword );
+CPEGETFUNC(getManagementServer_STUNMaximumKeepAlivePeriod );
+CPESETFUNC(setManagementServer_STUNMaximumKeepAlivePeriod );
+CPEGETFUNC(getManagementServer_STUNMinimumKeepAlivePeriod );
+CPESETFUNC(setManagementServer_STUNMinimumKeepAlivePeriod );
+CPEGETFUNC(getManagementServer_NATDetected );
+
+
+#endif /*TR111GETSET_H_*/

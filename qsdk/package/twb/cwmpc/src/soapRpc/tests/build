@@ -1,0 +1,7 @@
+#!/bin/bash
+cd ../..
+make testbox
+cd soapRpc/tests
+make clean
+make
+

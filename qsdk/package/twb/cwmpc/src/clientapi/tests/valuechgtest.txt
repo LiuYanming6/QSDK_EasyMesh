@@ -1,0 +1,4 @@
+StartSession 5
+SetPath Device.IP.Interface.[LAN-IP].IPv4Address.[LAN-GW].
+SetParameterValue IPAddress 10.2.2.10
+EndSession

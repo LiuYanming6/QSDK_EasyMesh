@@ -1,0 +1,3 @@
+StartSession 3600
+GetParameterValue InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.Connection.1.ActiveConnectionServiceID 
+EndSession
