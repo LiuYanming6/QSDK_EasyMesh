@@ -1,0 +1,3 @@
+obj-m   += thin_driver/
+obj-m   += hif_$(BUS)/
+obj-m   += misc/

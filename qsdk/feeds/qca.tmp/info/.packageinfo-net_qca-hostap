@@ -1,0 +1,160 @@
+Source-Makefile: feeds/qca/net/qca-hostap/Makefile
+Package: qca-hostap
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @PACKAGE_kmod-qca-wifi-unified-profile||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-dakota-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-unified-perf||PACKAGE_kmod-qca-wifi-lowmem-profile @(!(PACKAGE_hostapd)) +libnl +libopenssl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: default
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: Hostap authenticator
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description:  This package contains the IEEE 802.1x/WPA/EAP/RADIUS Authenticator.
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+Config:
+	menu "custom source directory"
+		depends on PACKAGE_qca-hostap
+	config qca-hostap_USE_CUSTOM_SOURCE_DIR
+		depends on PACKAGE_qca-hostap
+		bool "Use custom source directory"
+		default n
+	config qca-hostap_CUSTOM_SOURCE_DIR
+		depends on qca-hostap_USE_CUSTOM_SOURCE_DIR
+		string "Custom source directory"
+		default ""
+	endmenu
+	menu "overwrite package version"
+		depends on PACKAGE_qca-hostap
+	config qca-hostap_USE_CUSTOM_VERSION
+		depends on PACKAGE_qca-hostap
+		bool "Use custom package version"
+		default n
+
+	config qca-hostap_CUSTOM_VERSION
+		depends on qca-hostap_USE_CUSTOM_VERSION
+		string "qca-hostap version as string (default version: gff852c2ead2-dirty)"
+		default "gff852c2ead2-dirty"
+
+	endmenu
+@@
+
+Package: qca-wpa-supplicant
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @PACKAGE_kmod-qca-wifi-unified-profile||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-dakota-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-unified-perf||PACKAGE_kmod-qca-wifi-lowmem-profile @(!(PACKAGE_wpa-supplicant)) +libopenssl +libnl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: supplicant-default
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: WPA Supplicant
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description: WPA Supplicant
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+Package: qca-hostap-lite
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @PACKAGE_kmod-qca-wifi-unified-profile||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-dakota-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-unified-perf||PACKAGE_kmod-qca-wifi-lowmem-profile @(!(PACKAGE_hostapd)) +libnl +libopenssl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: lite
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: Hostap authenticator for lite profile
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description:  This package contains the IEEE 802.1x/WPA/EAP/RADIUS Authenticator.
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+Package: qca-wpa-supplicant-lite
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @PACKAGE_kmod-qca-wifi-unified-profile||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-dakota-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-unified-perf||PACKAGE_kmod-qca-wifi-lowmem-profile @(!(PACKAGE_wpa-supplicant)) +libopenssl +libnl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: supplicant-lite
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: WPA Supplicant for lite profile
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description: WPA Supplicant for lite profile
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+Package: qca-wpa-supplicant-macsec
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @PACKAGE_kmod-qca-wifi-unified-profile||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-dakota-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-perf||PACKAGE_kmod-qca-wifi-akronite-perf||PACKAGE_kmod-qca-wifi-unified-perf||PACKAGE_kmod-qca-wifi-lowmem-profile @(!(PACKAGE_wpa-supplicant)) +libopenssl +libnl @TARGET_ipq806x +DEFAULT_kmod-qca-nss-macsec:kmod-qca-nss-macsec
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: supplicant-macsec
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: WPA Supplicant (MACSEC)
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description: WPA Supplicant (MACSEC)
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+Package: qca-hostapd-cli
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @(PACKAGE_qca-hostap||PACKAGE_qca-hostap-lite) +librt +libnl +libopenssl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: Hostap authenticator command line interface
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description:  This package contains a command line utility to control the
+ IEEE 802.1x/WPA/EAP/RADIUS Authenticator.
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+Package: qca-wpa-cli
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @(PACKAGE_qca-wpa-supplicant||PACKAGE_qca-wpa-supplicant-macsec||PACKAGE_qca-wpa-supplicant-lite) +librt +libopenssl +libnl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: PACKAGE_kmod-qca-wifi-unified-profile:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-dakota-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-akronite-perf:qca-wifi PACKAGE_kmod-qca-wifi-perf:qca-wifi PACKAGE_kmod-qca-wifi-unified-perf:qca-wifi PACKAGE_kmod-qca-wifi-lowmem-profile:qca-wifi
+Section: QCA
+Category: QCA Proprietary software
+Title: WPA Supplicant command line interface
+Maintainer: Qualcomm Atheros
+Source: 
+Type: ipkg
+Description: WPA Supplicant command line interface
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+
+

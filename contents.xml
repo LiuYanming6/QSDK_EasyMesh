@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<contents>
+  <product_info>
+    <product_name>QCA9531.ILQ.6.2.1</product_name>
+    <hlos_type>ILQ</hlos_type>
+    <chipid>QCA9531</chipid>
+  </product_info>
+  <builds_flat>
+    <build>
+      <name>common</name>
+      <role>common</role>
+      <chipset>QCA9531</chipset>
+      <build_id>QCA9531.ILQ.6.2.1-00035-P-2</build_id>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>common</image_dir>
+      <release_path/>
+    </build>
+    <build>
+      <name>apps</name>
+      <role>apps</role>
+      <chipset>QCA9531</chipset>
+      <build_id>NHSS.QSDK.6.2.1-00244-P_BL-1</build_id>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>apss_proc</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true">
+        <file_name>openwrt-ar71xx-*</file_name>
+        <file_path>apss_proc/out/ar71xx/</file_path>
+      </file_ref>
+      <buildfile_path>./</buildfile_path>
+      <build_command>create_BuildProducts ./create_BuildProducts</build_command>
+    </build>
+    <build>
+      <name>wlan</name>
+      <role>wlan</role>
+      <chipset>QCA9531</chipset>
+      <build_id>WLAN.BL.3.6.1-00114-S-1</build_id>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>cnss_proc</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc/build/support/makesdk --crm-build-id ${CRM_BUILDID} --parallel --static-analysis first --tar --trace --clobber --configs QCA9984-hw-v1 AR900B-hw-v2 IPQ4019-hw-v1 QCA9888-hw-v2</build_command>
+    </build>
+    <build>
+      <name>cnss_sw_ps</name>
+      <role>cnss_sw_ps</role>
+      <chipset>QCA9531</chipset>
+      <build_id>CNSS.PS.2.6.1-00056-S-1</build_id>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>cnss_proc_ps</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc_ps/build/build_crm.sh</build_command>
+    </build>
+  </builds_flat>
+  <build_tools>
+    	
+  </build_tools>
+  <external_tools>
+    
+  </external_tools>
+  <builds_nested>
+    
+  </builds_nested>
+</contents>

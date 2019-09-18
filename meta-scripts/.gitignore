@@ -1,0 +1,6 @@
+*.swp
+*.its
+*.img
+*.bin
+images/
+partitions/

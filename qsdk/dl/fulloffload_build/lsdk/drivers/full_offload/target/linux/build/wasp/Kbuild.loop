@@ -1,0 +1,2 @@
+obj-m   += hif_$(BUS)/
+obj-m   += hif_loop/

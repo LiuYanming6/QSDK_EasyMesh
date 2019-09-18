@@ -1,0 +1,103 @@
+Target Debug Facility (athlogger) Implementation:
+=================================================
+
+
+Host:
+------
+
+
+                   ^         ^                
+                   |         |
+               ------------------
+              |  dev/tgt_debug   |
+              |  dev/tgt_crash   |
+               ------------------
+                       ^                
+                       |
+  ---------       --------------       ---------------
+ |  Log    |     |              |     |               |
+ | Memory  |<--->|   athlogger  |<----| Offload Stack |
+ |         |     |              |     |               |
+  ---------       --------------       ---------------
+                                              ^
+                                              |
+                                              |
+                                              | (ATH_P_CRASH_LOG)
+Target:                                       | (ATH_P_DEBUG_LOG)
+--------                                      |
+                                              | 
+                                              |
+  ---------       --------------       ---------------
+ |  Log    |     |              |     |               |
+ | Memory  |<--->|   athlogger  |---->| Offload Stack |
+ | (SRAM)  |     |              |     |               |
+  ---------       --------------       ---------------
+                       ^                     |
+                       |                     |
+  ----------       ----------                |
+ |          |     |          |               |
+ |   WLAN   |---> |  Linux   |<--------------
+ |  Driver  |     |  Console | 
+ |          |     |          | 
+  ----------       ---------- 
+                       ^
+                       |
+                  -----------  
+                 |           |
+                 |  Kernel   |
+                 |           |
+                  ----------- 
+
+
+
+Design Considerations:
+======================
+
+ 1. Initially Only Console Log is Logged by logger module. Design should consider 
+    future posibility of extending the feature to other kinds of data.
+    e.g. Other kinds of data could be pktlog, module stats etc.
+
+ 2. Design should consider using log storage as SRAM in case of BootROM mode
+    and should be able to extend (if available) to Flash memory, where much
+    bigger buffer can be used to log the data.
+
+ 3. Design should consider a configurability option for mode of sharing the
+    dbglog from target to host. 
+    Possible Modes are
+     a) Share the log immediately
+     b) Share the log based on logger buffer Threshhold.
+
+ 4. When a Target is rebooted, The Debug Log shared before XXXX event
+    is considered as Crash Log. Otherwise, the log is considered as Live Debug Log.
+
+    Normal Host-Target Boot Packet Exchange:
+      BootROM + 1st Stage FW Download:
+        Host  <------MDIO Host Lock Release---- Target
+        Host  -------MDIO Target Lock Release + FW Data -----> Target
+        Host  <------MDIO Host Lock Release + MDIO_FWD_GOOD/MDIO_FWD_RESET---- Target
+        Host  -------MDIO Target Lock Release + MDIO_FWD_START ----> Target
+        Host  <------MDIO Host Lock Release---- Target
+        Host  -------MDIO Target Lock Release + GMAC Parameters ----> Target
+      2nd Stage FWD Download:
+        Host  <-----ATH_P_MAGBOOT-------------- Target
+        Host  ------ATH_P_MAGBOOT + FWD Data -------------> Target
+        Host  <-----ATH_P_MAGBOOT + FWD_RSP_ACK/FWD_RSP_SUCCESS/FWD_RSP_FAILED---- Target
+      Device Detect:
+        Host  <-----ATH_P_MAGDISC-------------- Target
+        Host  -----ATH_P_MAGDISCRESP----------> Target
+      Normal Packets:
+        Host  <-------ATH_P_MAGNORM ----------- Target
+        Host  --------ATH_P_MAGNORM ----------> Target
+      Target Ready + Target Radio Detection:
+        Host  <------ HTC_MSG_READY_ID -------- Target
+        Host  ------- WMI_CMD_RADIO_QUERY ----> Target
+        Host  <------ WMI_CMD_RADIO_RSP ------- Target
+ 
+    Modified Host-Target Packet Exchange with Crash Log Exchange: 
+      Crash Log Packets:
+        Host  <------ ATH_P_CRASH_LOG --------- Target
+      Debug Log Packets:
+        Host  <------ ATH_P_DEBUG_LOG --------- Target
+
+ 5. 
+

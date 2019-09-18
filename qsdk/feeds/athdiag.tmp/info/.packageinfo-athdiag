@@ -1,0 +1,19 @@
+Source-Makefile: feeds/athdiag/athdiag/Makefile
+Package: athdiag
+Version: gff852c2ead2-dirty-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread +qca-wifi
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: QCA
+Category: QCA Proprietary software
+Title: QCA ATHDIAG(athdiag) Driver & tools
+Maintainer: 
+Source: athdiag-gff852c2ead2-dirty.tar.xz
+Type: ipkg
+Description:   athdiag command support for ath10k
+http://www.qca.qualcomm.com
+
+@@
+
+

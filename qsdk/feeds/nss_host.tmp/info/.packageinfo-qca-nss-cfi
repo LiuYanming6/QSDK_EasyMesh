@@ -1,0 +1,38 @@
+Source-Makefile: feeds/nss_host/qca-nss-cfi/Makefile
+Package: kmod-qca-nss-cfi-cryptoapi
+Submenu: Network Devices
+Version: <LINUX_VERSION>+g07e151b-2
+Depends: @TARGET_ipq806x||TARGET_ipq_ipq806x||TARGET_ipq_ipq807x||TARGET_ipq_ipq807x_64 +kmod-qca-nss-crypto +kmod-crypto-authenc @!LINUX_3_18
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: ocf-crypto-headers
+Section: kernel
+Category: Kernel modules
+Title: Kernel driver for NSS cfi
+Maintainer: 
+Source: qca-nss-cfi-g07e151b.tar.gz
+Type: ipkg
+Description: Kernel driver for NSS cfi
+
+@@
+
+Package: kmod-qca-nss-cfi-ocf
+Submenu: Network Devices
+Version: <LINUX_VERSION>+g07e151b-2
+Depends: @TARGET_ipq806x||TARGET_ipq_ipq806x||TARGET_ipq_ipq807x||TARGET_ipq_ipq807x_64 +kmod-qca-nss-crypto +kmod-crypto-ocf @!LINUX_3_18
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: ocf-crypto-headers
+Section: kernel
+Category: Kernel modules
+Title: Kernel driver for NSS cfi
+Maintainer: 
+Source: qca-nss-cfi-g07e151b.tar.gz
+Type: ipkg
+Description: Kernel driver for NSS cfi
+
+@@
+
+

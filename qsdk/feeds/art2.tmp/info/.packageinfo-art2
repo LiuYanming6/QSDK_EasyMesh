@@ -1,0 +1,89 @@
+Source-Makefile: feeds/art2/art2/Makefile
+Package: kmod-art2
+Version: <LINUX_VERSION>+CS10.2v4.9.446-1
+Depends: @!TARGET_ipq_ipq807x_64 +libpthread +libc +librt
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: QCA
+Category: QCA Proprietary software
+Title: - QCA ART Driver & tools
+Maintainer: Qualcomm Atheros
+Source: LinuxART2CS10.2v4.9.446.tar.bz2
+Type: ipkg
+Description: - QCA ART Driver & tools
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+Config:
+	menu "custom source directory"
+		depends on PACKAGE_kmod-art2
+	config LinuxART2_USE_CUSTOM_SOURCE_DIR
+		depends on PACKAGE_kmod-art2
+		bool "Use custom source directory"
+		default n
+	config LinuxART2_CUSTOM_SOURCE_DIR
+		depends on LinuxART2_USE_CUSTOM_SOURCE_DIR
+		string "Custom source directory"
+		default ""
+	endmenu
+	menu "overwrite package version"
+		depends on PACKAGE_kmod-art2
+	config LinuxART2_USE_CUSTOM_VERSION
+		depends on PACKAGE_kmod-art2
+		bool "Use custom package version"
+		default n
+
+	config LinuxART2_CUSTOM_VERSION
+		depends on LinuxART2_USE_CUSTOM_VERSION
+		string "LinuxART2 version as string (default version: CS10.2v4.9.446)"
+		default "CS10.2v4.9.446"
+
+	endmenu
+@@
+
+Package: kmod-art2-netlink
+Version: <LINUX_VERSION>+CS10.2v4.9.446-1
+Depends: @!TARGET_ipq_ipq807x_64 +libpthread +libc +librt libnl-tiny
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Variant: netlink
+Section: QCA
+Category: QCA Proprietary software
+Title: netlink - QCA ART Driver & tools
+Maintainer: Qualcomm Atheros
+Source: LinuxART2CS10.2v4.9.446.tar.bz2
+Type: ipkg
+Description: netlink - QCA ART Driver & tools
+http://www.qca.qualcomm.com
+Qualcomm Atheros
+@@
+Config:
+	menu "custom source directory"
+		depends on PACKAGE_kmod-art2-netlink
+	config LinuxART2_USE_CUSTOM_SOURCE_DIR
+		depends on PACKAGE_kmod-art2-netlink
+		bool "Use custom source directory"
+		default n
+	config LinuxART2_CUSTOM_SOURCE_DIR
+		depends on LinuxART2_USE_CUSTOM_SOURCE_DIR
+		string "Custom source directory"
+		default ""
+	endmenu
+	menu "overwrite package version"
+		depends on PACKAGE_kmod-art2-netlink
+	config LinuxART2_USE_CUSTOM_VERSION
+		depends on PACKAGE_kmod-art2-netlink
+		bool "Use custom package version"
+		default n
+
+	config LinuxART2_CUSTOM_VERSION
+		depends on LinuxART2_USE_CUSTOM_VERSION
+		string "LinuxART2 version as string (default version: CS10.2v4.9.446)"
+		default "CS10.2v4.9.446"
+
+	endmenu
+@@
+
+

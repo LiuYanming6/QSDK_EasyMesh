@@ -1,0 +1,6 @@
+#######################
+obj-m  +=  hif/
+obj-m  +=  thin_driver/
+obj-m  +=  fw_loader/
+
+
