@@ -98,6 +98,7 @@
 		};
 
 		spi_0: spi@1f000000 {
+			num-cs = <2>;
 			status = "okay";
 			m25p80@0 {
 				#address-cells = <1>;
@@ -176,7 +177,6 @@
                                         reg = <0x0000000 0x8000000>;
                                 };
                         };
-
 		};
 
 		mdio1: mdio@1a000000 {
