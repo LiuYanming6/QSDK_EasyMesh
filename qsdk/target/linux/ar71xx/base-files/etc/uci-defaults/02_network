@@ -39,7 +39,7 @@ epg5000)
 	ucidef_add_switch_vlan "switch0" "1" "0t 1 2 3 4"
 	ucidef_add_switch_vlan "switch0" "2" "0t 5"
 	;;
-
+ap151 |\
 ap136-010)
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	ucidef_add_switch "switch0" "1" "1"
@@ -51,7 +51,6 @@ ap136-020 |\
 ap135-020 |\
 ap135 |\
 ap137 |\
-ap151 |\
 tl-wr1043nd-v2 |\
 wzr-450hp2)
 	ucidef_set_interfaces_lan_wan "eth1" "eth0"
