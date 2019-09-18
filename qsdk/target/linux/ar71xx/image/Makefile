@@ -936,9 +936,11 @@ define CatFiles
 			( dd if=$(1) bs=$(AR71XX_32M_SYS_ROOTFS_SIZE) conv=sync; dd if=$(3) ) > $(5); \
 		else if [ $(2) -eq $(AR71XX_DUAL_64M_ROOTFS_SIZE) ]; then \
 			( dd if=$(1) bs=$(AR71XX_DUAL_64M_SYS_ROOTFS_SIZE) conv=sync; dd if=$(3) ) > $(5); \
+		else if [ $(2) -eq 1507328 ]; then \
+			( dd if=$(1) bs=1507328 conv=sync; dd if=$(3) ) > $(5); \
 		else \
 			( dd if=$(1) bs=$(AR71XX_8M_SYS_ROOTFS_SIZE) conv=sync; dd if=$(3) ) > $(5); \
-		fi; fi; fi; fi; fi \
+		fi; fi; fi; fi; fi; fi \
 	else \
 		( dd if=$(1) bs=$(2) conv=sync; dd if=$(3) ) > $(5); \
 		if [ `stat -c%s $(5)` -gt $(4) ]; then \
@@ -2060,7 +2062,7 @@ $(eval $(call SingleProfile,AthDTBLzma,64k,AP143_16M_DTB,ap143-16M,,,,,RKuImage,
 $(eval $(call SingleProfile,AthDTBLzma,64k,AP147_8M_DTB,ap147-8M,,,,,RKuImage,1441792,$(AR71XX_8M_ROOTFS_SIZE),ath79_ap147_8M))
 $(eval $(call SingleProfile,AthDTBLzma,64k,AP147_16M_DTB,ap147-16M,,,,,RKuImage,1507328,$(AR71XX_16M_ROOTFS_SIZE),ath79_ap147))
 $(eval $(call SingleProfile,AthDTBLzma,64k,AP151_8M_DTB,ap151-8M,,,,,RKuImage,1507328,$(AR71XX_8M_ROOTFS_SIZE),ath79_ap151_8M))
-$(eval $(call SingleProfile,AthDTBLzma,64k,AP151_16M_DTB,ap151-16M,,,,,RKuImage,1507328,$(AR71XX_16M_ROOTFS_SIZE),ath79_ap151))
+$(eval $(call SingleProfile,AthDTBLzma,64k,AP151_16M_DTB,ap151-16M,,,,,KRuImage,1507328,$(AR71XX_16M_ROOTFS_SIZE),ath79_ap151))
 $(eval $(call SingleProfile,AthDTBLzma,64k,AP152_8M_DTB,ap152-8M,,,,,RKuImage,1507328,$(AR71XX_8M_ROOTFS_SIZE),ath79_ap152_8M))
 $(eval $(call SingleProfile,AthDTBLzma,64k,AP152_16M_DTB,ap152-16M,,,,,RKuImage,1507328,$(AR71XX_16M_ROOTFS_SIZE),ath79_ap152))
 $(eval $(call SingleProfile,AthDTBLzma,128k,AP152DUAL_DTB,ap152-dual,,,,,RKuImage,2097152,$(AR71XX_DUAL_64M_ROOTFS_SIZE),ath79_ap152_dual))
