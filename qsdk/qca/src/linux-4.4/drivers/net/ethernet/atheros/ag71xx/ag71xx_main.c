@@ -18,11 +18,15 @@
 #include <linux/of_platform.h>
 #endif
 
+/*TWB EAP*/
+#include "tnw/tnw_eth_port.h"
+
 #ifndef UNUSED
 #define UNUSED(__x)	(void)(__x)
 #endif
 
-static int ag71xx_gmac_num;
+/*TWB EAP*/
+static int ag71xx_gmac_num = 0;
 
 #define AG71XX_DEFAULT_MSG_ENABLE	\
 	(NETIF_MSG_DRV			\
@@ -36,6 +40,8 @@ static int ag71xx_gmac_num;
 
 static int ag71xx_msg_level = -1;
 static int ag71xx_frame_len_mask = DESC_PKTLEN_M;
+/*TWB EAP*/
+struct net_device *ag71xx_dev[5] = {0};
 
 #define SGMII_PROCFS_DIR                        "ag71xx_sgmii"
 #define SGMII_FLAG_NAME				"sgmii_en"
@@ -911,7 +917,11 @@ void ag71xx_link_adjust(struct ag71xx *ag)
 		ag71xx_hw_stop(ag);
 		netif_carrier_off(ag->dev);
 		if (netif_msg_link(ag))
+	        {
 			pr_info("%s: link down\n", ag->dev->name);
+                        /*TWB EAP*/
+                        tnw_eth_port_change_check(ag->dev->name, 0);
+	        }
 		return;
 	}
 
@@ -978,10 +988,14 @@ void ag71xx_link_adjust(struct ag71xx *ag)
 	ag71xx_hw_start(ag);
 	netif_carrier_on(ag->dev);
 	if (netif_msg_link(ag))
+        {
 		pr_info("%s: link up (%sMbps/%s duplex)\n",
 			ag->dev->name,
 			ag71xx_speed_str(ag),
 			(ag->duplex == DUPLEX_FULL) ? "Full" : "Half");
+                /*TWB EAP*/
+                tnw_eth_port_change_check(ag->dev->name, 1);
+        }
 
 	DBG("%s: fifo_cfg0=%#x, fifo_cfg1=%#x, fifo_cfg2=%#x\n",
 	    ag->dev->name,
@@ -1853,6 +1867,9 @@ static int ag71xx_probe(struct platform_device *pdev)
 
 	SET_NETDEV_DEV(dev, &pdev->dev);
 
+        /*TWB EAP*/
+        ag71xx_dev[ag71xx_gmac_num] = dev;
+
 	ag = netdev_priv(dev);
 	ag->pdev = pdev;
 	ag->dev = dev;
@@ -2028,6 +2045,8 @@ static int __init ag71xx_module_init(void)
 	ret = platform_driver_register(&ag71xx_driver);
 	if (ret)
 		goto err_mdio_exit;
+        /*TWB EAP*/
+        tnw_eth_port_proc_create();
 
 	return 0;
 
@@ -2047,6 +2066,8 @@ static void __exit ag71xx_module_exit(void)
 	ag71xx_mdio_driver_exit();
 	ag71xx_debugfs_root_exit();
 	ag71xx_sgmii_procfs_exit();
+        /*TWB EAP*/
+        tnw_eth_port_proc_remove();
 }
 
 module_init(ag71xx_module_init);
