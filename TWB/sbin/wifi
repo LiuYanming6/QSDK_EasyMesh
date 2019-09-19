@@ -3,7 +3,7 @@
 
 . /lib/functions.sh
 . /usr/share/libubox/jshn.sh
-LED_OFF="led_ctrl LED_WLAN_RADIO1_DOWN"
+
 usage() {
 	cat <<EOF
 Usage: $0 [down|detect|reload|status]
@@ -230,13 +230,11 @@ set_wifi_down() {
 	for vif in $vifs; do
 		uci_revert_state wireless "$vif"
 	done
-	MODE=`uci get repacd.repacd.DeviceRole 2>&1`
-	if [ "$MODE" == "CAP" ]; then
-	${LED_OFF}
-	fi
-	uci set wps.hyd_ready='0'
-	uci set wps.ready='0'
-	uci commit wps
+        #TWB EAP
+        #RIL-1200-EASYMESH: Agent mode. Set wifi_ready to 0 to tell others Wi-Fi interfaces are not ready
+        uci set repacd.repacd.wifi_ready='0'
+        led_ctrl LED_WLAN_RADIO1_DOWN
+        ###
 }
 
 scan_wifi() {
