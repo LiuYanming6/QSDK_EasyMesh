@@ -5,48 +5,7 @@ START=25
 
 HELLO_BIN="/usr/sbin/hello"
 
-#start(){
-#	mode=`state_cfg get state | awk '{print $1}'`
-#	if [ "$mode" == "F" ]; then
-#		uci set hyd.config.Enable=0
-#		uci set repacd.repacd.Enable=0
-#		uci set wireless.wifi0.disabled=1
-#		uci set wireless.wifi1.disabled=1
-#		uci commit
-#	fi
-#	model_name=`state_cfg get model_name | awk '{print $1}'`
-#	if [ "$model_name" != "JCM0112" ]; then
-#		MODEL="JCM0112"
-#		state_cfg set model_name $MODEL
-#	fi
-#	# For those parameter changes that cannot be updated through factory default (earlier product)	
-#	if [ "$mode" == "N" ]; then
-#		local rate_threshold_min5=$(uci get repacd.WiFiLink.RateThresholdMin5GInPercent 2>/dev/null)
-#		if [ "$rate_threshold_min5" != "50" ]; then
-#			uci set repacd.WiFiLink.RateThresholdMin5GInPercent='50'
-#			uci commit repacd
-#		fi
-
-#		local rate_scalinl_factor=$(uci get repacd.WiFiLink.RateScalingFactor  2>/dev/null)
-#                if [ "$rate_scalinl_factor" != "100" ]; then
-#                        uci set repacd.WiFiLink.RateScalingFactor='100'
-#			uci commit repacd
-#                fi      
-
-#		local ul_hyst=$(uci get wireless.wifi1.ul_hyst  2>/dev/null)
-#                if [ "$ul_hyst" != "5" ]; then
-#                        uci set wireless.wifi1.ul_hyst='5'
-#			uci commit wireless
-#                fi      
-#	fi
-
-#	uci delete network.wan6
-#	uci delete network.lan.ip6assign
-#	uci set network.lan6='interface'
-#	uci set network.lan6.ifname='br-lan'
-#	uci set network.lan6.proto='dhcpv6'
-#	uci set network.lan6.reqprefix='no'
-#	uci commit network
+start(){
 
 	${HELLO_BIN}
 
