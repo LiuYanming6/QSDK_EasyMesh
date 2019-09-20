@@ -541,7 +541,7 @@ __repacd_wifimon_check_associated() {
 
 #TWB EAP
 #RIL-1200-EASYMESH: Agent mode. Set wifi_ready to 1 to tell others Wi-Fi interfaces are ready
-    local wifi_ready = `uci get repacd.repacd.wifi_ready`
+    local wifi_ready=`uci get repacd.repacd.wifi_ready`
     uci set repacd.repacd.wifi_ready='1'
     ###
 
@@ -2095,7 +2095,7 @@ repacd_wifimon_check() {
 
         #TWB EAP
         #RIL-1200-EASYMESH: Agent mode. Set wifi_ready to 1 to tell others Wi-Fi interfaces are ready
-        local wifi_ready = `uci get repacd.repacd.wifi_ready`
+        local wifi_ready=`uci get repacd.repacd.wifi_ready`
         uci set repacd.repacd.wifi_ready='1'
         ###
 

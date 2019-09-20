@@ -16,7 +16,7 @@ int main(void)
 
     system("/sbin/uboot_upgrade");
     system("mkdir -p /etc/keep");
-//    system("state_preinit");
+    system("state_preinit");
     system("insmod /lib/gpio-keys.ko");
     system("sysledd &");
     sleep(1);

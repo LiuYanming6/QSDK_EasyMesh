@@ -11,24 +11,8 @@ if [ "`uci get wireless.@wifi-iface[1].ssid`" = "" ];then
     uci set wireless.@wifi-iface[1].ssid="JioMesh-$macadd_str"
 fi
 if [ "`uci get wireless.@wifi-iface[2].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[2].ssid="jio-backhaul-$macadd_str"
+    uci set wireless.@wifi-iface[2].ssid="jioMesh-$macadd_str"
 fi
-if [ "`uci get wireless.@wifi-iface[3].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[3].ssid="jio-backhaul-$macadd_str"
-fi
-if [ "`uci get wireless.@wifi-iface[4].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[4].ssid="jio-backhaul-$macadd_str"
-fi
-if [ "`uci get wireless.@wifi-iface[5].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[5].ssid="jio-backhaul-$macadd_str"
-fi
-if [ "`uci get wireless.@wifi-iface[6].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[6].ssid="JioMesh-guest"
-fi
-if [ "`uci get wireless.@wifi-iface[7].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[7].ssid="JioMesh-guest"
-fi
-
 ###KEY
 if [ "`uci get wireless.@wifi-iface[0].key`" = "" ];then
     ##TODO
@@ -52,30 +36,6 @@ if [ "`uci get wireless.@wifi-iface[2].key`" = "" ];then
         uci set wireless.@wifi-iface[2].key="1234567890"
     else
         uci set wireless.@wifi-iface[2].key="$password_str"
-    fi
-fi
-if [ "`uci get wireless.@wifi-iface[3].key`" = "" ];then
-    ##TODO
-    if [ "$password_str" = "" ];then
-        uci set wireless.@wifi-iface[3].key="1234567890"
-    else
-        uci set wireless.@wifi-iface[3].key="$password_str"
-    fi
-fi
-if [ "`uci get wireless.@wifi-iface[4].key`" = "" ];then
-    ##TODO
-    if [ "$password_str" = "" ];then
-        uci set wireless.@wifi-iface[4].key="1234567890"
-    else
-        uci set wireless.@wifi-iface[4].key="$password_str"
-    fi
-fi
-if [ "`uci get wireless.@wifi-iface[5].key`" = "" ];then
-    ##TODO
-    if [ "$password_str" = "" ];then
-        uci set wireless.@wifi-iface[5].key="1234567890"
-    else
-        uci set wireless.@wifi-iface[5].key="$password_str"
     fi
 fi
 
