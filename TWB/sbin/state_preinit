@@ -1,8 +1,16 @@
 #!/bin/sh
 
 macadd_str=`state_cfg get ethaddr | sed -r 's/://g' | sed 's/^......//'`
+rmacaddr=`state_cfg get rmac`
+rmac2addr=`state_cfg get rmac2`
 password_str=`state_cfg get rkey | awk '{print $1}'`
-
+###MAC
+if [ "`uci get wireless.@wifi-device[0].macaddr`" = "" ];then
+    uci set wireless.@wifi-device[0].macaddr="$rmacaddr"
+fi
+if [ "`uci get wireless.@wifi-device[1].macaddr`" = "" ];then
+    uci set wireless.@wifi-device[1].macaddr="$rmac2addr"
+fi
 ###SSID
 if [ "`uci get wireless.@wifi-iface[0].ssid`" = "" ];then
     uci set wireless.@wifi-iface[0].ssid="JioMesh-$macadd_str"
@@ -11,7 +19,7 @@ if [ "`uci get wireless.@wifi-iface[1].ssid`" = "" ];then
     uci set wireless.@wifi-iface[1].ssid="JioMesh-$macadd_str"
 fi
 if [ "`uci get wireless.@wifi-iface[2].ssid`" = "" ];then
-    uci set wireless.@wifi-iface[2].ssid="jioMesh-$macadd_str"
+    uci set wireless.@wifi-iface[2].ssid="JioMesh-$macadd_str"
 fi
 ###KEY
 if [ "`uci get wireless.@wifi-iface[0].key`" = "" ];then
