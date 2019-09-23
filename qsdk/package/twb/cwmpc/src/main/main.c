@@ -50,13 +50,13 @@
 #endif
 int dns_lookup_auto(const char *name, int sockType, unsigned int port, int family, InAddr *);
 void startCPEEventListener(void);
-
 #ifdef CONFIG_CLIENTAPI
 int cwmpStartCPEAPIListener(void);
 #endif
 
 /* */
 extern CPEState cpeState;
+extern void retrytoACS(void);
 /*
  * Global default network interface name
  * and WAN side IP address.
@@ -134,7 +134,8 @@ void signal_handler(int signum)
 {
 	if (signum == SIGUSR1)
 	{
-		cpeState.sigusr1 = 1;
+	    cpeState.sigusr1 = 1;
+	    retrytoACS();
 	}
 }
 

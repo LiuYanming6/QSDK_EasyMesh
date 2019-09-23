@@ -350,16 +350,19 @@ static void sendXferComplete(RPCRequest *r) {
 		stopTimer(downloadWindowEnded, (void*)r);
 #endif
 	r->ud.downloadReq.dlEndTime = time(0);
+#if 0
 	cwmpAddEvent(r->rpcMethod == eDownload ? eEvtMDownload
 			        : r->rpcMethod== eScheduleDownload ? eEvtMScheduleDownload
 			        : eEvtMUpload);
-	cwmpSetPending(PENDING_XFERCOMPL);
 	cwmpAddEvent(eEvtTransferComplete);
+#endif
+	cwmpSetPending(PENDING_XFERCOMPL);
 	/* don't send inform if the next transfer is ready to start */
 	if (isTransferReady()) {
 		DBGPRINT((stderr, "Next Transfer is ready\n"));
 		return;
 	}
+	DBGPRINT((stderr, "cwmpStartPending\n"));
 	cwmpStartPending();
 }
 
@@ -406,15 +409,6 @@ static int completeResponse(ACSSession *s, RPCRequest *r, char *buf, int lth){
 	else if (status == 1)
 	{
 		status = CPE_OK;
-		while(1)
-		{
-			pause();
-			if (cpeState.sigusr1==1)
-			{
-				dlTransferQuit(s, status);
-				return status;
-			}
-		}
 	}
 	dlTransferQuit(s, status);
 	return status;

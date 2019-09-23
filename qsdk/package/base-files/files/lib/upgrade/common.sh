@@ -53,7 +53,8 @@ run_ramfs() { # <command> [...]
 		/bin/dd /bin/vi /bin/ls /bin/cat /usr/bin/awk /usr/bin/hexdump	\
 		/bin/sleep /bin/zcat /usr/bin/bzcat /usr/bin/printf /usr/bin/wc \
 		/bin/cut /usr/bin/printf /bin/sync /bin/mkdir /bin/rmdir	\
-		/bin/rm /usr/bin/basename /bin/kill /bin/chmod
+		/bin/rm /usr/bin/basename /bin/kill /bin/chmod \
+		/usr/bin/killall
 
 	install_bin /sbin/mtd
 	install_bin /sbin/mount_root
@@ -239,6 +240,11 @@ do_upgrade() {
 	fi
 
 	v "Upgrade completed"
+
+	# TWB Angus: Sending SIGUSR1 after sysupgrade start
+    	v "Sending M Dowloand And 7 Transfer to tr069 server"
+    	killall -SIGUSR1 cwmpc
+
 	[ -n "$DELAY" ] && sleep "$DELAY"
 	ask_bool 1 "Reboot" && {
 		v "Rebooting system..."

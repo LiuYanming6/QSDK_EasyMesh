@@ -1044,14 +1044,14 @@ static eRPCStatus runRPC( ACSSession *s ) {
 #endif
 
         case eTransferCompleteResponse:
-        	if ( !completeTransfer(eUpload/*or eDownload*/) ) {
-        		/* no more completed transfers */
-        	    cwmpClearPending(PENDING_XFERCOMPL);
-            	cpeState.eventMask = cpeState.eventMask & (~EVT_XFERCOMPL);
-            	clearAllEvents(eTransferCompleteResponse);
-            	rs = eRpcEnd;
-        	} else
-        		rs = eRpcInit;
+            if ( !completeTransfer(eUpload/*or eDownload*/) ) {
+                /* no more completed transfers */
+                cwmpClearPending(PENDING_XFERCOMPL);
+                cpeState.eventMask = cpeState.eventMask & (~EVT_XFERCOMPL);
+                clearAllEvents(eTransferCompleteResponse);
+                rs = eRpcEnd;
+            } else
+                rs = eRpcInit;
             break;
 #ifdef CONFIG_RPCAUTONOMOUSTRANSFERCOMPLETE
         case eAutonomousTransferCompleteResponse:
@@ -1517,5 +1517,27 @@ void cwmpScheduleInform(void *handle) {
 	retryACSInform(NULL);
 }
 #endif /* #ifdef CONFIG_RPCSCHEDULEINFORM */
+
+/*
+ * return the number of events added.
+ */
+static int addEvent(eEventCode eEvent, char *ckey, XMLWriter *xp) {
+        xmlOpenTagGrp(xp, "EventStruct");
+        xmlMemPrintf(xp, "<EventCode>%s</EventCode>\n", cwmpGetEventName(eEvent));
+        xmlMemPrintf(xp, "<CommandKey>%s</CommandKey>\n", ckey ? ckey : "");
+        xmlCloseTagGrp(xp); /* </EventStruct> */
+        return 1;
+}
+
+void retrytoACS(void)
+{
+	DBGPRINT((stderr, "Receive SIGUSR1, cwmpAddEvent\n"));
+	XMLWriter *xp = xmlOpenWriter(SOAP_SENDBUFSZ, XML_WRITER_FLG);
+        xmlOpenTagGrp(xp, "Event %sarrayType=\"%sEventStruct[!^^!]\"", nsSOAP_ENC, nsCWMP);
+	RPCRequest *r = cpeState.dlQActive;
+	addEvent(eEvtMDownload, r->commandKey, xp);
+        cwmpAddEvent(eEvtTransferComplete);
+	setTimer(retryACSInform, NULL, 1*1000);
+}
 
 
