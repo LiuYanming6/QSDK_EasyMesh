@@ -15,6 +15,10 @@ empty:=
 space:= $(empty) $(empty)
 $(if $(findstring $(space),$(TOPDIR)),$(error ERROR: The path to the OpenWrt directory must not include any spaces))
 
+DATE:= $(shell git log -1 --pretty=format:%ai | cut -c 1-10 | tr -d '-')
+GIT_VERSION:=$(shell git log -1 --pretty=format:%H | cut -c 1-8)
+VERSION_NUMBER = $(shell printf "$(CONFIG_VERSION_NUMBER)" | tr -d '"' | tr -d " ")
+
 world:
 
 include $(TOPDIR)/include/host.mk
@@ -57,7 +61,9 @@ else
 endif
 
 clean: FORCE clean_kernel
-	 rm -rf $(BUILD_DIR) $(STAGING_DIR) $(BIN_DIR) $(BUILD_LOG_DIR)
+	rm -rf $(BUILD_DIR) $(STAGING_DIR) $(BIN_DIR) $(BUILD_LOG_DIR)
+# Remove firmware
+	rm -rf $(BIN_DIR)/20*.bin
 
 dirclean: clean
 	rm -rf $(STAGING_DIR_HOST) $(TOOLCHAIN_DIR) $(BUILD_DIR_HOST) $(BUILD_DIR_TOOLCHAIN)
@@ -92,6 +98,19 @@ prereq: $(target/stamp-prereq) tmp/.prereq_packages
 prepare: .config $(tools/stamp-install) $(toolchain/stamp-install)
 world: prepare $(target/stamp-compile) $(package/stamp-compile) $(package/stamp-install) $(target/stamp-install) FORCE
 	$(_SINGLE)$(SUBMAKE) -r package/index
+
+firmware: world
+firmware:
+		@$(eval MD5NUMBER = $(shell md5sum $(BIN_DIR)/openwrt-ar71xx-generic-ap151-16M-squashfs-sysupgrade.bin | cut -c 1-8 ))
+		@cp $(BIN_DIR)/openwrt-ar71xx-generic-ap151-16M-squashfs-sysupgrade.bin $(BIN_DIR)/$(DATE)_$(strip $(VERSION_NUMBER))_QSDK5.3_$(MD5NUMBER).bin
+		@echo "====================================================================";
+		@echo "Build Date: $(DATE)";
+		@echo "Git Commit: $(GIT_VERSION)";
+		@echo "MD5sum: $(MD5NUMBER)";
+		@echo "file path: $(BIN_DIR)";
+		@echo "file Name: $(DATE)_$(strip $(VERSION_NUMBER))_QSDK5.3_$(MD5NUMBER).bin";
+		@echo "====================================================================";
+
 
 .PHONY: clean dirclean prereq prepare world package/symlinks package/symlinks-install package/symlinks-clean
 
