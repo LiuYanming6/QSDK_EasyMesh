@@ -22,6 +22,7 @@ extern "C"{
 /*TWB EAP*/
 #include "twb_util_hyd.h"
 
+
 char *proc_net_dev = "/proc/net/dev";
 char *proc_net_dev_current = "/tmp/proc_net_dev_current";
 char *proc_net_dev_previous = "/tmp/proc_net_dev_previous";
@@ -593,7 +594,7 @@ client_info_t *get_client_info(char *interface) {
                 LERROR("Unable to execute command \"%s\" error %d (%s)", cmd_str, errno, strerror(errno));
             }
         }
-
+  
         if (command_output) {
 
             char *line, *lineptr;
@@ -629,7 +630,7 @@ client_info_t *get_client_info(char *interface) {
 		/*TWB EAP*/
  		    } else if (token_num == 3) { //TX Rate in wlanconfig but we use apstats instead
 			stats->txrate_value = _get_client_txrate(stats->device);
-		    } else if (token_num == 19) {
+		    } else if (token_num == 21) {
 			for (item = 0; item < sizeof(max_data_rate)/sizeof(max_data_rate[0]); ++item)
 			{
 			    if(!strcmp(phy[item].mode, token))
@@ -638,7 +639,7 @@ client_info_t *get_client_info(char *interface) {
 				break;
 			    }
 			}
-                    } else if (token_num == 21) {
+                    } else if (token_num == 23) {
 			stream = (long) strtol(token, NULL, 10);
 			stats->maxtxrate_value = temp->max_rate[stream-1];
                     }
