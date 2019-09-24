@@ -772,6 +772,18 @@ stop_service() {
 }
 
 restart_after_config_change() {
+
+	# TWB EAP check cgibox set status
+	uci set system.lock='0'
+	need_reload=`uci get system.reload 2>&1`
+	if [ $need_reload =='1' ] ;then
+		uci set system.reload='0'
+		uci commit system
+		killall /etc/reload.sh
+		/etc/reload.sh &
+	fi
+	uci commit system
+
 	[ -f "$WSPLCD_RUN_FILE" ] || return
 	hyfi_lock
 

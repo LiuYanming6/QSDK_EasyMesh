@@ -67,8 +67,8 @@ void reload_query(void){
         return;
     }
     system("uci set system.lock=1");
-    system("killall /etc/cgibox.sh");
-    system("/etc/cgibox.sh &"); /* sleep 5  , /etc/init.d/repacd restart */
+    system("killall /etc/reload.sh");
+    system("/etc/reload.sh &"); /* sleep 5  , /etc/init.d/repacd restart */
     return;
 }
 
