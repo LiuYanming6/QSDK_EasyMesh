@@ -999,27 +999,29 @@ int get_role(void)
  */
 /*
  * 
-RE
-ath   topology
-0      0
-01     1
-02     2  
-1      3
-11     4
-12     5
-* 
 
-CAP
+Agent ethernet backhaul
+ath   uci  channel
+0      1   2.4G Fronthaul
+01     3   2.4G Backhaul
+1      2   5G Fronthaul
+11     4   5G Backhaul
+*
 
-ath   topology
-0     0
-01    1
-1     2
-11    3
+WiFi backhaul
+
+ath   uci  channel
+0     1    2.4G Fronthaul
+01    3    2.4G Backhaul
+1     0    5G Station
+11    2    5G Fronthaul
+12    4    5G Backhaul
+
 
 */
 char *get_topology_iface_name (int x)
 {
+#if 0
     if ( get_role() == 1) /* CAP */
     {
         if(x==0)
@@ -1032,32 +1034,33 @@ char *get_topology_iface_name (int x)
             return "11";
     }
     else
-    {/*   RE   */
-        cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
-        if (g_ethbackhaul[0] == '0' )
-        {
-            if(x==0)
-                return "0";
-            else if(x==1)
-                return "02";
-            else if(x==2)
-                return "1";
-            else if(x==3)
-                return "12";
-        }
-        else
-        {
-            if(x==0)
-                return "0";
-            else if(x==1)
-                return "01";
-            else if(x==2)
-                return "1";
-            else if(x==3)
-                return "11";
-        }
+#endif
+    /*   RE   */
+    cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
+    if (g_ethbackhaul[0] == '1' )
+    {
+        if(x==0)
+            return "0";
+        else if(x==1)
+            return "01";
+        else if(x==2)
+            return "1";
+        else if(x==3)
+            return "11";
     }
-    
+    else
+    {
+        if(x==0)
+            return "0";
+        else if(x==1)
+            return "01";
+        else if(x==2)
+            return "11";
+        else if(x==3)
+            return "12";
+        else if(x==4)
+            return "1";
+    }   
     return "-1";
 }
 
@@ -1069,28 +1072,27 @@ char *get_topology_iface_name (int x)
  */
 /*
  * 
-RE
-ath   uci
-0      0
-01     2
-02     4
-1      1
-11     3
-12     5
+Agent ethernet backhaul
+ath   uci  channel
+0      1   2.4G Fronthaul
+01     3   2.4G Backhaul
+1      2   5G Fronthaul
+11     4   5G Backhaul
 * 
 
-CAP
+WiFi backhaul
 
-ath   uci
-0     0
-01    4
-1     1
-11    5
+ath   uci  channel
+0     1    2.4G Fronthaul
+01    3    2.4G Backhaul
+11    2    5G Fronthaul
+12    4    5G Backhaul
+1     0    5G Station
 
 */
 int get_uci_iface_name (int x)
 {
-
+#if 0
     if (get_role() == 1) /* CAP */
     {
         if(x==0)
@@ -1102,33 +1104,35 @@ int get_uci_iface_name (int x)
         else if(x==3)
             return 5;
     }
-    else
-    {/*   RE   */
-        cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
-        if (g_ethbackhaul[0] == '0' )
-        {
-            if(x==0)
-                return 0;
-            else if(x==1)
-                return 4;
-            else if(x==2)
-                return 1;
-            else if(x==3)
-                return 5;
-        }
-        else
-        {
-            if(x==0)
-                return 0;
-            else if(x==1)
-                return 4;
-            else if(x==2)
-                return 1;
-            else if(x==3)
-                return 5;
-        }
-    }
 
+    else
+#endif
+    /*   RE   */
+    cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
+    if (g_ethbackhaul[0] == '1' )
+    {
+        if(x==0)
+            return 1;
+        else if(x==1)
+            return 3;
+        else if(x==2)
+            return 2;
+        else if(x==3)
+            return 4;
+        else if(x==4)
+            return 0;
+    }
+    else
+    {
+        if(x==0)
+            return 1;
+        else if(x==1)
+            return 3;
+        else if(x==2)
+            return 2;
+        else if(x==3)
+            return 4;
+    }
     return -1;
 }
 /*****************************************************************************/
