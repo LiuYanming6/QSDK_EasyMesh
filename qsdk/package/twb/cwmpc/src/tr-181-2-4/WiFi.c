@@ -785,7 +785,7 @@ CPE_STATUS getWiFiRadioStats_PacketsSent(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
 
-        sprintf(cmd, "ifconfig wifi%d | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1i %% %llu}'" ,ip->parent->id-1 ,4*GB_TO_BYTE );
+        sprintf(cmd, "ifconfig wifi%d | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1 %% %llu}'" ,ip->parent->id-1 ,4*GB_TO_BYTE );
         cmd_packet_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
        // if( NULL != cmd_result)     p->packetsSent = atoi(cmd_result);
@@ -827,7 +827,7 @@ CPE_STATUS getWiFiRadioStats_ErrorsSent(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
 
-        sprintf(cmd, "ifconfig wifi%d| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1i %% %llu}'" , ip->parent->id-1 , 4*GB_TO_BYTE);
+        sprintf(cmd, "ifconfig wifi%d| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1 %% %llu}'" , ip->parent->id-1 , 4*GB_TO_BYTE);
         cmd_packet_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
        // if( NULL != cmd_result)     p->errorsSent = atoi(cmd_result);
