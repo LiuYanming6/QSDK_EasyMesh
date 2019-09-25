@@ -453,43 +453,34 @@ void refreshAssociatedDeviceinstances(void)
     i=0;
 
 
-#if 0
-/*  For Client ip */
-    memset(cmd,0x0,sizeof(cmd));
-    memset(cmd_result,0x0,sizeof(cmd_result));
-    sprintf(cmd,"rm -rf %s && arp-scan -l -I br-lan > %s", SCAN_FILE, SCAN_FILE);
-    cmd_popen( cmd , cmd_result);
-#endif
+
 /*  For RE wired client */
+    memset(oName , 0x0 , sizeof(oName));
+    snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.", CWMP_RootObject[0].name, 5 );
+    o = cwmpFindObject(oName);
 
-    if( get_role() == 0)
+    if ( NULL == o)
     {
-        memset(oName , 0x0 , sizeof(oName));
-        snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.", CWMP_RootObject[0].name, 5 );
-        o = cwmpFindObject(oName);
-
-        if ( NULL == o)
-        {
-           cwmpInitObjectInstance(oName);
-           cpeLog(LOG_DEBUG, "createInterfaceEntry: %s", oName);
-        }
-
-        memset( cmd_result , 0x0 , sizeof(cmd_result));
-        if ((ret = ubox_get_qca_wifison_re_wired_client ( cmd_result , 1 )) !=0)
-        {
-            DBG_MSG("No RE Wired Client");
-            //return ;
-        }
-        i=0;
-        pos = strtok(cmd_result,"\n");
-        while (pos != NULL)
-        {
-            sprintf(clients_wired[i].mac, pos);
-            pos = strtok(NULL,"\n");
-            i++;
-        }
-        client_wired = i;
+       cwmpInitObjectInstance(oName);
+       cpeLog(LOG_DEBUG, "createInterfaceEntry: %s", oName);
     }
+
+    memset( cmd_result , 0x0 , sizeof(cmd_result));
+    if ((ret = ubox_get_qca_wifison_re_wired_client ( cmd_result , 1 )) !=0)
+    {
+        DBG_MSG("No RE Wired Client");
+        //return ;
+    }
+    i=0;
+    pos = strtok(cmd_result,"\n");
+    while (pos != NULL)
+    {
+        sprintf(clients_wired[i].mac, pos);
+        pos = strtok(NULL,"\n");
+        i++;
+    }
+    client_wired = i;
+    
 
     for (i=1,j=1; j<= client_2g; j++)
     {
@@ -586,7 +577,7 @@ void refreshAssociatedDeviceinstances(void)
     }
 
 
-     for (i=5,j=1; j <= client_wired ; j++)
+    for (i=5,j=1; j <= client_wired ; j++)
     {
         memset(oName , 0x0 , sizeof(oName));
         snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.AssociatedDevice.%d.", CWMP_RootObject[0].name, i , j);
