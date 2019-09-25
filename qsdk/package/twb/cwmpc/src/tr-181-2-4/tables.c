@@ -858,53 +858,65 @@ CWMPParam WiFiAccessPointAssociatedDevice_Params[]={
 
 /**@param Device.WiFi.AccessPoint.{i}.Security. */
 CPEGETFUNC(getWiFiAccessPointSecurity_Reset);
-CPESETFUNC(setWiFiAccessPointSecurity_Reset);
 CPEGETFUNC(getWiFiAccessPointSecurity_ModesSupported);
 CPEGETFUNC(getWiFiAccessPointSecurity_ModeEnabled);
-//CPESETFUNC(setWiFiAccessPointSecurity_ModeEnabled);
 CPEGETFUNC(getWiFiAccessPointSecurity_PreSharedKey);
-CPESETFUNC(setWiFiAccessPointSecurity_PreSharedKey);
 CPEGETFUNC(getWiFiAccessPointSecurity_KeyPassphrase);
+
+#if 0
+CPESETFUNC(setWiFiAccessPointSecurity_Reset);
+CPESETFUNC(setWiFiAccessPointSecurity_ModeEnabled);
+CPESETFUNC(setWiFiAccessPointSecurity_PreSharedKey);
 CPESETFUNC(setWiFiAccessPointSecurity_KeyPassphrase);
+#endif
+
 CWMPParam WiFiAccessPointSecurity_Params[]={
-	{ "Reset", getWiFiAccessPointSecurity_Reset, setWiFiAccessPointSecurity_Reset, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "Reset", getWiFiAccessPointSecurity_Reset, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "ModesSupported", getWiFiAccessPointSecurity_ModesSupported, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "ModeEnabled", getWiFiAccessPointSecurity_ModeEnabled, NULL, NULL, RPC_R, eString, 0, 0},
-	{ "PreSharedKey", getWiFiAccessPointSecurity_PreSharedKey, setWiFiAccessPointSecurity_PreSharedKey, NULL, RPC_RW, eHexBinary, 0, 32},
-	{ "KeyPassphrase", getWiFiAccessPointSecurity_KeyPassphrase, setWiFiAccessPointSecurity_KeyPassphrase, NULL, RPC_RW, eStringSetOnly, 0, 63},
+	{ "PreSharedKey", getWiFiAccessPointSecurity_PreSharedKey, NULL, NULL, RPC_RW, eHexBinary, 0, 32},
+	{ "KeyPassphrase", getWiFiAccessPointSecurity_KeyPassphrase, NULL, NULL, RPC_RW, eStringSetOnly, 0, 63},
 	{NULL}
 };
 /**@endparam Device.WiFi.AccessPoint.{i}.Security.  */
 
 /**@param Device.WiFi.AccessPoint.{i}.WPS. */
 CPEGETFUNC(getWiFiAccessPointWPS_Enable);
-CPESETFUNC(setWiFiAccessPointWPS_Enable);
 CPEGETFUNC(getWiFiAccessPointWPS_ConfigMethodsSupported);
 CPEGETFUNC(getWiFiAccessPointWPS_ConfigMethodsEnabled);
+
+#if 0
+CPESETFUNC(setWiFiAccessPointWPS_Enable);
 CPESETFUNC(setWiFiAccessPointWPS_ConfigMethodsEnabled);
+#endif
+
 CWMPParam WiFiAccessPointWPS_Params[]={
-	{ "Enable", getWiFiAccessPointWPS_Enable, setWiFiAccessPointWPS_Enable, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "Enable", getWiFiAccessPointWPS_Enable, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "ConfigMethodsSupported", getWiFiAccessPointWPS_ConfigMethodsSupported, NULL, NULL, RPC_R, eString, 0, 0},
-	{ "ConfigMethodsEnabled", getWiFiAccessPointWPS_ConfigMethodsEnabled, setWiFiAccessPointWPS_ConfigMethodsEnabled, NULL, RPC_RW, eString, 0, 0},
+	{ "ConfigMethodsEnabled", getWiFiAccessPointWPS_ConfigMethodsEnabled, NULL, NULL, RPC_RW, eString, 0, 0},
 	{NULL}
 };
 /**@endparam Device.WiFi.AccessPoint.{i}.WPS.  */
 
 /**@param Device.WiFi.AccessPoint.{i}. */
 CPEGETFUNC(getWiFiAccessPoint_Enable);
-CPESETFUNC(setWiFiAccessPoint_Enable);
 CPEGETFUNC(getWiFiAccessPoint_Status);
 CPEGETFUNC(getWiFiAccessPoint_SSIDReference);
 CPEGETFUNC(getWiFiAccessPoint_SSIDAdvertisementEnabled);
-CPESETFUNC(setWiFiAccessPoint_SSIDAdvertisementEnabled);
 CPEGETFUNC(getWiFiAccessPoint_AssociatedDeviceNumberOfEntries);
 CPEGETFUNC(getWiFiAccessPoint_ParentAPMAC);
 CPEGETFUNC(getWiFiAccessPoint_CAPMODE);
+
+#if 0
+CPESETFUNC(setWiFiAccessPoint_Enable);
+CPESETFUNC(setWiFiAccessPoint_SSIDAdvertisementEnabled);
+#endif
+
 CWMPParam WiFiAccessPoint_Params[]={
-	{ "Enable", getWiFiAccessPoint_Enable, setWiFiAccessPoint_Enable, NULL, RPC_R, eBoolean, 0, 0},
+	{ "Enable", getWiFiAccessPoint_Enable, NULL, NULL, RPC_R, eBoolean, 0, 0},
 	{ "Status", getWiFiAccessPoint_Status, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "SSIDReference", getWiFiAccessPoint_SSIDReference, NULL, NULL, RPC_R,  eString, 0, 256},
-	{ "SSIDAdvertisementEnabled", getWiFiAccessPoint_SSIDAdvertisementEnabled, setWiFiAccessPoint_SSIDAdvertisementEnabled, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "SSIDAdvertisementEnabled", getWiFiAccessPoint_SSIDAdvertisementEnabled, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "AssociatedDeviceNumberOfEntries", getWiFiAccessPoint_AssociatedDeviceNumberOfEntries, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
 	{NULL}
 };
@@ -947,65 +959,69 @@ CWMPParam WiFiRadioStats_Params[]={
 
 /**@param Device.WiFi.Radio.{i}. */
 CPEGETFUNC(getWiFiRadio_Enable);
-CPESETFUNC(setWiFiRadio_Enable);
 CPEGETFUNC(getWiFiRadio_Status);
 CPEGETFUNC(getWiFiRadio_Name);
 CPEGETFUNC(getWiFiRadio_MaxBitRate);
 CPEGETFUNC(getWiFiRadio_SupportedFrequencyBands);
 CPEGETFUNC(getWiFiRadio_OperatingFrequencyBand);
-//CPESETFUNC(setWiFiRadio_OperatingFrequencyBand);
 CPEGETFUNC(getWiFiRadio_SupportedStandards);
 CPEGETFUNC(getWiFiRadio_OperatingStandards);
-CPESETFUNC(setWiFiRadio_OperatingStandards);
 CPEGETFUNC(getWiFiRadio_PossibleChannels);
 CPEGETFUNC(getWiFiRadio_ChannelsInUse);
 CPEGETFUNC(getWiFiRadio_Channel);
-CPESETFUNC(setWiFiRadio_Channel);
 CPEGETFUNC(getWiFiRadio_AutoChannelSupported);
 CPEGETFUNC(getWiFiRadio_AutoChannelEnable);
-CPESETFUNC(setWiFiRadio_AutoChannelEnable);
 //CPEGETFUNC(getWiFiRadio_AutoChannelRefreshPeriod);
-//CPESETFUNC(setWiFiRadio_AutoChannelRefreshPeriod);
 CPEGETFUNC(getWiFiRadio_OperatingChannelBandwidth);
-CPESETFUNC(setWiFiRadio_OperatingChannelBandwidth);
 //CPEGETFUNC(getWiFiRadio_ExtensionChannel);
-//CPESETFUNC(setWiFiRadio_ExtensionChannel);
 CPEGETFUNC(getWiFiRadio_GuardInterval);
-CPESETFUNC(setWiFiRadio_GuardInterval);
 CPEGETFUNC(getWiFiRadio_MCS);
-//CPESETFUNC(setWiFiRadio_MCS);
 CPEGETFUNC(getWiFiRadio_TransmitPowerSupported);
 CPEGETFUNC(getWiFiRadio_TransmitPower);
-CPESETFUNC(setWiFiRadio_TransmitPower);
 CPEGETFUNC(getWiFiRadio_IEEE80211hSupported);
 CPEGETFUNC(getWiFiRadio_IEEE80211hEnabled);
-//CPESETFUNC(setWiFiRadio_IEEE80211hEnabled);
 CPEGETFUNC(getWiFiRadio_RegulatoryDomain);
+
+#if 0
+CPESETFUNC(setWiFiRadio_Enable);
 CPESETFUNC(setWiFiRadio_RegulatoryDomain);
+CPESETFUNC(setWiFiRadio_AutoChannelEnable);
+CPESETFUNC(setWiFiRadio_TransmitPower);
+CPESETFUNC(setWiFiRadio_GuardInterval);
+CPESETFUNC(setWiFiRadio_IEEE80211hEnabled);
+CPESETFUNC(setWiFiRadio_MCS);
+CPESETFUNC(setWiFiRadio_ExtensionChannel);
+CPESETFUNC(setWiFiRadio_AutoChannelRefreshPeriod);
+CPESETFUNC(setWiFiRadio_OperatingFrequencyBand);
+CPESETFUNC(setWiFiRadio_OperatingChannelBandwidth);
+CPESETFUNC(setWiFiRadio_Channel);
+CPESETFUNC(setWiFiRadio_OperatingStandards);
+#endif
+
 CWMPParam WiFiRadio_Params[]={
-	{ "Enable", getWiFiRadio_Enable, setWiFiRadio_Enable, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "Enable", getWiFiRadio_Enable, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "Status", getWiFiRadio_Status, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "Name", getWiFiRadio_Name, NULL, NULL, RPC_R, eString, 0, 64},
 	{ "MaxBitRate", getWiFiRadio_MaxBitRate, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
 	{ "SupportedFrequencyBands", getWiFiRadio_SupportedFrequencyBands, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "OperatingFrequencyBand", getWiFiRadio_OperatingFrequencyBand, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "SupportedStandards", getWiFiRadio_SupportedStandards, NULL, NULL, RPC_R, eString, 0, 0},
-	{ "OperatingStandards", getWiFiRadio_OperatingStandards, setWiFiRadio_OperatingStandards, NULL, RPC_RW, eString, 0, 0},
+	{ "OperatingStandards", getWiFiRadio_OperatingStandards, NULL, NULL, RPC_RW, eString, 0, 0},
 	{ "PossibleChannels", getWiFiRadio_PossibleChannels, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "ChannelsInUse", getWiFiRadio_ChannelsInUse, NULL, NULL, RPC_R, eString, NOACTIVENOTIFY, 0},
-	{ "Channel", getWiFiRadio_Channel, setWiFiRadio_Channel, NULL, RPC_RW, eUnsignedInt, 0, 0},
+	{ "Channel", getWiFiRadio_Channel, NULL, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "AutoChannelSupported", getWiFiRadio_AutoChannelSupported, NULL, NULL, RPC_R, eBoolean, 0, 0},
-	{ "AutoChannelEnable", getWiFiRadio_AutoChannelEnable, setWiFiRadio_AutoChannelEnable, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "AutoChannelEnable", getWiFiRadio_AutoChannelEnable, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 //	{ "AutoChannelRefreshPeriod", getWiFiRadio_AutoChannelRefreshPeriod, setWiFiRadio_AutoChannelRefreshPeriod, NULL, RPC_RW, eString, 0, 0},
-	{ "OperatingChannelBandwidth", getWiFiRadio_OperatingChannelBandwidth, setWiFiRadio_OperatingChannelBandwidth, NULL, RPC_RW, eString, 0, 0},
+	{ "OperatingChannelBandwidth", getWiFiRadio_OperatingChannelBandwidth, NULL, NULL, RPC_RW, eString, 0, 0},
 //	{ "ExtensionChannel", getWiFiRadio_ExtensionChannel, setWiFiRadio_ExtensionChannel, NULL, RPC_RW, eString, 0, 0},
-	{ "GuardInterval", getWiFiRadio_GuardInterval, setWiFiRadio_GuardInterval, NULL, RPC_RW, eString, 0, 0},
+	{ "GuardInterval", getWiFiRadio_GuardInterval, NULL, NULL, RPC_RW, eString, 0, 0},
 	{ "MCS", getWiFiRadio_MCS, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "TransmitPowerSupported", getWiFiRadio_TransmitPowerSupported, NULL, NULL, RPC_R, eInt, 0, 0},
-	{ "TransmitPower", getWiFiRadio_TransmitPower, setWiFiRadio_TransmitPower, NULL, RPC_RW, eInt, 0, 0},
+	{ "TransmitPower", getWiFiRadio_TransmitPower, NULL, NULL, RPC_RW, eInt, 0, 0},
 	{ "IEEE80211hSupported", getWiFiRadio_IEEE80211hSupported, NULL, NULL, RPC_R, eBoolean, 0, 0},
 	{ "IEEE80211hEnabled", getWiFiRadio_IEEE80211hEnabled, NULL, NULL, RPC_R, eBoolean, 0, 0},
-	{ "RegulatoryDomain", getWiFiRadio_RegulatoryDomain, setWiFiRadio_RegulatoryDomain, NULL, RPC_RW, eString, 0, 3},
+	{ "RegulatoryDomain", getWiFiRadio_RegulatoryDomain, NULL, NULL, RPC_RW, eString, 0, 3},
 	{NULL}
 };
 /**@endparam Device.WiFi.Radio.{i}.  */
@@ -1038,20 +1054,24 @@ CWMPParam WiFiSSIDStats_Params[]={
 
 /**@param Device.WiFi.SSID.{i}. */
 CPEGETFUNC(getWiFiSSID_Enable);
-CPESETFUNC(setWiFiSSID_Enable);
 CPEGETFUNC(getWiFiSSID_Status);
 CPEGETFUNC(getWiFiSSID_Name);
 CPEGETFUNC(getWiFiSSID_BSSID);
 CPEGETFUNC(getWiFiSSID_MACAddress);
 CPEGETFUNC(getWiFiSSID_SSID);
+
+#if 0
 CPESETFUNC(setWiFiSSID_SSID);
+CPESETFUNC(setWiFiSSID_Enable);
+#endif
+
 CWMPParam WiFiSSID_Params[]={
-	{ "Enable", getWiFiSSID_Enable, setWiFiSSID_Enable, NULL, RPC_RW, eBoolean, 0, 0},
+	{ "Enable", getWiFiSSID_Enable, NULL, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "Status", getWiFiSSID_Status, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "Name", getWiFiSSID_Name, NULL, NULL, RPC_R, eString, 0, 64},
 	{ "BSSID", getWiFiSSID_BSSID, NULL, NULL, RPC_R, eString, 0, 17},
 	{ "MACAddress", getWiFiSSID_MACAddress, NULL, NULL, RPC_R, eString, 0, 17},
-	{ "SSID", getWiFiSSID_SSID, setWiFiSSID_SSID, NULL, RPC_RW, eString, FORCED_INFORM | DEFAULT_ACTIVE , 32},
+	{ "SSID", getWiFiSSID_SSID, NULL, NULL, RPC_RW, eString, FORCED_INFORM | DEFAULT_ACTIVE , 32},
 	{NULL}
 };
 /**@endparam Device.WiFi.SSID.{i}.  */

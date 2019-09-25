@@ -358,7 +358,7 @@ CPE_STATUS setWiFiAccessPointSecurity_PreSharedKey(Instance *ip, char *value)
             char cmd[128]={0};
             char cmd_result[128]={0};
             cmd_popen(cmd , cmd_result );
-            sprintf(cmd, "uci get wireless.@wifi-iface[%d].key", 0);
+            sprintf(cmd, "uci get wireless.@wifi-iface[%d].key", get_uci_iface_name(0));
             if (0 == strncmp(cmd_result , value , strlen(value)))
                 return CPE_OK;
             
@@ -432,8 +432,9 @@ CPE_STATUS setWiFiAccessPointSecurity_KeyPassphrase(Instance *ip, char *value)
         {
             char cmd[128]={0};
             char cmd_result[128]={0};
+            
+            sprintf(cmd, "uci get wireless.@wifi-iface[%d].key", get_uci_iface_name(0));
             cmd_popen(cmd , cmd_result );
-            sprintf(cmd, "uci get wireless.@wifi-iface[%d].key", 0);
 
             if (0 == strncmp(cmd_result , value , strlen(value)))
                 return CPE_OK;
@@ -525,6 +526,7 @@ CPE_STATUS getWiFiAccessPointWPS_ConfigMethodsSupported(Instance *ip, char **val
 {
 	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
 	if ( p ){
+        COPYSTR(p->configMethodsSupported , "PushButton");
 		if ( p->configMethodsSupported )
 			*value = GS_STRDUP(p->configMethodsSupported);
 	}
@@ -535,16 +537,25 @@ CPE_STATUS getWiFiAccessPointWPS_ConfigMethodsSupported(Instance *ip, char **val
 /**@param WiFiAccessPointWPS_ConfigMethodsEnabled                     **/
 CPE_STATUS setWiFiAccessPointWPS_ConfigMethodsEnabled(Instance *ip, char *value)
 {
-	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
-	if ( p ){
-		COPYSTR(p->configMethodsEnabled, value);
-	}
-	return CPE_OK;
+    WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
+    if ( p )
+    {
+        if( EMPTYSTR(value) )
+        {
+            COPYSTR(p->configMethodsEnabled, "PushButton");
+        }
+        else
+        {
+            COPYSTR(p->configMethodsEnabled, value);
+        }
+    }
+    return CPE_OK;
 }
 CPE_STATUS getWiFiAccessPointWPS_ConfigMethodsEnabled(Instance *ip, char **value)
 {
 	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
 	if ( p ){
+        COPYSTR(p->configMethodsEnabled , "PushButton");
 		if ( p->configMethodsEnabled )
 			*value = GS_STRDUP(p->configMethodsEnabled);
 	}
