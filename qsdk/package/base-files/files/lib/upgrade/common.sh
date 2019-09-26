@@ -71,6 +71,13 @@ run_ramfs() { # <command> [...]
 	for file in $RAMFS_COPY_BIN; do
 		install_bin ${file//:/ }
 	done
+	#TWB EAP:
+        v "Install state_cfg/flashcp/mtd for backup firmware" 
+        install_bin /sbin/state_cfg                        
+        install_bin /sbin/flashcp
+	install_bin /sbin/mtd
+	#install_bin /usr/bin/strings
+
 	install_file /etc/resolv.conf /lib/*.sh /lib/functions/*.sh /lib/upgrade/*.sh $RAMFS_COPY_DATA
 
 	[ -L "/lib64" ] && ln -s /lib $RAM_ROOT/lib64
@@ -228,6 +235,22 @@ default_do_upgrade() {
 }
 
 do_upgrade() {
+
+	#TWB EAP
+#	BACKUPJIOFW=0 #20190213 Remove backup firmware for next release
+	BACKUPJIOFW=1 #20190328 Enable backup firmware from now on.
+	if [ "$BACKUPJIOFW" -eq 1 ]; then
+
+	    v "Backup existing firmware into NAND flash"
+	    mtd write /dev/mtd2 /dev/mtd10
+            v "Backup Kernel completed"
+            mtd write /dev/mtd3 /dev/mtd11
+            v "Backup Rootfs completed"
+	    v "Set fwup_state to 1 (in process)"
+	    state_cfg set fwup_state 1	
+	fi
+	#
+
 	v "Performing system upgrade..."
 	if type 'platform_do_upgrade' >/dev/null 2>/dev/null; then
 		platform_do_upgrade "$ARGV"
@@ -235,11 +258,22 @@ do_upgrade() {
 		default_do_upgrade "$ARGV"
 	fi
 
+
 	if [ "$SAVE_CONFIG" -eq 1 ] && type 'platform_copy_config' >/dev/null 2>/dev/null; then
 		platform_copy_config
 	fi
 
 	v "Upgrade completed"
+
+	#TWB EAP: calculate hash value of rootfs after system upgrade
+	if [ "$BACKUPJIOFW" -eq 1 ]; then #20190213 Remove backup firmware for next release
+	checksum=`md5sum /dev/mtd3 | awk '{print $1}'`
+	v "Hash Value of mtd3: $checksum"
+	state_cfg set rfs_hash $checksum
+	state_cfg get rfs_hash
+	v "Set fwup_state to 2 (completed)"
+        state_cfg set fwup_state 2
+	fi
 
 	# TWB Angus: Sending SIGUSR1 after sysupgrade start
     	v "Sending M Dowloand And 7 Transfer to tr069 server"
