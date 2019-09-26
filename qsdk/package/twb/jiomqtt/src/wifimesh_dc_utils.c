@@ -619,6 +619,7 @@ client_info_t *get_client_info(char *interface) {
 		char phymode[32] = {0};
 		int stream = 0;
 		int item = 0;
+                int rec;
 		phy_mode_cap *temp = NULL;
 		phy_mode_cap *phy = max_data_rate;
 		/**/
@@ -630,6 +631,8 @@ client_info_t *get_client_info(char *interface) {
 		/*TWB EAP*/
  		    } else if (token_num == 3) { //TX Rate in wlanconfig but we use apstats instead
 			stats->txrate_value = _get_client_txrate(stats->device);
+                    }
+#if 0
 		    } else if (token_num == 21) {
 			for (item = 0; item < sizeof(max_data_rate)/sizeof(max_data_rate[0]); ++item)
 			{
@@ -643,6 +646,25 @@ client_info_t *get_client_info(char *interface) {
 			stream = (long) strtol(token, NULL, 10);
 			stats->maxtxrate_value = temp->max_rate[stream-1];
                     }
+#endif
+                    else if (strstr(token, "IEEE80211") != NULL ) { /*QSDK 6.2.1 wlanconfig data format varies (wifi backhaul or ethernet)*/
+                    
+                       rec = token_num + 2;
+                       for (item = 0; item < sizeof(max_data_rate)/sizeof(max_data_rate[0]); ++item)
+                       {
+                           if(!strcmp(phy[item].mode, token))
+                           {
+                               temp = &phy[item];
+                               break;
+                           }
+                       }
+
+                    } else if (token_num == rec) {
+                        stream = (long) strtol(token, NULL, 10);
+                        stats->maxtxrate_value = temp->max_rate[stream-1];
+                    }
+                    
+                      
 		/**/
 		    //stats->mcs_value = 0;// TwinA needs fix
 		    token_num++;
