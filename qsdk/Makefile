@@ -19,7 +19,7 @@ DATE:= $(shell git log -1 --pretty=format:%ai | cut -c 1-10 | tr -d '-')
 GIT_VERSION:=$(shell git log -1 --pretty=format:%H | cut -c 1-8)
 VERSION_NUMBER = $(shell printf "$(CONFIG_VERSION_NUMBER)" | tr -d '"' | tr -d " ")
 
-world:
+firmware:
 
 include $(TOPDIR)/include/host.mk
 
@@ -112,6 +112,6 @@ firmware:
 		@echo "====================================================================";
 
 
-.PHONY: clean dirclean prereq prepare world package/symlinks package/symlinks-install package/symlinks-clean
+.PHONY: clean dirclean prereq prepare world firmware package/symlinks package/symlinks-install package/symlinks-clean
 
 endif
