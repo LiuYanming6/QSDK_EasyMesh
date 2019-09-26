@@ -17,6 +17,7 @@ config config 'repacd'
 	option EnableEthernetMonitoring '0'
 	option Enable '1'
 	option ConfigREMode 'son'
+        option is_onboard 'no'
 
 config MAPConfig 'MAPConfig'
 	option BSSInstantiationTemplate 'scheme-a.conf'
