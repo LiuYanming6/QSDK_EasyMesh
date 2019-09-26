@@ -2877,15 +2877,15 @@ __repacd_restart_dependencies() {
         __repacd_echo "Restarting network stack..."
         #TWB EAP
         #RIL-1200-EASYMESH: Agent mode. Reset wifi_ready and wifi LED
-        uci set repacd.repacd.wifi_ready='0'
-        led_ctrl LED_WLAN_RADIO1_DOWN
+        #uci set repacd.repacd.wifi_ready='0'
+        #led_ctrl LED_WLAN_RADIO1_DOWN
         ###
         whc_network_restart
     else
         #TWB EAP
         #RIL-1200-EASYMESH: Agent mode. repacd not retarted. Keep wifi_ready and wifi LED setting
-        uci set repacd.repacd.wifi_ready='1'
-        led_ctrl LED_WLAN_RADIO1_UP
+        #uci set repacd.repacd.wifi_ready='1'
+        #led_ctrl LED_WLAN_RADIO1_UP
         ###
         __repacd_echo "No changes; not restarting network stack..."
     fi
@@ -3122,6 +3122,8 @@ __start_map() {
 
     config_changed=0
 
+    #echo "[TWB LOG]: __start_map -> ether_gwcon=$1 start_role=$2 autoconf=$3" > /dev/console
+
     config_load 'repacd'
     config_get_bool enabled repacd 'Enable' '0'
     config_get gwcon_mode repacd GatewayConnectedMode 'AP'
@@ -3260,6 +3262,7 @@ start() {
     if __repacd_is_map_enabled; then
         __repacd_map_reset_5g_attempts
 
+        #echo "[TWB LOG]: repacd start -> map enable" > /dev/console
         local ether_gwcon=0 start_role='init' autoconf=0
         __start_map $ether_gwcon $start_role $autoconf
         return $?

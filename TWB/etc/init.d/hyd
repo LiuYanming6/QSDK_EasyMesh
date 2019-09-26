@@ -645,9 +645,37 @@ start_service() {
 
         #TWB EAP
         #RIL-1200-EASYMESH: Agent mode. Set wifi_ready to 1 to tell others Wi-Fi interfaces are ready
-        local wifi_ready=`uci get repacd.repacd.wifi_ready`
+        #local wifi_ready=`uci get repacd.repacd.wifi_ready`
+        local role=`uci get repacd.repacd.Role`
+        local onboard=`uci get repacd.repacd.is_onboard`
+        local wps=`uci get repacd.repacd.wps_in_process`
+        #if [ "$onboard" == 'no' && "$role" == 'NonCAP' ] ; then
+        if [ "$onboard" == 'no' ] ; then
+            # not onboard yet. wifi LED blinking
+            if [ "$role" == 'CAP' ] ; then
+                led_ctrl LED_WLAN_RADIO1_DOWN   
+                led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
+            else
+                if [ "$wps" == '1' ]; then
+                    led_ctrl LED_WLAN_RADIO1_DOWN
+                    led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
+                else
+                    led_ctrl LED_WLAN_RADIO1_DOWN
+                    led_ctrl LED_WLAN_RADIO1_FAST_FLASH
+                fi
+            fi
+        else
+            # onboard and wifi interface ready
+            uci set repacd.repacd.wps_in_process='0'
+            if [ "$role" == 'CAP' ] ; then
+                led_ctrl LED_WLAN_RADIO1_UP
+            else
+                led_ctrl LED_WLAN_RADIO1_DOWN
+                led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
+            fi            
+        fi
+
         uci set repacd.repacd.wifi_ready='1'
-        led_ctrl LED_WLAN_RADIO1_UP
         ###
 }
 

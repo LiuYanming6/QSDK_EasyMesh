@@ -1417,8 +1417,12 @@ void * apac_mib_apply_wifi_configuration(void *mibHandle, apacBool_e createNew)
 
     dprintf(MSG_DEBUG, "%s Calling storage apply\n", __func__);
 
-    fail = storage_apply(mibHandle);
+    /*TWB EAP: RIL-1200 EasyMesh*/
+    system("uci set repacd.repacd.is_onboard='yes'");
+    system("uci commit repacd");
 
+    fail = storage_apply(mibHandle);
+    
     if(fail)
     {
         dprintf(MSG_ERROR, "%s: failed when apply wifi config, restarting wsplcd daemon!\n", __func__);
