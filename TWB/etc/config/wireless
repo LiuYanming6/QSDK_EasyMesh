@@ -9,6 +9,9 @@ config wifi-device 'wifi0'
 	option dbdc_enable '0'
 	option repacd_map_bsta_selected '1'
 	option country 'IN'
+	option txchainmask '3'
+	option rxchainmask '3'
+	
 
 config wifi-device 'wifi1'
 	option type 'qcawifi'
@@ -19,6 +22,8 @@ config wifi-device 'wifi1'
 	option htmode 'HT80'
 	option dbdc_enable '0'
 	option country 'IN'
+	option txchainmask '3'
+	option rxchainmask '3'
 
 config wifi-iface
 	option device 'wifi0'
