@@ -121,16 +121,6 @@ if [ "$eth_mon_enabled" -eq 0 ] || [ ${new_mode} -ne "$GWMON_MODE_NO_CHANGE" ]; 
     __repacd_update_mode $new_mode
 fi
 
-#TWB EAP: fixed issue which credentials not pass to bSTA after Ethernet onboarding
-if [ "$start_role" == 'init' ] ; then
-    if [ "$cur_role" == 'NonCAP' ] ; then
-        if [ "$onboard" == 'yes' ] ; then
-            echo "Previously onboarded via Ethernet.. save the credentials in bSTA" > /dev/console
-            repacd_wifimon_config_bsta "${managed_network}"
-        fi
-    fi 
-fi
-
 cur_state='' new_state=''
 new_re_mode=$current_re_mode new_re_submode=$current_re_submode
 autoconf_restart=''
@@ -177,11 +167,26 @@ else
     __repacd_info "Failed to resolve STA interface; will attempt periodically"
 fi
 
+#TWB EAP:
+firsttime=0
 # Loop forever (unless we are killed with SIGTERM which is handled above).
 while true; do
     __gwmon_check
     new_mode=$?
     __repacd_update_mode $new_mode
+
+    #TWB EAP: fixed issue which credentials not pass to bSTA after Ethernet onboarding
+    if [ "$firsttime" -eq 0 ]; then
+        if [ "$start_role" == 'CAP' ] ; then
+            if [ "$cur_role" == 'CAP' ] ; then
+                if [ "$onboard" == 'yes' ] ; then
+                    echo "Previously onboarded via Ethernet.. save the credentials in bSTA" > /dev/console
+                    repacd_wifimon_config_bsta "${managed_network}"
+                    firsttime=1
+                fi
+            fi
+        fi
+    fi
 
     if [ -n "$cur_state" ]; then
         new_state=''
