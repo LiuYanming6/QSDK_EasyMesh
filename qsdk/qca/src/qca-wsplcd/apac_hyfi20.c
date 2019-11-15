@@ -1186,7 +1186,8 @@ int apacHyfi20ReceiveRenewalE(apacHyfi20Data_t *pData, u8 *msg, u32 msgLen) {
 
     /* Clear out all AutoConfigured flags and send search messages */
     for (i = 0; i < APAC_NUM_WIFI_FREQ; i++) {
-        pData->ap[i].isAutoConfigured = APAC_FALSE;
+        if(supportedFreq == i) /*TWB EAP: QCA workround*/
+            pData->ap[i].isAutoConfigured = APAC_FALSE;
     }
     apacS.bandInRegistration = APAC_WIFI_FREQ_INVALID;
     apacS.bandSupportedByReg = 0;
