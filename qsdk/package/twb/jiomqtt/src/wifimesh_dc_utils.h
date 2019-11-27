@@ -121,12 +121,14 @@ static inline int get_device_mac_address(char **output, int32_t *size) {
 
 //Function to get mesh mode of the device.
 static inline int get_device_mesh_mode(char **output, int32_t *size) {
-    return util_popen_with_output(output, size, "uci get repacd.repacd.DeviceRole");
+    //return util_popen_with_output(output, size, "uci get repacd.repacd.DeviceRole");
+    return util_popen_with_output(output, size, "uci get repacd.repacd.is_onboard"); //TWB EAP: EasyMesh 
 }
 
 //Function to backhaul type of the device.
-static inline int get_device_bkhl_type() {
-    return util_popen_with_output_long("uci get repacd.repacd.IsEthBackhaul");
+static inline int get_device_bkhl_type(char **output, int32_t *size) {
+    //return util_popen_with_output_long("uci get repacd.repacd.IsEthBackhaul");
+    return util_popen_with_output(output, size, "uci get repacd.repacd.Role"); //TWB EAP: EasyMesh
 }
 
 
@@ -146,7 +148,8 @@ static inline long get_memory_usage() {
 static inline int get_re_bh_rssi(char *ifname) {
     char cmd_str[128]={0};
     int rssi = 0;
-    sprintf(cmd_str, "wlanconfig %s list | awk '!(NR==1){print $6}'", ifname);
+    //sprintf(cmd_str, "wlanconfig %s list | awk '!(NR==1){print $6}'", ifname);
+    sprintf(cmd_str, "wlanconfig %s list | awk '(NR==2){print $6}'", ifname);
     rssi = ( -95 + util_popen_with_output_long(cmd_str));
     return rssi;
 }
@@ -172,11 +175,19 @@ static inline int get_80211_channel(char *ifname) {
     return util_popen_with_output_long(cmd_str);
 }
 
-static inline int get_channel_utilization(int channel) {
+//static inline int get_channel_utilization(int channel) {
+static inline int get_channel_utilization(char *intf) {
     char cmd_str[128]={0};
-    sprintf(cmd_str, "(echo bandmon s; sleep 1) | hyt | grep \"Channel %d\" | awk -F ':' '{print $3}' | awk '{print $1}'", channel);
+    //sprintf(cmd_str, "(echo bandmon s; sleep 1) | hyt | grep \"Channel %d\" | awk -F ':' '{print $3}' | awk '{print $1}'", channel);
+    sprintf(cmd_str, "iwpriv %s get_chutil | awk -F ':' '{print $2}'", intf);
     return util_popen_with_output_long(cmd_str);
 }
+
+static inline int get_easymesh_bh_interface(char **output, int32_t *size, char *ifname) {
+
+    return util_popen_with_output(output, size, "iwconfig %s | grep \"Mode:\" | awk -F' ' '{print $1}' | awk -F':' '{print $2}'", ifname);
+}
+
 
 
 
@@ -209,6 +220,11 @@ static inline ifstats_t *get_stats_backhaul_WIFI50() {
     return get_ifstats_delta("ath11:");
 }
 
+//Function to get Backhaul Wifi 5.0 stats.
+static inline ifstats_t *get_wifi_stats(char *intf) {
+    return get_ifstats_delta(intf);
+}
+
 
 //Function to get uptime(Number of seconds the device has been up).
 long get_uptime();
@@ -220,10 +236,10 @@ long get_lan_clients_count_LAN();
 long get_lan_clients_count_IPV6();
 
 //Function to get number of clients connected to wireless LAN 2.4 GHz radio
-long get_wlan_clients_count_WIFI24();
+long get_wlan_clients_count_WIFI24(char *intf);
 
 //Function to get number of clients connected to wireless LAN 5.0 GHz radio
-long get_wlan_clients_count_WIFI50();
+long get_wlan_clients_count_WIFI50(char *intf);
 
 //Function to get channel used on 2.4 GHz radio
 long get_channel_WIFI24();

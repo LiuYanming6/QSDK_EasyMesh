@@ -261,10 +261,10 @@ int ubox_get_qca_wifison_dev_topology(int dev_num, hyd_wifison_dev *son_dev, int
             continue;
         }
         /* Entry point for each WiFi-SON device */
-        if((token = strstr(line, "QCA IEEE 1905.1 device:")) != NULL)
+        if((token = strstr(line, "IEEE 1905.1 device:")) != NULL)
         {
             son_dev[i].idx = i+1;
-            sscanf(token, "QCA IEEE 1905.1 device: %s", son_dev[i].mac);
+            sscanf(token, "IEEE 1905.1 device: %s", son_dev[i].mac);
             if(son_dev[i].mac[strlen(son_dev[i].mac)-1]==',')
             {
                 son_dev[i].mac[strlen(son_dev[i].mac)-1] = '\0';
@@ -311,7 +311,7 @@ int  ubox_if_qca_wifison_cap_exsit(int need_renew)
         }
 
         /* Find CAP */
-        if(((token = strstr(line, "QCA IEEE 1905.1 device")) != NULL) && 
+        if(((token = strstr(line, "IEEE 1905.1 device")) != NULL) && 
             ((token = strstr(line, "Network relaying device")) != NULL))
         {
             fclose(fp);

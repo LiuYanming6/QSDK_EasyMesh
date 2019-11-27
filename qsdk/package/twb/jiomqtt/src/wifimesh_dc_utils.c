@@ -540,16 +540,24 @@ long get_lan_clients_count_IPV6() {
 }
 
 //Function to get number of clients connected to wireless LAN 2.4 GHz radio
-long get_wlan_clients_count_WIFI24() {
-    char *cmd_str = "wlanconfig ath0 list sta | wc -l";
+long get_wlan_clients_count_WIFI24(char *intf) {
+
+    char cmd_str[128] = {0};
+    sprintf(cmd_str, "wlanconfig %s list sta | wc -l", intf);
+
+    //char *cmd_str = "wlanconfig ath0 list sta | wc -l";
     int count = util_popen_with_output_long(cmd_str);
     if (count <= 1) return 0;
     return count -1;
 }
 
 //Function to get number of clients connected to wireless LAN 5.0 GHz radio
-long get_wlan_clients_count_WIFI50() {
-    char *cmd_str = "wlanconfig ath1 list sta | wc -l";
+long get_wlan_clients_count_WIFI50(char *intf) {
+
+    char cmd_str[128] = {0};
+    sprintf(cmd_str, "wlanconfig %s list sta | wc -l", intf);
+
+    //char *cmd_str = "wlanconfig ath1 list sta | wc -l";
     int count = util_popen_with_output_long(cmd_str);
     if (count <= 1) return 0;
     return count -1;
@@ -750,6 +758,8 @@ int get_mesh_lan_client(char *get_str, int x)
     sprintf(get_str, "%s", addr);
     return 0;
 }
+
+
 /*END*/
 
 #ifdef __cplusplus

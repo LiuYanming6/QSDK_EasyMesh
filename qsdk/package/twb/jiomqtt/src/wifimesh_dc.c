@@ -39,9 +39,6 @@ char main_topic[MAIN_TOPIC_SIZE];
 jiot_client_MQTT_Hndl_t mqttClient;
 int doStop = 0;
 
-/*TWB EAP: Get device role*/
-char device_role[8];
-
 /*Callback for MQTT client connection complete with broker.
  Client applications should implement this to get connection complete status. */
 void connectionComplete(void *context, jiot_client_MQTT_token_t token) {
@@ -598,6 +595,71 @@ char *dc_get_stats() {
     int32_t size = 0;
     int error = 0;
 
+    /*TWB EAP: Get device role*/
+    char device_role[8];
+    int btype;
+    char fronthaul_24[8] = {0};
+    char fronthaul_5[8] = {0};
+    char backhaul_24[8] = {0};
+    char backhaul_5[8] = {0};
+
+    /*TWB EAP: collect Wi-Fi interfaces list. Interfaces are not sorted in consistent order
+     *         We need to collect them in run time. When there is Wi-Fi/Ethernet backhaul 
+     *         switching  
+    */          
+    char bkhl[32] = {0};
+    error = get_device_bkhl_type(bkhl, &size);
+    if (error != 0) {
+        if (!bkhl) {
+            errno = error;
+            LERROR("get_device_mesh_mode failed errno: %d (%s)", errno, strerror(errno));
+        }
+    }
+    strip_newline_chars(bkhl);
+    LDEBUG("bkhl type:[%s]", bkhl);
+
+    btype = 0; // Wi-Fi
+    if (!strcmp(bkhl, "CAP"))
+    btype = 1; // Ethernet
+
+    if (btype == 1) 
+    {
+        strcpy(backhaul_24,  "none");
+        strcpy(backhaul_5,   "none");
+        strcpy(fronthaul_24, "ath01");
+        strcpy(fronthaul_5,  "ath11");
+    }else {
+
+        get_easymesh_bh_interface(&command_output, &size, "ath1");
+        if (error != 0) {
+            if (!command_output) {
+                errno = error;
+                LERROR("get_device_serial failed errno: %d (%s)", errno, strerror(errno));
+            }
+        }
+   
+        if (command_output) {
+            strip_newline_chars(command_output);
+            if (!strcmp(command_output, "Managed")) // 5G backhaul
+            {
+                strcpy(backhaul_24,  "none");
+                strcpy(fronthaul_24, "ath01");
+                strcpy(backhaul_5, "ath1");
+                strcpy(fronthaul_5, "ath12");
+ 
+            }else {
+                strcpy(backhaul_24,  "ath0");
+                strcpy(fronthaul_24, "ath02");
+                strcpy(backhaul_5, "none");
+                strcpy(fronthaul_5, "ath11");
+            }
+            LDEBUG("Wi-Fi interface list:[2.4bh: %s 2.4fh: %s 5bh: %s 5fh: %s]", backhaul_24, fronthaul_24, backhaul_5, fronthaul_5);
+        }
+    }
+    free(command_output);
+    command_output = NULL;
+    /**/
+
     char *device_serial_format = "\"DI1\" : \"%s\"";
     char *device_serial_buffer = NULL;
     error = get_device_serial(&command_output, &size);
@@ -776,13 +838,19 @@ char *dc_get_stats() {
         strip_newline_chars(command_output);
 	/*TWB EAP: Read DeviceRole here and save it for classifying rest items */
 	memset(device_role, 0, sizeof(device_role));
-	strcpy(device_role, command_output);
+
+        if (!strcmp(command_output, "yes")) //TWB EAP: EasyMesh
+            strcpy(device_role, "Agent");
+             
+	//strcpy(device_role, command_output);
 	LINFO("Device Role: [%s]", device_role);
 	/*END*/
         if (strlen(command_output) > 0) {
-            LDEBUG("device_mesh_mode:[%s]", command_output);
+            //LDEBUG("device_mesh_mode:[%s]", command_output);
+            LDEBUG("device_mesh_mode:[%s]", device_role);
 
-            error = asprintf(&device_mesh_mode_buffer, device_mesh_mode_format, command_output);
+            //error = asprintf(&device_mesh_mode_buffer, device_mesh_mode_format, command_output);
+            error = asprintf(&device_mesh_mode_buffer, device_mesh_mode_format, device_role);
             if (error < 0) {
                 LERROR("FAILED to format device mesh_mode err:[%d]", error);
                 free(device_mesh_mode_buffer);
@@ -804,7 +872,7 @@ char *dc_get_stats() {
     /*D16 Parent MAC (RE exclusive item)*/
     char *pmac_type_format = "\"DI6\" : %s";
     char *pmac_type_buffer = NULL;
-    if (!strcmp(device_role, "RE"))
+    if (!strcmp(device_role, "Agent"))
     {
 	char pmac[32];
 	memset(pmac, 0, sizeof(pmac));
@@ -842,9 +910,27 @@ char *dc_get_stats() {
     char *bkhl_type_format = "\"DI7\" : %ld";
     char *bkhl_type_buffer = NULL;
     /*TWB EAP: D17 (RE exclusive item)*/
-    if (!strcmp(device_role, "RE"))
+    if (!strcmp(device_role, "Agent"))
     {
-        long btype = get_device_bkhl_type();
+#if 0
+        char bkhl[32] = {0};
+        error = get_device_bkhl_type(bkhl, &size);
+        if (error != 0) {
+            if (!bkhl) {
+                errno = error;
+                LERROR("get_device_mesh_mode failed errno: %d (%s)", errno, strerror(errno));
+            }
+        }
+
+        strip_newline_chars(bkhl);
+        LDEBUG("bkhl type:[%s]", bkhl);
+      
+        btype = 0; // Wi-Fi
+        if (!strcmp(bkhl, "CAP"))
+            btype = 1; // Ethernet
+
+        //long btype = get_device_bkhl_type();
+#endif
         LDEBUG("bkhl type:[%ld]", btype);
         error = asprintf(&bkhl_type_buffer, bkhl_type_format, btype);
         if (error < 0) {
@@ -918,7 +1004,7 @@ char *dc_get_stats() {
     char *lan_client_type_format = "\"LI1\" : %s";
     char *lan_client_type_buffer = NULL;
 
-    if (!strcmp(device_role, "RE") && ((int)get_device_bkhl_type()==0))
+    if (!strcmp(device_role, "Agent") && btype == 0)
     {
         char lan_mac[32];
         memset(lan_mac, 0, sizeof(lan_mac));
@@ -984,7 +1070,8 @@ char *dc_get_stats() {
     // 2.4GHz Fronthaul interface
     char *stats_fronthaul_wifi24_format = "\"WI5\" : %llu, \"WI4\" : %llu, \"WI7\" : %llu, \"WI6\" : %llu, \"WI9\" : %llu, \"WI8\" : %llu";
     char *stats_fronthaul_wifi24_buffer = NULL;
-    stats = get_stats_fronthaul_WIFI24();
+    //stats = get_stats_fronthaul_WIFI24();
+    stats = get_wifi_stats(fronthaul_24);
     if (!stats) {
         LWARNING("FAILED to get_stats_fronthaul_WIFI24 [NULL]");
     } else {
@@ -1009,9 +1096,10 @@ char *dc_get_stats() {
     // 2.4GHz backhaul interface
     char *stats_backhaul_wifi24_format = "\"BKI16\" : %llu, \"BKI15\" : %llu, \"BKI18\" : %llu, \"BKI17\" : %llu, \"BKI20\" : %llu, \"BKI19\" : %llu";
     char *stats_backhaul_wifi24_buffer = NULL;
-    if (!strcmp(device_role, "RE"))  /*TWB EAP: RE exclusive items*/
+    if (!strcmp(device_role, "Agent"))  /*TWB EAP: RE exclusive items*/
     {
-        stats = get_stats_backhaul_WIFI24();
+        //stats = get_stats_backhaul_WIFI24();
+        stats = get_wifi_stats(backhaul_24);
         if (!stats) {
             LWARNING("FAILED to get_stats_backhaul_WIFI24 [NULL]");
         } else {
@@ -1037,7 +1125,8 @@ char *dc_get_stats() {
     // 5GHz Fronthaul interface
     char *stats_fronthaul_wifi50_format = "\"WI14\" : %llu, \"WI13\" : %llu, \"WI16\" : %llu, \"WI15\" : %llu, \"WI18\" : %llu, \"WI17\" : %llu";
     char *stats_fronthaul_wifi50_buffer = NULL;
-    stats = get_stats_fronthaul_WIFI50();
+    //stats = get_stats_fronthaul_WIFI50();
+    stats = get_wifi_stats(fronthaul_5);
     if (!stats) {
         LWARNING("FAILED to get_stats_fronthaul_WIFI50 [NULL]");
     } else {
@@ -1062,9 +1151,10 @@ char *dc_get_stats() {
     // 5GHz backhaul interface
     char *stats_backhaul_wifi50_format = "\"BKI6\" : %llu, \"BKI5\" : %llu, \"BKI8\" : %llu, \"BKI7\" : %llu, \"BKI10\" : %llu, \"BKI9\" : %llu";
     char *stats_backhaul_wifi50_buffer = NULL;
-    if (!strcmp(device_role, "RE")) /*TWB EAP: RE exclusive items*/
+    if (!strcmp(device_role, "Agent")) /*TWB EAP: RE exclusive items*/
     {
-        stats = get_stats_backhaul_WIFI50();
+        //stats = get_stats_backhaul_WIFI50();
+        stats = get_wifi_stats(backhaul_5);
         if (!stats) {
             LWARNING("FAILED to get_stats_backhaul_WIFI50 [NULL]");
         } else {
@@ -1092,9 +1182,10 @@ char *dc_get_stats() {
     char *bh_rssi_wifi50_buffer = NULL;
     int bh50_rssi = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_5, "none"))
     {
-	char *if_re_bh = "ath11";
+	char *if_re_bh = backhaul_5;
         bh50_rssi = get_re_bh_rssi(if_re_bh);
 
         LDEBUG("RE 5G backhaul RSSI:[%d]", bh50_rssi);
@@ -1113,9 +1204,9 @@ char *dc_get_stats() {
     char *bh_rssi_wifi24_buffer = NULL;
     int bh24_rssi = 0;
 
-    if (!strcmp(device_role, "RE"))
+    if (strcmp(backhaul_24, "none"))
     {
-        char *if_re_bh = "ath01";
+        char *if_re_bh = backhaul_24;
         bh24_rssi = get_re_bh_rssi(if_re_bh);
 
         LDEBUG("RE 2.4G backhaul RSSI:[%d]", bh24_rssi);
@@ -1135,9 +1226,10 @@ char *dc_get_stats() {
     char *bh_mcs_wifi50_buffer = NULL;
     int bh50_mcs = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_5, "none"))
     {
-        char *if_re_bh = "ath11";
+        char *if_re_bh = backhaul_5;
         bh50_mcs = get_5g_re_bh_mcs(if_re_bh);
 
         LDEBUG("RE backhaul MCS:[%d]", bh50_mcs);
@@ -1156,9 +1248,10 @@ char *dc_get_stats() {
     char *bh_mcs_wifi24_buffer = NULL;
     int bh24_mcs = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_24, "none"))
     {
-        char *if_re_bh = "ath01";
+        char *if_re_bh = backhaul_24;
         bh24_mcs = get_24g_re_bh_mcs(if_re_bh);
 
         LDEBUG("RE 2.4G backhaul MCS:[%d]", bh24_mcs);
@@ -1178,9 +1271,10 @@ char *dc_get_stats() {
     char *bh_chan_wifi50_buffer = NULL;
     int bh50_chan = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_5, "none"))
     {
-        char *if_re_bh = "ath11";
+        char *if_re_bh = backhaul_5;
         bh50_chan = get_80211_channel(if_re_bh);
 
         LDEBUG("RE backhaul channel:[%d]", bh50_chan);
@@ -1199,9 +1293,10 @@ char *dc_get_stats() {
     char *bh_chan_wifi24_buffer = NULL;
     int bh24_chan = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_24, "none"))
     {
-        char *if_re_bh = "ath01";
+        char *if_re_bh = backhaul_24;
         bh24_chan = get_80211_channel(if_re_bh);
 
         LDEBUG("RE 2.4G backhaul channel:[%d]", bh24_chan);
@@ -1220,10 +1315,12 @@ char *dc_get_stats() {
     char *bh_chan_ut_wifi50_buffer = NULL;
     int bh50_chan_ut = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_5, "none"))
     {
         //char *if_re_bh = "ath11";
-        bh50_chan_ut = get_channel_utilization(bh50_chan);
+        //bh50_chan_ut = get_channel_utilization(bh50_chan);
+        bh50_chan_ut = get_channel_utilization(backhaul_5);
 
         LDEBUG("RE backhaul channel utilization:[%d]", bh50_chan_ut);
         error = asprintf(&bh_chan_ut_wifi50_buffer, bh_chan_ut_wifi50_format, bh50_chan_ut);
@@ -1242,10 +1339,12 @@ char *dc_get_stats() {
     char *bh_chan_ut_wifi24_buffer = NULL;
     int bh24_chan_ut = 0;
 
-    if (!strcmp(device_role, "RE"))
+    //if (!strcmp(device_role, "Agent"))
+    if (strcmp(backhaul_24, "none"))
     {
         //char *if_re_bh = "ath11";
-        bh24_chan_ut = get_channel_utilization(bh24_chan);
+        //bh24_chan_ut = get_channel_utilization(bh24_chan);
+        bh24_chan_ut = get_channel_utilization(backhaul_24);
 
         LDEBUG("RE 2.4G backhaul channel utilization:[%d]", bh24_chan_ut);
         error = asprintf(&bh_chan_ut_wifi24_buffer, bh_chan_ut_wifi24_format, bh24_chan_ut);
@@ -1262,7 +1361,7 @@ char *dc_get_stats() {
     char *clients_count_WIFI24_format = "\"WI1\" : %ld";
     char *clients_count_WIFI24_buffer = NULL;
     if (stats_fronthaul_wifi24_buffer) {
-        long wlan_clients_count_WIFI24 = get_wlan_clients_count_WIFI24();
+        long wlan_clients_count_WIFI24 = get_wlan_clients_count_WIFI24(fronthaul_24);
         LDEBUG("wlan_clients_count_WIFI24:[%ld]", wlan_clients_count_WIFI24);
         error = asprintf(&clients_count_WIFI24_buffer, clients_count_WIFI24_format, wlan_clients_count_WIFI24);
         if (error < 0) {
@@ -1279,8 +1378,8 @@ char *dc_get_stats() {
     char *fh_chan_wifi24_buffer = NULL;
     int fchan24 = 0;
 
-    char *ifname24 = "ath0";
-    fchan24 = get_80211_channel(ifname24);
+    //char *ifname24 = "ath0";
+    fchan24 = get_80211_channel(fronthaul_24);
 
     LDEBUG("Fronthaul channel:[%d]", fchan24);
     error = asprintf(&fh_chan_wifi24_buffer, fh_chan_wifi24_format, fchan24);
@@ -1298,7 +1397,9 @@ char *dc_get_stats() {
     char *fh_chan_ut_wifi24_buffer = NULL;
     int fchan24_ut = 0;
 
-    fchan24_ut = get_channel_utilization(fchan24);
+    //fchan24_ut = get_channel_utilization(fchan24);
+    fchan24_ut = get_channel_utilization(fronthaul_24);
+
 
     LDEBUG("Fronthaul channel utilization:[%d]", fchan24_ut);
     error = asprintf(&fh_chan_ut_wifi24_buffer, fh_chan_ut_wifi24_format, fchan24_ut);
@@ -1317,8 +1418,8 @@ char *dc_get_stats() {
     char *fh_chan_wifi50_buffer = NULL;
     int fchan50 = 0;
 
-    char *ifname50 = "ath1";
-    fchan50 = get_80211_channel(ifname50);
+    //char *ifname50 = "ath1";
+    fchan50 = get_80211_channel(fronthaul_5);
 
     LDEBUG("Fronthaul channel:[%d]", fchan50);
     error = asprintf(&fh_chan_wifi50_buffer, fh_chan_wifi50_format, fchan50);
@@ -1336,7 +1437,8 @@ char *dc_get_stats() {
     char *fh_chan_ut_wifi50_buffer = NULL;
     int fchan50_ut = 0;
 
-    fchan50_ut = get_channel_utilization(fchan50);
+    //fchan50_ut = get_channel_utilization(fchan50);
+    fchan50_ut = get_channel_utilization(fronthaul_5);
 
     LDEBUG("Fronthaul channel utilization:[%d]", fchan50_ut);
     error = asprintf(&fh_chan_ut_wifi50_buffer, fh_chan_ut_wifi50_format, fchan50_ut);
@@ -1357,7 +1459,7 @@ char *dc_get_stats() {
     char *clients_count_WIFI50_format = "\"WI10\" : %ld";
     char *clients_count_WIFI50_buffer = NULL;
     if (stats_fronthaul_wifi50_buffer) {
-        long wlan_clients_count_WIFI50 = get_wlan_clients_count_WIFI50();
+        long wlan_clients_count_WIFI50 = get_wlan_clients_count_WIFI50(fronthaul_5);
         LDEBUG("wlan_clients_count_WIFI50:[%ld]", wlan_clients_count_WIFI50);
         error = asprintf(&clients_count_WIFI50_buffer, clients_count_WIFI50_format, wlan_clients_count_WIFI50);
         if (error < 0) {
@@ -1372,7 +1474,7 @@ char *dc_get_stats() {
     char *stats_rssi24_format = "{ \"mac\" : \"%s\", \"rssi\" : %d , \"txrate\" : %d, \"maxtxrate\" : %d}";
     char *stats_rssi24_buffer = NULL;
     if (stats_fronthaul_wifi24_buffer) {
-        char *wlan_interface = "ath0";
+        char *wlan_interface = fronthaul_24;
         client_info_t *rssi24_stats = get_client_info(wlan_interface);
         if (!rssi24_stats) {
             LWARNING("FAILED to get_client_rssi for %s [NULL]", wlan_interface);
