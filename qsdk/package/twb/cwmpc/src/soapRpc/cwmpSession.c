@@ -649,7 +649,7 @@ void cwmpStartACSInform(void) {
     initRPCMethods();
     
     /* set all Inform events from saved state */
-    DBG_MSG("0x%08x\n",cpeState.eventMask);
+    //DBG_MSG("0x%08x\n",cpeState.eventMask);
     cmd_popen("uci get tr069.firstboot", firstboot);
     cmd_popen("uci get tr069.reboot", reboot);
     if ( !strncmp(firstboot,"0",1)   && cpeState.eventMask == 0 )
@@ -695,7 +695,7 @@ void cwmpStartACSInform(void) {
             cwmpAddEvent(eEvtMReboot);
             system("uci set tr069.reboot='1'");
         }
-            cpeState.eventMask = 0;
+        cpeState.eventMask = 0;
     }
     cpeLockConfiguration();
     cpeRefreshCPEData(&cpeState);
