@@ -629,8 +629,8 @@ static void scheduleNextInform(void) {
 void cwmpStartACSInform(void) {
     char    *infBuf;
     const char	*p;
-    char firstboot[256]={0};
-    char reboot[256]={0};
+    char firstboot[10]={0};
+    char reboot[10]={0};
     char	dfltIP[IP_ADDRSTRLEN];
     /* set starting CWMP protocol version */
     cpeState.cwmpVersion = CWMP_VERSION;
@@ -649,8 +649,10 @@ void cwmpStartACSInform(void) {
     initRPCMethods();
     
     /* set all Inform events from saved state */
+    DBG_MSG("0x%08x\n",cpeState.eventMask);
     cmd_popen("uci get tr069.firstboot", firstboot);
-    if ( !strncmp(firstboot,"0",1) && cpeState.eventMask == 0 )
+    cmd_popen("uci get tr069.reboot", reboot);
+    if ( !strncmp(firstboot,"0",1)   && cpeState.eventMask == 0 )
     { /* EVT_BOOTSTRAP is 0 active */
         system("uci set tr069.firstboot='1'");
         system("uci commit tr069");
@@ -661,30 +663,39 @@ void cwmpStartACSInform(void) {
                                         /* other pending events are forced to 0 */
         system("uci set tr069.reboot='1'");
     }
+    else if (!strncmp(reboot,"0",1) && !(cpeState.eventMask&EVT_REBOOT))
+    {
+        cwmpAddEvent(eEvtBoot);
+        system("uci set tr069.reboot='1'");
+    }
     else
     {
-        cmd_popen("uci get tr069.reboot", reboot);
-        if(!strncmp(reboot,"0",1) && cpeState.eventMask&EVT_BOOTSTRAP)
-        {
+#if 0
+        if(cpeState.eventMask&EVT_BOOTSTRAP)
             cwmpAddEvent(eEvtBoot);
-            system("uci set tr069.reboot='1'");
-        }
+#endif
         if (cpeState.eventMask&EVT_VALUECHANGE)
-            cwmpAddEvent(eEvtValueChange);
-        if (anyCompleteXfer(eUpload) ) {
+                cwmpAddEvent(eEvtValueChange);
+
+        if (anyCompleteXfer(eUpload) ) 
+        {
             cwmpAddEvent(eEvtTransferComplete);
             cwmpSetPending( PENDING_XFERCOMPL );
         }
-        if (anyCompleteXfer(eAutonomousTransferComplete) ) {
-            cwmpAddEvent(eEvtAutonomousTransferComplete);
-            cwmpSetPending( PENDING_AUTOXFRCMPT );
+
+        if (anyCompleteXfer(eAutonomousTransferComplete) ) 
+        {
+                cwmpAddEvent(eEvtAutonomousTransferComplete);
+                cwmpSetPending( PENDING_AUTOXFRCMPT );
         }
 
         if (cpeState.eventMask&EVT_REBOOT)
         {
             cwmpAddEvent(eEvtBoot);
             cwmpAddEvent(eEvtMReboot);
+            system("uci set tr069.reboot='1'");
         }
+            cpeState.eventMask = 0;
     }
     cpeLockConfiguration();
     cpeRefreshCPEData(&cpeState);
