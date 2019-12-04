@@ -222,7 +222,10 @@ static inline ifstats_t *get_stats_backhaul_WIFI50() {
 
 //Function to get Backhaul Wifi 5.0 stats.
 static inline ifstats_t *get_wifi_stats(char *intf) {
-    return get_ifstats_delta(intf);
+    char interface[16] = {0};
+    strcpy(interface, intf);
+    strncat(interface, ":", 1);
+    return get_ifstats_delta(interface);
 }
 
 

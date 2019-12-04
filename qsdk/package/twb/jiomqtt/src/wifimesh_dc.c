@@ -608,19 +608,24 @@ char *dc_get_stats() {
      *         switching  
     */          
     char bkhl[32] = {0};
-    error = get_device_bkhl_type(bkhl, &size);
+    error = get_device_bkhl_type(&command_output, &size);
+    strip_newline_chars(command_output);
     if (error != 0) {
-        if (!bkhl) {
+        if (!command_output) {
             errno = error;
             LERROR("get_device_mesh_mode failed errno: %d (%s)", errno, strerror(errno));
         }
     }
-    strip_newline_chars(bkhl);
-    LDEBUG("bkhl type:[%s]", bkhl);
+    LDEBUG("bkhl type:[%s]", command_output);
+
+    strcpy(bkhl, command_output);
+    free(command_output);
+    command_output = NULL;
+
 
     btype = 0; // Wi-Fi
     if (!strcmp(bkhl, "CAP"))
-    btype = 1; // Ethernet
+        btype = 1; // Ethernet
 
     if (btype == 1) 
     {
@@ -1522,7 +1527,7 @@ char *dc_get_stats() {
     char *stats_rssi50_format = "{ \"mac\" : \"%s\", \"rssi\" : %d, \"txrate\" : %d, \"maxtxrate\" : %d }";
     char *stats_rssi50_buffer = NULL;
     if (stats_fronthaul_wifi50_buffer) {
-        char *wlan_interface = "ath1";
+        char *wlan_interface = fronthaul_5;
         client_info_t *rssi50_stats = get_client_info(wlan_interface);
         if (!rssi50_stats) {
             LWARNING("FAILED to get_client_info for %s [NULL]", wlan_interface);

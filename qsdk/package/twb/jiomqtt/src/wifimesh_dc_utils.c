@@ -594,7 +594,8 @@ client_info_t *get_client_info(char *interface) {
     client_info_t *returnStats = NULL, *stats = NULL;
     char cmd_str[128], cmd2_str[128];
 
-    sprintf(cmd_str, "wlanconfig %s list sta | sed \"1 d\"", interface);
+    //sprintf(cmd_str, "wlanconfig %s list sta | sed \"1 d\"", interface);
+    sprintf(cmd_str, "wlanconfig %s list sta | awk '/Minimum Tx Power/'", interface); //EasyMesh's wlanconfig format is very different from the previous one! 
         error = util_popen_with_output(&command_output, &size, cmd_str);
         if (error != 0) {
             if (!command_output) {
