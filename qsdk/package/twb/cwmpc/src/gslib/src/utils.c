@@ -59,10 +59,6 @@ static void generateCnonce(char *cnonceBuf);
 
 size_t b64_encode(const char *inp, size_t insize, char *outptr);
 
-/* TWB EAP*/
-static char g_ethbackhaul[100]={0};
-/*****************/
-
 /*
  * bind a unix domain socket with the pathname
  * return socket
@@ -973,22 +969,28 @@ int get_role(void)
     static char cmd[128]={0};
     static char cmd_result[128]={0};
     
-    if(cmd_result[0]=='\0')
-    {
-        sprintf(cmd ,"uci get repacd.repacd.DeviceRole 2>&1");
-        cmd_popen(cmd , cmd_result);
-    }
+    sprintf(cmd ,"uci get repacd.repacd.Role 2>&1");
+    cmd_popen(cmd , cmd_result);
     
-    if(NULL != cmd_result && !strncmp(cmd_result,"CAP",3))
+    if(!strncmp(cmd_result,"CAP",3))
         return 1;
-
-    else if (NULL != cmd_result && !strncmp(cmd_result,"RE",2))
-        return 0;
     else
-        return -1;
+        return 0;
 }
 
+int get_bkhaul_iface(char *iface)
+{
+    static char cmd[128]={0};
+    static char cmd_result[128]={0};
 
+    sprintf(cmd ,"iwconfig %s | grep \"Mode:\" | awk -F' ' '{print $1}' | awk -F':' '{print $2}'", iface);
+    cmd_popen(cmd , cmd_result);
+
+    if(!strncmp(cmd_result,"Managed",7))
+        return 2;
+    else
+        return 3;
+}
 
 /*********************************************************************************/
 
@@ -1002,65 +1004,61 @@ int get_role(void)
 
 Agent ethernet backhaul
 ath   uci  channel
-0      1   2.4G Fronthaul
-01     3   2.4G Backhaul
-1      2   5G Fronthaul
+01     3   2.4G Fronthaul
+           2.4G Backhaul
+           5G Fronthaul
 11     4   5G Backhaul
 *
 
 WiFi backhaul
+ath1 Managed
 
 ath   uci  channel
-0     1    2.4G Fronthaul
-01    3    2.4G Backhaul
-1     0    5G Station
-11    2    5G Fronthaul
-12    4    5G Backhaul
+01     3    2.4G Fronthaul
+            2.4G Backhaul
+12     4    5G Fronthaul
+1      0    5G Backhaul
+
+ath0 Managed
+
+ath   uci  channel
+02     3    2.4G Fronthaul
+0      0    2.4G Backhaul
+11     4    5G Fronthaul
+            5G Backhaul
 
 
 */
-char *get_topology_iface_name (int x)
+char *get_topology_iface_name (int role , int id)
 {
-#if 0
-    if ( get_role() == 1) /* CAP */
+    if ( role == 1 )
     {
-        if(x==0)
-            return "0";
-        else if(x==1)
+        if(id==0)
             return "01";
-        else if(x==2)
-            return "1";
-        else if(x==3)
+        else if (id==2)
             return "11";
     }
-    else
-#endif
-    /*   RE   */
-    cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
-    if (g_ethbackhaul[0] == '1' )
+    else if (role ==2)
     {
-        if(x==0)
-            return "0";
-        else if(x==1)
+        if(id==0)
             return "01";
-        else if(x==2)
-            return "1";
-        else if(x==3)
-            return "11";
-    }
-    else
-    {
-        if(x==0)
-            return "0";
-        else if(x==1)
-            return "01";
-        else if(x==2)
-            return "11";
-        else if(x==3)
+        else if(id==2)
             return "12";
-        else if(x==4)
+        else if(id==3)
             return "1";
-    }   
+    }
+    else if (role == 3)
+    {
+        if(id==0)
+            return "02";
+        else if(id==1)
+            return "0";
+        else if(id==2)
+            return "11";
+    }
+    else
+        DBG_MSG("ERROR : get_role: %d %d",role , id);
+
     return "-1";
 }
 
@@ -1074,65 +1072,62 @@ char *get_topology_iface_name (int x)
  * 
 Agent ethernet backhaul
 ath   uci  channel
-0      1   2.4G Fronthaul
-01     3   2.4G Backhaul
-1      2   5G Fronthaul
+01     3   2.4G Fronthaul
+           2.4G Backhaul
+           5G Fronthaul
 11     4   5G Backhaul
-* 
+*
 
 WiFi backhaul
+ath1 Managed
 
 ath   uci  channel
-0     1    2.4G Fronthaul
-01    3    2.4G Backhaul
-11    2    5G Fronthaul
-12    4    5G Backhaul
-1     0    5G Station
+01     3    2.4G Fronthaul
+            2.4G Backhaul
+12     4    5G Fronthaul
+1      0    5G Backhaul
+
+ath0 Managed
+
+ath   uci  channel
+02     3    2.4G Fronthaul
+0      0    2.4G Backhaul
+11     4    5G Fronthaul
+            5G Backhaul
+
 
 */
-int get_uci_iface_name (int x)
+int get_uci_iface_name (int role , int id)
 {
-#if 0
-    if (get_role() == 1) /* CAP */
-    {
-        if(x==0)
-            return 0;
-        else if(x==1)
-            return 4;
-        else if(x==2)
-            return 1;
-        else if(x==3)
-            return 5;
-    }
 
-    else
-#endif
-    /*   RE   */
-    cmd_popen("uci get repacd.repacd.IsEthBackhaul",g_ethbackhaul);
-    if (g_ethbackhaul[0] == '1' )
+    if ( role == 1 )
     {
-        if(x==0)
-            return 1;
-        else if(x==1)
+        if(id==0)
             return 3;
-        else if(x==2)
-            return 2;
-        else if(x==3)
+        else if(id==3)
             return 4;
-        else if(x==4)
+    }
+    else if ( role == 2)
+    {
+        if(id==0)
+            return 3;
+        else if(id==2)
+            return 4;
+        else if(id==3)
             return 0;
     }
-    else
+    else if ( role ==3 )
     {
-        if(x==0)
-            return 1;
-        else if(x==1)
+        if(id==0)
             return 3;
-        else if(x==2)
-            return 2;
-        else if(x==3)
+        else if(id==1)
+            return 0;
+        else if(id==2)
             return 4;
     }
+    else
+        DBG_MSG("ERROR : get_role: %d %d",role , id);
+
     return -1;
 }
 /*****************************************************************************/

@@ -250,8 +250,9 @@ void util_check_string_on_shell_cmd(const char *srcstr, char *dststr);
 void util_check_string_on_web(const char *srcstr, char *dststr);
 char *util_delete_space(char *srcstr);
 int get_role(void);
-int get_uci_iface_name (int x);
-char *get_topology_iface_name (int x);
+int get_bkhaul_iface(char *iface);
+char *get_topology_iface_name (int role , int id);
+int get_uci_iface_name (int role , int id);
 unsigned int util_generate_random_num(void);
 void randomstring(char *rstring,int length);
 #endif

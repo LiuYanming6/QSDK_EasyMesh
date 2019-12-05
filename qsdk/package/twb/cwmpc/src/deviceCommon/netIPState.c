@@ -57,6 +57,7 @@ const char   NAMESERVER[]="nameserver";
 
 /* wifi client */
 
+static int role;
 static int client_wired = 0;
 static int client_2g =0;
 static int client_5g =0;
@@ -305,6 +306,7 @@ void refreshAssociatedDeviceinstances(void)
     Instance *associateddevice;
     Instance *associated;
     CWMPObject *o;
+    FILE *fp = NULL;
 
     memset(&clients_2g , 0x0 , sizeof(clients_2g));
     memset(&clients_5g , 0x0 , sizeof(clients_5g));
@@ -331,156 +333,194 @@ void refreshAssociatedDeviceinstances(void)
         }
     }
 
-
+    role = get_role();
 /*  For Client mac , tx , rx ,rssi , state */
-    sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | awk '!(NR==1){print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $15}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(0) , MAC_FILE);
-    cmd_popen(cmd, cmd_result);
 
-    FILE *fp = NULL;
-    fp = fopen(MAC_FILE, "r");
-    if(fp == NULL)
+    if (!strncmp(get_topology_iface_name(role,0),"-1",2))
     {
-        DBG_MSG("Cannot read file, %s\n", MAC_FILE );
-        return ;
+        client_2g =0;
+        i=0;
     }
-
-    memset(cmd,0x0,sizeof(cmd));
-    i=0;
-    while (fgets(line_buf, sizeof(line_buf), fp))
+    else
     {
-        sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi , &clients_2g[i].idle , &clients_2g[i].state  );
-        for(j = 0 ; j < strlen(clients_2g[i].mac)+1 ; j++ )
+        sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | grep Minimum |  awk '{print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $16}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(role,0) , MAC_FILE);
+        cmd_popen(cmd, cmd_result);
+
+        fp = fopen(MAC_FILE, "r");
+        if(fp == NULL)
+            DBG_MSG("Cannot read file, %s\n", MAC_FILE );
+
+        memset(cmd,0x0,sizeof(cmd));
+        i=0;
+        while (fgets(line_buf, sizeof(line_buf), fp))
         {
-            cmd[j] = toupper(clients_2g[i].mac[j]);
+            sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi , &clients_2g[i].idle , &clients_2g[i].state  );
+            for(j = 0 ; j < strlen(clients_2g[i].mac)+1 ; j++ )
+            {
+                cmd[j] = toupper(clients_2g[i].mac[j]);
+            }
+            snprintf(clients_2g[i].mac , strlen(clients_2g[i].mac)+1 , cmd);
+            //DBG_MSG ("%s %s %s %s", clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi );
+            i++;
         }
-        snprintf(clients_2g[i].mac , strlen(clients_2g[i].mac)+1 , cmd);
-        //DBG_MSG ("%s %s %s %s", clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi );
-        i++;
-    }
-    fclose(fp);
-    client_2g = i;
-    i=0;
-
-    memset(cmd,0x0,sizeof(cmd));
-    memset(cmd_result,0x0,sizeof(cmd_result));
-    sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | awk '!(NR==1){print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $15}' | tr -d \"M\" > %s" , MAC_FILE , get_topology_iface_name(1) , MAC_FILE);
-    cmd_popen(cmd, cmd_result);
-
-    fp = fopen(MAC_FILE, "r");
-    if(fp == NULL)
-    {
-        DBG_MSG("Cannot read file, %s\n", MAC_FILE );
-        return ;
+        fclose(fp);
+        client_2g = i;
+        i=0;
     }
 
-    memset(cmd,0x0,sizeof(cmd));
-    memset(line_buf,0x0,sizeof(line_buf));
-    while (fgets(line_buf, sizeof(line_buf), fp))
+    if (!strncmp(get_topology_iface_name(role,1),"-1",2))
     {
-        sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_2g_backhaul[i].mac , clients_2g_backhaul[i].tx , clients_2g_backhaul[i].rx , clients_2g_backhaul[i].rssi , &clients_2g_backhaul[i].idle , &clients_2g_backhaul[i].state  );
-        for(j = 0 ; j < strlen(clients_2g_backhaul[i].mac)+1 ; j++ )
+        client_2g_backhaul = 0;
+        i=0;
+    }
+    else
+    {
+        memset(cmd,0x0,sizeof(cmd));
+        memset(cmd_result,0x0,sizeof(cmd_result));
+        sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | grep Minimum |  awk '{print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $16}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(role,1) , MAC_FILE);
+        cmd_popen(cmd, cmd_result);
+
+        fp = fopen(MAC_FILE, "r");
+        if(fp == NULL)
         {
-            cmd[j] = toupper(clients_2g_backhaul[i].mac[j]);
+            DBG_MSG("Cannot read file, %s\n", MAC_FILE );
+            return ;
         }
-        snprintf(clients_2g_backhaul[i].mac , strlen(clients_2g_backhaul[i].mac)+1 , cmd);
-        //DBG_MSG ("%s %s %s %s", clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi );
-        i++;
-    }
-    fclose(fp);
-    client_2g_backhaul = i;
-    i=0;
 
-
-
-    memset(cmd,0x0,sizeof(cmd));
-    memset(cmd_result,0x0,sizeof(cmd_result));
-    sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | awk '!(NR==1){print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $15}' | tr -d \"M\"  > %s"  , MAC_FILE , get_topology_iface_name(2) , MAC_FILE );
-    cmd_popen(cmd, cmd_result);
-
-    fp = fopen(MAC_FILE, "r");
-    if(fp == NULL)
-    {
-        DBG_MSG("Cannot read file, %s\n", MAC_FILE );
-        return ;
-    }
-
-    memset(cmd,0x0,sizeof(cmd));
-    memset(line_buf,0x0,sizeof(line_buf));
-    while (fgets(line_buf, sizeof(line_buf), fp))
-    {
-        sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi , &clients_5g[i].idle , &clients_5g[i].state );
-        //DBG_MSG ("%s", clients_5g[i].mac  );
-        for(j = 0 ; j < strlen(clients_5g[i].mac)+1 ; j++ )
+        memset(cmd,0x0,sizeof(cmd));
+        memset(line_buf,0x0,sizeof(line_buf));
+        while (fgets(line_buf, sizeof(line_buf), fp))
         {
-            cmd[j] = toupper(clients_5g[i].mac[j]);
+            sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_2g_backhaul[i].mac , clients_2g_backhaul[i].tx , clients_2g_backhaul[i].rx , clients_2g_backhaul[i].rssi , &clients_2g_backhaul[i].idle , &clients_2g_backhaul[i].state  );
+            for(j = 0 ; j < strlen(clients_2g_backhaul[i].mac)+1 ; j++ )
+            {
+                cmd[j] = toupper(clients_2g_backhaul[i].mac[j]);
+            }
+            snprintf(clients_2g_backhaul[i].mac , strlen(clients_2g_backhaul[i].mac)+1 , cmd);
+            //DBG_MSG ("%s %s %s %s", clients_2g[i].mac , clients_2g[i].tx , clients_2g[i].rx , clients_2g[i].rssi );
+            i++;
         }
-        snprintf(clients_5g[i].mac , strlen(clients_5g[i].mac)+1 , cmd);
-        //DBG_MSG ("%s %s %s %s", clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi );
-        i++;
-    }
-    fclose(fp);
-    client_5g = i;
-    i=0;
-
-
-    memset(cmd,0x0,sizeof(cmd));
-    sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | awk '!(NR==1){print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $15}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(3), MAC_FILE );
-    cmd_popen(cmd, cmd_result);
-
-    fp = fopen(MAC_FILE, "r");
-    if(fp == NULL)
-    {
-        DBG_MSG("Cannot read file, %s\n", MAC_FILE );
-        return ;
+        fclose(fp);
+        client_2g_backhaul = i;
+        i=0;
     }
 
-    memset(cmd,0x0,sizeof(cmd));
-    memset(line_buf,0x0,sizeof(line_buf));
-    while (fgets(line_buf, sizeof(line_buf), fp))
+    if (!strncmp(get_topology_iface_name(role,2),"-1",2))
     {
-        sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_5g_backhaul[i].mac , clients_5g_backhaul[i].tx , clients_5g_backhaul[i].rx , clients_5g_backhaul[i].rssi , &clients_5g_backhaul[i].idle , &clients_5g_backhaul[i].state );
-        //DBG_MSG ("%s", clients_5g[i].mac  );
-        for(j = 0 ; j < strlen(clients_5g_backhaul[i].mac)+1 ; j++ )
+        client_5g = 0;
+        i=0;
+    }
+    else
+    {
+        memset(cmd,0x0,sizeof(cmd));
+        memset(cmd_result,0x0,sizeof(cmd_result));
+        sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | grep Minimum |  awk '{print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $16}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(role,2) , MAC_FILE);
+        cmd_popen(cmd, cmd_result);
+
+        fp = fopen(MAC_FILE, "r");
+        if(fp == NULL)
         {
-            cmd[j] = toupper(clients_5g_backhaul[i].mac[j]);
+            DBG_MSG("Cannot read file, %s\n", MAC_FILE );
+            return ;
         }
-        snprintf(clients_5g_backhaul[i].mac , strlen(clients_5g_backhaul[i].mac)+1 , cmd);
-        //DBG_MSG ("%s %s %s %s", clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi );
-        i++;
+
+        memset(cmd,0x0,sizeof(cmd));
+        memset(line_buf,0x0,sizeof(line_buf));
+        while (fgets(line_buf, sizeof(line_buf), fp))
+        {
+            sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi , &clients_5g[i].idle , &clients_5g[i].state );
+            //DBG_MSG ("%s", clients_5g[i].mac  );
+            for(j = 0 ; j < strlen(clients_5g[i].mac)+1 ; j++ )
+            {
+                cmd[j] = toupper(clients_5g[i].mac[j]);
+            }
+            snprintf(clients_5g[i].mac , strlen(clients_5g[i].mac)+1 , cmd);
+            //DBG_MSG ("%s %s %s %s", clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi );
+            i++;
+        }
+        fclose(fp);
+        client_5g = i;
+        i=0;
     }
-    fclose(fp);
-    client_5g_backhaul = i;
-    i=0;
+
+    if (!strncmp(get_topology_iface_name(role,3),"-1",2))
+    {
+        client_5g_backhaul = 0;
+        i=0;
+    }
+    else
+    {
+        memset(cmd,0x0,sizeof(cmd));
+        memset(cmd_result,0x0,sizeof(cmd_result));
+        sprintf(cmd, "rm -rf %s && wlanconfig ath%s list | grep Minimum |  awk '{print $1 \" \" $4 \" \" $5 \" \" $6 \" \" $9 \" \" $16}' | tr -d \"M\"  > %s" , MAC_FILE , get_topology_iface_name(role,3) , MAC_FILE);
+        cmd_popen(cmd, cmd_result);
+
+        fp = fopen(MAC_FILE, "r");
+        if(fp == NULL)
+        {
+            DBG_MSG("Cannot read file, %s\n", MAC_FILE );
+            return ;
+        }
+
+        memset(cmd,0x0,sizeof(cmd));
+        memset(line_buf,0x0,sizeof(line_buf));
+        while (fgets(line_buf, sizeof(line_buf), fp))
+        {
+            sscanf( line_buf , "%s %s %s %s %c %[^\n]" , clients_5g_backhaul[i].mac , clients_5g_backhaul[i].tx , clients_5g_backhaul[i].rx , clients_5g_backhaul[i].rssi , &clients_5g_backhaul[i].idle , &clients_5g_backhaul[i].state );
+            //DBG_MSG ("%s", clients_5g[i].mac  );
+            for(j = 0 ; j < strlen(clients_5g_backhaul[i].mac)+1 ; j++ )
+            {
+                cmd[j] = toupper(clients_5g_backhaul[i].mac[j]);
+            }
+            snprintf(clients_5g_backhaul[i].mac , strlen(clients_5g_backhaul[i].mac)+1 , cmd);
+            //DBG_MSG ("%s %s %s %s", clients_5g[i].mac , clients_5g[i].tx , clients_5g[i].rx , clients_5g[i].rssi );
+            i++;
+        }
+        fclose(fp);
+        client_5g_backhaul = i;
+        i=0;
+    }
 
 
 
 /*  For RE wired client */
-    memset(oName , 0x0 , sizeof(oName));
-    snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.", CWMP_RootObject[0].name, 5 );
-    o = cwmpFindObject(oName);
-
-    if ( NULL == o)
-    {
-       cwmpInitObjectInstance(oName);
-       cpeLog(LOG_DEBUG, "createInterfaceEntry: %s", oName);
-    }
-
-    memset( cmd_result , 0x0 , sizeof(cmd_result));
     if ((ret = ubox_get_qca_wifison_re_wired_client ( cmd_result , 1 )) !=0)
     {
         DBG_MSG("No RE Wired Client");
+        client_wired =0;
+        i=0;
         //return ;
     }
-    i=0;
-    pos = strtok(cmd_result,"\n");
-    while (pos != NULL)
+    else
     {
-        sprintf(clients_wired[i].mac, pos);
-        pos = strtok(NULL,"\n");
-        i++;
+
+        memset(oName , 0x0 , sizeof(oName));
+        snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.", CWMP_RootObject[0].name, 5 );
+        o = cwmpFindObject(oName);
+
+        if ( NULL == o)
+        {
+           cwmpInitObjectInstance(oName);
+           cpeLog(LOG_DEBUG, "createInterfaceEntry: %s", oName);
+        }
+
+        memset( cmd_result , 0x0 , sizeof(cmd_result));
+        if ((ret = ubox_get_qca_wifison_re_wired_client ( cmd_result , 1 )) !=0)
+        {
+            DBG_MSG("No RE Wired Client");
+            //return ;
+        }
+        i=0;
+        pos = strtok(cmd_result,"\n");
+        while (pos != NULL)
+        {
+            sprintf(clients_wired[i].mac, pos);
+            pos = strtok(NULL,"\n");
+            i++;
+        }
+        client_wired = i;
+        i=0;
     }
-    client_wired = i;
-    
 
     for (i=1,j=1; j<= client_2g; j++)
     {

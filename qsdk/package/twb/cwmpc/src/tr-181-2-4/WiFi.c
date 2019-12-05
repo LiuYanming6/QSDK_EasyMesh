@@ -54,6 +54,7 @@
 /*                           VARIABLES                                     */
 /*-------------------------------------------------------------------------*/
 extern  CWMPObject CWMP_RootObject[];
+static int role =0;
 /*-------------------------------------------------------------------------*/
 /*                           FUNCTIONS                                     */
 /*-------------------------------------------------------------------------*/
@@ -216,17 +217,22 @@ CPE_STATUS setWiFiAccessPointSecurity_Reset(Instance *ip, char *value)
 {
     WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
     if ( p ){
+#if 0
         p->reset=testBoolean(value); // default values
         if(p->reset)
         {
+
             char cmd[128]={0};
             char cmd_result[128]={0};
             int wpa =0;
             char *pos =NULL;
+            char iface[3]={0};
+            int uci_iface = get_uci_iface_name(role, ip->parent->id-1);
+            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
 
             if ( get_role() ==1 && 0!= strcmp("01", get_topology_iface_name(ip->parent->id-1) ) && 0!= strcmp("11", get_topology_iface_name(ip->parent->id-1) ) )  // Only Can change CAP
             {
-                sprintf(cmd, "cat /var/run/hostapd-ath%s.conf | grep wpa= | awk -F '=' '{print $2}'", get_topology_iface_name(ip->parent->id-1));
+                sprintf(cmd, "cat /var/run/hostapd-ath%s.conf | grep wpa= | awk -F '=' '{print $2}'", iface);
                 cmd_popen(cmd , cmd_result );
                 if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
                 if ( NULL != cmd_result)
@@ -234,7 +240,7 @@ CPE_STATUS setWiFiAccessPointSecurity_Reset(Instance *ip, char *value)
 
                 memset(cmd , 0x0 , sizeof(cmd));
                 memset(cmd_result , 0x0 , sizeof(cmd_result));
-                sprintf(cmd, "sed -i 's/wpa=%d/wpa=%d/g' /var/run/hostapd-ath%s.conf", wpa , 2 , get_topology_iface_name(ip->parent->id-1));
+                sprintf(cmd, "sed -i 's/wpa=%d/wpa=%d/g' /var/run/hostapd-ath%s.conf", wpa , 2 , iface);
 
                 memset(cmd , 0x0 , sizeof(cmd));
                 memset(cmd_result, 0x0 , sizeof(cmd_result));
@@ -243,18 +249,18 @@ CPE_STATUS setWiFiAccessPointSecurity_Reset(Instance *ip, char *value)
                 if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
 
                 memset(cmd , 0x0 , sizeof(cmd));
-                sprintf(cmd, "uci set wireless.@wifi-iface[%d].key=%s", get_uci_iface_name(ip->parent->id-1), cmd_result);
+                sprintf(cmd, "uci set wireless.@wifi-iface[%d].key=%s", uci_iface, cmd_result);
                 cmd_popen(cmd,cmd_result);
 
                 memset(cmd , 0x0 , sizeof(cmd));
-                sprintf(cmd, "uci set wireless.@wifi-iface[%d].key=%s", get_uci_iface_name(ip->parent->id+1), cmd_result);
+                sprintf(cmd, "uci set wireless.@wifi-iface[%d].key=%s", uci_iface, cmd_result);
                 cmd_popen(cmd,cmd_result);
 
                 system("uci commit wireless");
                 reload_query();
             }
-
         }
+#endif
     }
     return CPE_ERR;
 }
@@ -278,6 +284,7 @@ CPE_STATUS setWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char *value)
 {
     WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->modeEnabled, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -309,8 +316,11 @@ CPE_STATUS setWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char *value)
             sprintf(cmd, "hostapd_cli -i ath%s -p var/run/hostapd-wifi%d reload", get_topology_iface_name(ip->parent->id-1) ,ip->parent->id-1);
             cmd_popen(cmd , cmd_result );
         }
+#endif
+
     }
-    return CPE_OK;
+
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char **value)
 {
@@ -322,7 +332,13 @@ CPE_STATUS getWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char **value)
         int ret;
         char *pos =NULL;
 
-        sprintf(cmd, "cat /var/run/hostapd-ath%s.conf | grep wpa= | awk -F '=' '{print $2}'", get_topology_iface_name(ip->parent->id-1));
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+        sprintf(cmd, "cat /var/run/hostapd-ath%s.conf | grep wpa= | awk -F '=' '{print $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     ret = atoi(cmd_result);
@@ -353,8 +369,10 @@ CPE_STATUS setWiFiAccessPointSecurity_PreSharedKey(Instance *ip, char *value)
 
     WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
     if ( p ){
+#if 0
         if ( get_role() ==1 && ip->parent->id != 2 && ip->parent->id !=4 )  // Only Can change CAP
         {
+
             char cmd[128]={0};
             char cmd_result[128]={0};
             cmd_popen(cmd , cmd_result );
@@ -388,6 +406,7 @@ CPE_STATUS setWiFiAccessPointSecurity_PreSharedKey(Instance *ip, char *value)
                 return CPE_OK;
             }
         }
+#endif
     }
     return CPE_ERR;
 }
@@ -427,7 +446,7 @@ CPE_STATUS setWiFiAccessPointSecurity_KeyPassphrase(Instance *ip, char *value)
     WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
     if ( p ){
 
-
+#if 0
         if ( get_role() ==1 && ip->parent->id != 2 && ip->parent->id !=4 )  // Only Can change CAP
         {
             char cmd[128]={0};
@@ -463,6 +482,7 @@ CPE_STATUS setWiFiAccessPointSecurity_KeyPassphrase(Instance *ip, char *value)
                 return CPE_OK;
             }
         }
+#endif
     }
     return CPE_ERR;
 }
@@ -493,13 +513,14 @@ CPE_STATUS setWiFiAccessPointWPS_Enable(Instance *ip, char *value)
 {
 	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
 	if ( p ){
+#if 0
 		p->enable=testBoolean(value);
         char cmd[128]={0};
         char cmd_result[128]={0};
 
         sprintf(cmd, "iwpriv ath%s wps mode %d", get_topology_iface_name(ip->parent->id-1), p->enable );
         cmd_popen(cmd , cmd_result );
- 
+#endif
 	}
 	return CPE_OK;
 }
@@ -507,11 +528,18 @@ CPE_STATUS getWiFiAccessPointWPS_Enable(Instance *ip, char **value)
 {
 	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
 	if ( p ){
+
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
 
-        sprintf(cmd, "iwpriv ath%s get_wps | awk -F \":\" '{print $2}'", get_topology_iface_name(ip->parent->id-1));
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+        sprintf(cmd, "iwpriv ath%s get_wps | awk -F \":\" '{print $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     p->enable = atoi(cmd_result);
@@ -589,6 +617,7 @@ CPE_STATUS setWiFiAccessPoint_Enable(Instance *ip, char *value)
 {
     WiFiAccessPoint *p = (WiFiAccessPoint *)ip->cpeData;
     if ( p ){
+#if 0
         char cmd[128]={0};
         char cmd_result[128]={0};
 
@@ -603,8 +632,9 @@ CPE_STATUS setWiFiAccessPoint_Enable(Instance *ip, char *value)
             sprintf(cmd, "ifconfig ath%s down", get_topology_iface_name(ip->id-1) );
             cmd_popen(cmd, cmd_result);
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiAccessPoint_Enable(Instance *ip, char **value)
 {
@@ -615,7 +645,13 @@ CPE_STATUS getWiFiAccessPoint_Enable(Instance *ip, char **value)
         const char default_status[]="UP";
         char *pos = NULL;
 
-        sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->id-1));
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+        sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ( NULL != cmd_result)
         {
@@ -644,7 +680,15 @@ CPE_STATUS getWiFiAccessPoint_Status(Instance *ip, char **value)
         char cmd_result[128]={0};
         const char default_status[] = "Not-Associated";
 
-        sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", get_topology_iface_name(ip->id-1));
+
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+
+        sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", iface);
         cmd_popen(cmd, cmd_result);
         if(strncmp(cmd_result, default_status, strlen(default_status)) != 0)
         {
@@ -693,14 +737,16 @@ CPE_STATUS setWiFiAccessPoint_SSIDAdvertisementEnabled(Instance *ip, char *value
 {
     WiFiAccessPoint *p = (WiFiAccessPoint *)ip->cpeData;
     if ( p ){
+#if 0
         p->sSIDAdvertisementEnabled=testBoolean(value);
         char cmd[128]={0};
         char cmd_result[128]={0};
 
         sprintf(cmd, "iwpriv ath%s hide_ssid %d", get_topology_iface_name(ip->id-1), p->sSIDAdvertisementEnabled ? 0:1 );
         cmd_popen(cmd , cmd_result );
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiAccessPoint_SSIDAdvertisementEnabled(Instance *ip, char **value)
 {
@@ -712,7 +758,14 @@ CPE_STATUS getWiFiAccessPoint_SSIDAdvertisementEnabled(Instance *ip, char **valu
         char cmd_result[128]={0};
         char *pos = NULL;
 
-        sprintf(cmd, "iwpriv ath%s get_hide_ssid | awk -F \":\" '{print $2}'", get_topology_iface_name(ip->id-1));
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+
+        sprintf(cmd, "iwpriv ath%s get_hide_ssid | awk -F \":\" '{print $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     p->sSIDAdvertisementEnabled = atoi(cmd_result);
@@ -931,6 +984,7 @@ CPE_STATUS setWiFiRadio_Enable(Instance *ip, char *value)
 
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         char cmd[128]={0};
         char cmd_result[128]={0};
 
@@ -945,8 +999,9 @@ CPE_STATUS setWiFiRadio_Enable(Instance *ip, char *value)
             sprintf(cmd, "ifconfig wifi%d down", ip->id-1 );
             cmd_popen(cmd, cmd_result);
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_Enable(Instance *ip, char **value)
 {
@@ -1017,7 +1072,13 @@ CPE_STATUS getWiFiRadio_Name(Instance *ip, char **value)
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
             char cmd[128]={0};
-            sprintf(cmd, "ath%d", ip->id-1);
+            char iface[3]={0};
+            if (ip->id ==1)
+                strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+            else
+                strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
+
+            sprintf(cmd, "ath%s", iface);
             if( NULL != cmd)    COPYSTR( p->name, cmd );
         if ( p->name )
             *value = GS_STRDUP(p->name);
@@ -1036,8 +1097,13 @@ CPE_STATUS getWiFiRadio_MaxBitRate(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwconfig ath%d | grep \"Bit Rate\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1 \" \" $2}'", ip->id-1);
+        sprintf(cmd, "iwconfig ath%s | grep \"Bit Rate\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1 \" \" $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     p->maxBitRate = atoi(cmd_result);
@@ -1057,8 +1123,13 @@ CPE_STATUS getWiFiRadio_SupportedFrequencyBands(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "wifitool ath%d supported_freq | awk -F \" \" '{print $5}'", ip->id-1);
+        sprintf(cmd, "wifitool ath%s supported_freq | awk -F \" \" '{print $5}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     COPYSTR(p->supportedFrequencyBands ,cmd_result );
@@ -1074,6 +1145,7 @@ CPE_STATUS setWiFiRadio_OperatingFrequencyBand(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->operatingFrequencyBand, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1083,9 +1155,10 @@ CPE_STATUS setWiFiRadio_OperatingFrequencyBand(Instance *ip, char *value)
         else if (!strcmp(p->operatingFrequencyBand, "5GHz"))
             sprintf(cmd, "iwpriv ath%d freq %s", ip->id-1 , "5G" );
 
-        cmd_popen(cmd, cmd_result);    
+        cmd_popen(cmd, cmd_result);
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_OperatingFrequencyBand(Instance *ip, char **value)
 {
@@ -1094,9 +1167,14 @@ CPE_STATUS getWiFiRadio_OperatingFrequencyBand(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
 
-        sprintf(cmd, "iwconfig ath%d | grep Frequency | awk -F ':' '{print $3}' | awk -F \" \" '{print $1 \" \" $2}'", ip->id-1);
+        sprintf(cmd, "iwconfig ath%s | grep Frequency | awk -F ':' '{print $3}' | awk -F \" \" '{print $1 \" \" $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     COPYSTR(p->operatingFrequencyBand ,cmd_result );
@@ -1134,6 +1212,7 @@ CPE_STATUS setWiFiRadio_OperatingStandards(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->operatingStandards, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1177,8 +1256,9 @@ CPE_STATUS setWiFiRadio_OperatingStandards(Instance *ip, char *value)
                 cmd_popen(cmd, cmd_result);
             }
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_OperatingStandards(Instance *ip, char **value)
 {
@@ -1187,8 +1267,13 @@ CPE_STATUS getWiFiRadio_OperatingStandards(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d get_mode | awk -F \":\" '{print $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_mode | awk -F \":\" '{print $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     COPYSTR(p->operatingStandards ,cmd_result );
@@ -1207,8 +1292,13 @@ CPE_STATUS getWiFiRadio_PossibleChannels(Instance *ip, char **value)
     if ( p ){
         char cmd[128]={0};
         char cmd_result[128]={0};
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwlist ath%d chan | grep -r \" : \" | awk -F \" \" '{print $2}' | tr -s \"\n\" ','", ip->id-1);
+        sprintf(cmd, "iwlist ath%s chan | grep -r \" : \" | awk -F \" \" '{print $2}' | tr -s \"\n\" ','", iface);
         cmd_popen(cmd , cmd_result );
         cmd_result[strlen(cmd_result)-1]='\0';
         if (NULL != cmd_result)     COPYSTR(p->possibleChannels ,cmd_result );
@@ -1226,8 +1316,13 @@ CPE_STATUS getWiFiRadio_ChannelsInUse(Instance *ip, char **value)
     if ( p ){
         char cmd[128]={0};
         char cmd_result[128]={0};
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwlist ath%d chan | grep -r \" : \" | awk -F \" \" '{print $2}' | tr -s \"\n\" ','", ip->id-1);
+        sprintf(cmd, "iwlist ath%s chan | grep -r \" : \" | awk -F \" \" '{print $2}' | tr -s \"\n\" ','", iface);
         cmd_popen(cmd , cmd_result );
         cmd_result[strlen(cmd_result)-1]='\0';
 
@@ -1244,14 +1339,16 @@ CPE_STATUS setWiFiRadio_Channel(Instance *ip, char *value)
 {
 	GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
 	if ( p ){
+#if 0
 		p->channel=atoi(value);
         char cmd[128]={0};
         char cmd_result[128]={0};
 
         sprintf(cmd, "iwconfig ath%d chan %d", ip->id-1 , p->channel);
         cmd_popen(cmd , cmd_result );
+#endif
 	}
-	return CPE_OK;
+	return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_Channel(Instance *ip, char **value)
 {
@@ -1261,7 +1358,13 @@ CPE_STATUS getWiFiRadio_Channel(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         int c;
-        sprintf(cmd,"iwlist ath%d chan | grep '(Channel' | awk -F ' ' '{print $5}' | tr -d ')'", ip->id-1);
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
+
+        sprintf(cmd,"iwlist ath%s chan | grep '(Channel' | awk -F ' ' '{print $5}' | tr -d ')'", iface);
         //sprintf(cmd, "iwlist ath%d chan | grep Current | awk -F \":\" '{ print $2 }' | awk -F \"(\" '{ print $2}' | awk -F \")\" '{print $1}' | awk -F \" \" '{print $2}'", ip->id-1);
         cmd_popen(cmd , cmd_result );
         c = strlen(cmd_result);
@@ -1298,8 +1401,13 @@ CPE_STATUS setWiFiRadio_AutoChannelEnable(Instance *ip, char *value)
         p->autoChannelEnable=testBoolean(value);
         char cmd[128]={0};
         char cmd_result[128]={0};
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d acsreport %d", ip->id-1, p->autoChannelEnable );
+        sprintf(cmd, "iwpriv ath%s acsreport %d", iface, p->autoChannelEnable );
         cmd_popen(cmd , cmd_result );
     }
     return CPE_OK;
@@ -1312,8 +1420,13 @@ CPE_STATUS getWiFiRadio_AutoChannelEnable(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d get_acsreport | awk -F \":\" '{printf $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_acsreport | awk -F \":\" '{printf $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     p->autoChannelEnable = atoi(cmd_result);
@@ -1352,8 +1465,13 @@ CPE_STATUS getWiFiRadio_OperatingChannelBandwidth(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
         int ret = -1;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d get_chwidth | awk -F \":\" '{printf $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_chwidth | awk -F \":\" '{printf $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if ( NULL != cmd_result)   ret = atoi(cmd_result);
@@ -1380,6 +1498,7 @@ CPE_STATUS setWiFiRadio_OperatingChannelBandwidth(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->operatingChannelBandwidth, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1404,8 +1523,9 @@ CPE_STATUS setWiFiRadio_OperatingChannelBandwidth(Instance *ip, char *value)
             }
             cmd_popen(cmd , cmd_result );
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 /**@endparam                                               **/
 
@@ -1414,6 +1534,7 @@ CPE_STATUS setWiFiRadio_ExtensionChannel(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->extensionChannel, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1431,8 +1552,9 @@ CPE_STATUS setWiFiRadio_ExtensionChannel(Instance *ip, char *value)
 
             cmd_popen(cmd , cmd_result );
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_ExtensionChannel(Instance *ip, char **value)
 {
@@ -1443,8 +1565,13 @@ CPE_STATUS getWiFiRadio_ExtensionChannel(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
         int ret = -1;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d get_chextoffset | awk -F \":\" '{printf $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_chextoffset | awk -F \":\" '{printf $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     ret = atoi(cmd_result);
@@ -1477,6 +1604,7 @@ CPE_STATUS setWiFiRadio_GuardInterval(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->guardInterval, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1490,8 +1618,9 @@ CPE_STATUS setWiFiRadio_GuardInterval(Instance *ip, char *value)
 
             cmd_popen(cmd , cmd_result );
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_GuardInterval(Instance *ip, char **value)
 {
@@ -1502,8 +1631,13 @@ CPE_STATUS getWiFiRadio_GuardInterval(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
         int ret = -1;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
-        sprintf(cmd, "iwpriv ath%d get_shortgi | awk -F \":\" '{printf $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_shortgi | awk -F \":\" '{printf $2}'", iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     ret = atoi(cmd_result);
@@ -1528,6 +1662,7 @@ CPE_STATUS setWiFiRadio_MCS(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->mCS , value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1572,8 +1707,9 @@ CPE_STATUS setWiFiRadio_MCS(Instance *ip, char *value)
             cmd_popen(cmd , cmd_result );
         }
         else{}
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_MCS(Instance *ip, char **value)
 {
@@ -1585,10 +1721,15 @@ CPE_STATUS getWiFiRadio_MCS(Instance *ip, char **value)
         char result[128]={0};
         int mcs_result=0;
         char *pos = NULL;
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
         if (ip->id == 1)
         {
-            sprintf(cmd, "iwpriv ath%d get11NRates | awk -F \":\" '{printf $2}'", ip->id-1);
+            sprintf(cmd, "iwpriv ath%s get11NRates | awk -F \":\" '{printf $2}'", iface);
             cmd_popen(cmd , cmd_result );
             if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
             if (NULL != cmd_result)    sprintf(result, "%08x" , atoi(cmd_result));
@@ -1618,7 +1759,7 @@ CPE_STATUS getWiFiRadio_MCS(Instance *ip, char **value)
 
         if (ip->id == 2) // > 9  disable fix rate
         {
-            sprintf(cmd, "iwpriv ath%d get_vhtmcs | awk -F \":\" '{printf $2}'", ip->id-1);
+            sprintf(cmd, "iwpriv ath%s get_vhtmcs | awk -F \":\" '{printf $2}'", iface);
             cmd_popen(cmd , cmd_result );
             if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
             
@@ -1656,6 +1797,7 @@ CPE_STATUS setWiFiRadio_TransmitPower(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         p->transmitPower=atoi(value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1673,9 +1815,10 @@ CPE_STATUS setWiFiRadio_TransmitPower(Instance *ip, char *value)
             system(cmd);
             system("uci commit wireless");
         }
+#endif
     }
 
-    return CPE_OK;
+    return CPE_ERR;
 
 }
 CPE_STATUS getWiFiRadio_TransmitPower(Instance *ip, char **value)
@@ -1744,9 +1887,14 @@ CPE_STATUS getWiFiRadio_IEEE80211hEnabled(Instance *ip, char **value)
 	if ( p ){
         char cmd[128]={0};
         char cmd_result[128]={0};
+        char iface[3]={0};
+        if (ip->id ==1)
+            strncpy(iface,get_topology_iface_name(role , 0),strlen(get_topology_iface_name(role, 0)));
+        else
+            strncpy(iface,get_topology_iface_name(role , 2),strlen(get_topology_iface_name(role, 2)));
 
 
-        sprintf(cmd, "iwpriv ath%d get_doth | awk -F ':' '{print $2}'", ip->id-1);
+        sprintf(cmd, "iwpriv ath%s get_doth | awk -F ':' '{print $2}'", iface);
         cmd_popen(cmd , cmd_result );
         p->iEEE80211hEnabled = atoi(cmd_result);
         *value = GS_STRDUP(p->iEEE80211hEnabled? "true": "false");
@@ -1760,6 +1908,7 @@ CPE_STATUS setWiFiRadio_RegulatoryDomain(Instance *ip, char *value)
 {
     GS_WiFiRadio *p = (GS_WiFiRadio *)ip->cpeData;
     if ( p ){
+#if 0
         COPYSTR(p->regulatoryDomain, value);
         char cmd[128]={0};
         char cmd_result[128]={0};
@@ -1767,8 +1916,9 @@ CPE_STATUS setWiFiRadio_RegulatoryDomain(Instance *ip, char *value)
 
         sprintf(cmd, "iwpriv wifi%d setCountry %s", ip->id-1 , p->regulatoryDomain);
         cmd_popen(cmd , cmd_result );
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiRadio_RegulatoryDomain(Instance *ip, char **value)
 {
@@ -1812,8 +1962,13 @@ CPE_STATUS getWiFiSSIDStats_BytesSent(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'"  ,get_topology_iface_name(ip->parent->id-1) );
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'"  ,iface );
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1837,8 +1992,13 @@ CPE_STATUS getWiFiSSIDStats_BytesReceived(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->parent->id-1));
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1862,8 +2022,12 @@ CPE_STATUS getWiFiSSIDStats_PacketsSent(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
- 
-        sprintf(cmd, "ifconfig ath%s | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" ,get_topology_iface_name(ip->parent->id-1) );
+         char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+        sprintf(cmd, "ifconfig ath%s | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" ,iface );
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1886,8 +2050,13 @@ CPE_STATUS getWiFiSSIDStats_PacketsReceived(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->parent->id-1));
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1910,8 +2079,13 @@ CPE_STATUS getWiFiSSIDStats_ErrorsSent(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->parent->id-1));
+        sprintf(cmd, "ifconfig ath%s| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1934,8 +2108,13 @@ CPE_STATUS getWiFiSSIDStats_ErrorsReceived(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->parent->id-1));
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result)
@@ -1975,6 +2154,7 @@ CPE_STATUS setWiFiSSID_Enable(Instance *ip, char *value)
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p )
     {
+#if 0
         char cmd[128]={0};
         char cmd_result[128]={0};
 
@@ -1989,8 +2169,9 @@ CPE_STATUS setWiFiSSID_Enable(Instance *ip, char *value)
             sprintf(cmd, "ifconfig ath%s down", get_topology_iface_name(ip->id-1) );
             cmd_popen(cmd, cmd_result);
         }
+#endif
     }
-    return CPE_OK;
+    return CPE_ERR;
 }
 CPE_STATUS getWiFiSSID_Enable(Instance *ip, char **value)
 {
@@ -2001,8 +2182,13 @@ CPE_STATUS getWiFiSSID_Enable(Instance *ip, char **value)
         char cmd_result[128]={0};
         const char default_status[]="UP";
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , get_topology_iface_name(ip->id-1));
+        sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , iface);
         cmd_popen(cmd , cmd_result);
         if ( NULL != cmd_result){
             if ((pos = strchr(cmd_result, '\n')) != NULL)
@@ -2027,8 +2213,13 @@ CPE_STATUS getWiFiSSID_Status(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         const char default_status[] = "Not-Associated";
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", get_topology_iface_name(ip->id-1));
+        sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", iface);
         cmd_popen(cmd, cmd_result);
         if(strncmp(cmd_result, default_status, strlen(default_status)) != 0)
         {
@@ -2053,8 +2244,11 @@ CPE_STATUS getWiFiSSID_Name(Instance *ip, char **value)
             char cmd[128]={0};
             char cmd_result[128]={0};
             char *pos = NULL;
+            int uci_iface = get_uci_iface_name(role, ip->id-1);
+            if (uci_iface == -1)
+                return CPE_OK;
 
-            sprintf(cmd, "uci get wireless.@wifi-iface[%d].ssid", get_uci_iface_name(ip->id-1));
+            sprintf(cmd, "uci get wireless.@wifi-iface[%d].ssid", uci_iface);
             cmd_popen(cmd , cmd_result );
             if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
 
@@ -2079,8 +2273,13 @@ CPE_STATUS getWiFiSSID_BSSID(Instance *ip, char **value)
             char cmd[128]={0};
             char cmd_result[128]={0};
             char *pos = NULL;
+            char iface[3]={0};
+            strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+            
+            if(!strncmp(iface,"-1",2))
+                return CPE_OK;
 
-            sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", get_topology_iface_name(ip->id-1));
+            sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", iface);
             cmd_popen(cmd, cmd_result);
             if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
 
@@ -2101,8 +2300,13 @@ CPE_STATUS getWiFiSSID_MACAddress(Instance *ip, char **value)
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        sprintf(cmd, "ifconfig ath%s | grep -r \"HWaddr\" | awk -F \" \" '{print $5}'"  , get_topology_iface_name(ip->id-1) );
+        sprintf(cmd, "ifconfig ath%s | grep -r \"HWaddr\" | awk -F \" \" '{print $5}'"  , iface);
         cmd_popen(cmd , cmd_result);
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if( NULL != cmd_result) 
@@ -2120,6 +2324,7 @@ CPE_STATUS setWiFiSSID_SSID(Instance *ip, char *value)
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p )
     {
+#if 0
         if ( get_role() ==1 &&  ip->id != 2 && ip->id != 4 )  // Only Can change CAP
         {
             char cmd[128]={0};
@@ -2153,6 +2358,7 @@ CPE_STATUS setWiFiSSID_SSID(Instance *ip, char *value)
                 return CPE_OK;
             }
         }
+#endif
     }
     return CPE_ERR;
 }
@@ -2165,9 +2371,11 @@ CPE_STATUS getWiFiSSID_SSID(Instance *ip, char **value)
         char cmd_result[128]={0};
         char *pos = NULL;
 
+        int uci_iface = get_uci_iface_name(role, ip->id-1);
+        if (uci_iface == -1)
+            return CPE_OK;
 
-
-        sprintf(cmd, "uci get wireless.@wifi-iface[%d].ssid", get_uci_iface_name(ip->id-1));
+        sprintf(cmd, "uci get wireless.@wifi-iface[%d].ssid", uci_iface);
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
 
@@ -2191,7 +2399,10 @@ CPE_STATUS getWiFiSSID_SSID(Instance *ip, char **value)
 /**@obj WiFi **/
 CPE_STATUS  initWiFi(CWMPObject *o, Instance *ip)
 {
-    
+    role = get_role();
+    if (role == 0)
+        role = get_bkhaul_iface("ath1");
+
     return CPE_OK;
 }
 /**@param WiFi_RadioNumberOfEntries                     **/
