@@ -760,6 +760,8 @@ int startStun(void)
         }
         DBGPRINT((stderr,"startStun()\n"));
         stunState.cpeIP = cpeState.ipAddress.u.inAddr.s_addr;
+        COPYSTR(stunState.serverAddr, cpeState.stunURL);
+        stunState.serverPort = 3478;
         /* setup to be notified if IP address changes */
         setCallback(&cpeState.ipAddress, restartStun, NULL);
         if ( stunState.cpeIP == 0 ){

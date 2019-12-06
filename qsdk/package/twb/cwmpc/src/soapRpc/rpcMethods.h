@@ -108,10 +108,12 @@ typedef struct CPEState {
 	u_char	instanceMode;	 /* InstanceNumber=0 or InstanceAlias==1 */
 	u_char	autoCreateInstances; /* Auto create object instances for SetPValues RPC */
 	char	SoftwareVersion[33];
+// TwinA
 	int	sigusr1;  /* for sysupgrade use */
 	char    OUI[7];
 	char    SN[30];
 	char    HVER[30];
+	char    *stunURL;
 } CPEState;
 
 

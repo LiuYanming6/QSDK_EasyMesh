@@ -1084,6 +1084,7 @@ EthernetLink *cpeGetNetIPInfo(int discovery){
                 return NULL;
             }
 		dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
+        COPYSTR(cpeState.stunURL, writeInIPAddr(&cpeState.acsIPAddress));
 		//}
 		SET_SockADDR(acsp, htons(port), &cpeState.acsIPAddress);
 		if ( (fd=socket(cpeState.acsIPAddress.inFamily, SOCK_DGRAM, 0))<0 ){
