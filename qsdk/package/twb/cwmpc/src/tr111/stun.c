@@ -762,6 +762,8 @@ int startStun(void)
         stunState.cpeIP = cpeState.ipAddress.u.inAddr.s_addr;
         COPYSTR(stunState.serverAddr, cpeState.stunURL);
         stunState.serverPort = 3478;
+        stunState.minKeepAlive=30;
+        stunState.maxKeepAlive=45;
         /* setup to be notified if IP address changes */
         setCallback(&cpeState.ipAddress, restartStun, NULL);
         if ( stunState.cpeIP == 0 ){
