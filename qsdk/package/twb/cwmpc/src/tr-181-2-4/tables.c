@@ -697,7 +697,7 @@ CWMPParam ManagementServer_Params[]={
 	{ "URL", getManagementServer_URL, setManagementServer_URL, NULL, RPC_RW, eString, 0, 256},
 	{ "Username", getManagementServer_Username, setManagementServer_Username, NULL, RPC_RW, eString, 0, 256},
 	{ "Password", getManagementServer_Password, setManagementServer_Password, NULL, RPC_RW, eStringSetOnly, 0, 256},
-	{ "PeriodicInformEnable", getManagementServer_PeriodicInformEnable, setManagementServer_PeriodicInformEnable, NULL, RPC_R, eBoolean, 0, 0},
+	{ "PeriodicInformEnable", getManagementServer_PeriodicInformEnable, setManagementServer_PeriodicInformEnable, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "PeriodicInformInterval", getManagementServer_PeriodicInformInterval, setManagementServer_PeriodicInformInterval, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "PeriodicInformTime", getManagementServer_PeriodicInformTime, setManagementServer_PeriodicInformTime, NULL, RPC_RW, eDateTime, 0, 0},
 	{ "ParameterKey", getManagementServer_ParameterKey, NULL, NULL, RPC_R, eString, FORCED_INFORM|NOACTIVENOTIFY, 32},
