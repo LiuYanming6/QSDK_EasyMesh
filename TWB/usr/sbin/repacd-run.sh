@@ -22,8 +22,6 @@ traffic_separation_enabled=0
 traffic_separation_active=0
 backhaul_network=''
 eth_mon_enabled=''
-#TWB EAP:
-onboard=''
 
 __repacd_info() {
     local stderr=''
@@ -78,8 +76,6 @@ config_get traffic_separation_enabled repacd TrafficSeparationEnabled '0'
 config_get traffic_separation_active repacd TrafficSeparationActive '0'
 config_get backhaul_network repacd NetworkBackhaul 'backhaul'
 config_get eth_mon_enabled repacd 'EnableEthernetMonitoring' '0'
-#TWB EAP:
-config_get onboard repacd 'is_onboard' 'no'
 
 if [ "$#" -lt 5 ]; then
     echo -n "Usage: $0 <alg_set> <start_role> <config RE mode> "
@@ -179,6 +175,8 @@ while true; do
     if [ "$firsttime" -eq 0 ]; then
         if [ "$start_role" == 'CAP' ] ; then
             if [ "$cur_role" == 'CAP' ] ; then
+                config_load repacd 
+                config_get onboard repacd 'is_onboard' 'no' # must get it here because reapcd-run keeps running 
                 if [ "$onboard" == 'yes' ] ; then
                     echo "Previously onboarded via Ethernet.. save the credentials in bSTA" > /dev/console
                     repacd_wifimon_config_bsta "${managed_network}"
