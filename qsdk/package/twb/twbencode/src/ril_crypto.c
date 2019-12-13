@@ -84,7 +84,6 @@ unsigned int hexstr2array (char *input, BYTE *output)
         tmp[2] = '\0';
         output[i/2] = strtol (tmp, NULL, 16);
     }
-
     return length/2;
 }
 
@@ -132,18 +131,40 @@ void ary2sha256(char *string, char outputBuffer[65])
 
 void sha256(char *string, char outputBuffer[65])
 {
+    int i;
+    int length = strlen(string);
+    printf("length: %d\n\n",length);
+    printf("string : %s \n",string);
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
-    SHA256_Update(&sha256, string, 32);
+    SHA256_Update(&sha256, string, length);
     SHA256_Final(hash, &sha256);
-    int i = 0;
+ 
     for(i = 0; i < SHA256_DIGEST_LENGTH; i++)
     {
         sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
     }
     outputBuffer[64] = 0;
 }
+
+void sha256_prepassword(char *string, char outputBuffer[65])
+{
+    int i;
+
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, string, 32);
+    SHA256_Final(hash, &sha256);
+ 
+    for(i = 0; i < SHA256_DIGEST_LENGTH; i++)
+    {
+        sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
+    }
+    outputBuffer[64] = 0;
+}
+
 
 
 int ril_prepassword_encode(char *mac_str , char *sn, char *prepassword)
@@ -207,7 +228,7 @@ int ril_acs_encode(char *prepassword , char *secret , char *output)
     strcat(input , secret);
 
     hexstr2array(input, output_hex2array);
-    sha256(output_hex2array , output_sha256 );
+    sha256_prepassword(output_hex2array , output_sha256 );
 
     snprintf(output_first128,33,output_sha256);
     hexstr2array(output_first128, output_128hex2array);
