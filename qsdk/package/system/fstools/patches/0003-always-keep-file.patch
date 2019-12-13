@@ -1,0 +1,16 @@
+--- fstools-2016-01-10/jffs2reset.c	2018-07-13 17:25:39.676360240 +0800
++++ fstools-2016-01-10/jffs2reset.c	2018-07-13 17:11:45.185859581 +0800
+@@ -47,9 +47,13 @@
+ 	mp = find_mount_point(v->blk, 1);
+ 	if (mp) {
+ 		ULOG_INFO("%s is mounted as %s, only erasing files\n", v->blk, mp);
++               system("mkdir -p /tmp/backup/keep");
++		system("cp -a /overlay/upper/etc/keep/* /tmp/backup/keep/");
+ 		fs_state_set("/overlay", FS_STATE_PENDING);
+ 		overlay_delete(mp, false);
+ 		mount(mp, "/", NULL, MS_REMOUNT, 0);
++		system("mkdir -p /overlay/upper/etc/keep");
++		system("cp -a /tmp/backup/keep/* /overlay/upper/etc/keep/");
+ 	} else {
+ 		ULOG_INFO("%s is not mounted\n", v->blk);
+ 		return jffs2_mark(v);
