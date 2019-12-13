@@ -78,7 +78,7 @@ run_ramfs() { # <command> [...]
 	install_bin /sbin/mtd
 	#install_bin /usr/bin/strings
 
-	install_file /etc/resolv.conf /lib/*.sh /lib/functions/*.sh /lib/upgrade/*.sh $RAMFS_COPY_DATA
+	install_file /etc/resolv.conf /lib/*.sh /lib/functions/*.sh /lib/upgrade/*.sh $RAMFS_COPY_DATA /etc/keep/*
 
 	[ -L "/lib64" ] && ln -s /lib $RAM_ROOT/lib64
 
