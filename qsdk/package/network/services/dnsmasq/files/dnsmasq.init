@@ -763,7 +763,8 @@ dnsmasq_start()
 	mv -f $CONFIGFILE_TMP $CONFIGFILE
 
 	[ "$resolvfile" = "/tmp/resolv.conf.auto" ] && {
-		rm -f /tmp/resolv.conf
+#       Fix DNS bug, to use /tmp/resolv.conf.auto by link
+#	rm -f /tmp/resolv.conf
 		[ $ADD_LOCAL_DOMAIN -eq 1 ] && [ -n "$DOMAIN" ] && {
 			echo "search $DOMAIN" >> /tmp/resolv.conf
 		}
