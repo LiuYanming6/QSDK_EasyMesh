@@ -1118,7 +1118,7 @@ EthernetLink *cpeGetNetIPInfo(int discovery){
 		readInIPAddr( &wanIP, defaultWANIP);
 	}
 	/* now try to find the interface name associated with the IP address */
-	if ( cpeState.fw_upg  && (netIFCnt = refreshNetworkInstances(discovery))>0 ) {
+	if ( (netIFCnt = refreshNetworkInstances(discovery))>0 ) {
 		strcpy( wanIPString, writeInIPAddr(&wanIP));
 		cpeNetIF = findELinkByIP( wanIPString );
 	} else

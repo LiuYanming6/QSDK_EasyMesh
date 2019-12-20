@@ -110,7 +110,6 @@ typedef struct CPEState {
 	char	SoftwareVersion[33];
 // TwinA
 	int	sigusr1;  /* for sysupgrade use */
-	int	fw_upg;
 	char    OUI[7];
 	char    SN[30];
 	char    HVER[30];

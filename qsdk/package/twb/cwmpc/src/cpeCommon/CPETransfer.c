@@ -579,7 +579,6 @@ int cpeDownloadComplete(DownloadMsg *r, char *buf, int lth) {
         }
 upgrade:
 #endif
-        cpeState.fw_upg = 0;
         system("led_ctrl LED_FW_UPGRADE");
         system("echo \"sysupgrade -d 30 -c /tmp/cwmpdownloadfile\" > /tmp/cwmpc_active.sh");
         system("chmod 777 /tmp/cwmpc_active.sh;/tmp/cwmpc_active.sh &");
