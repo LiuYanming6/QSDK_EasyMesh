@@ -446,6 +446,7 @@ __repacd_wifimon_measure_link() {
             # TWB EAP
             __repacd_wifimon_debug "Jio agent: user has found the approval placement!"
             uci set repacd.repacd.is_located='yes'
+            uci commit repacd
             acfg_tool acfg_set_sens_level wifi1 /-90 
             ####
 
