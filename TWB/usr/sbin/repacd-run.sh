@@ -163,6 +163,15 @@ else
     __repacd_info "Failed to resolve STA interface; will attempt periodically"
 fi
 
+#TWB EAP (EasyMesh placement)
+config_load repacd
+config_get located repacd 'is_located' 'no'
+if [ "$located" == "no" ] ; then
+    __repacd_info "Jio agent starts mesh placement. STA looks for an AP (RSSI greater than -75 dB)"
+    cfg_tool acfg_set_sens_level wifi1 /-75
+fi
+
+
 #TWB EAP:
 firsttime=0
 # Loop forever (unless we are killed with SIGTERM which is handled above).

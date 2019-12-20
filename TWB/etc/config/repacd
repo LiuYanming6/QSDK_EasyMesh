@@ -18,6 +18,7 @@ config config 'repacd'
 	option Enable '1'
 	option ConfigREMode 'son'
         option is_onboard 'no'
+        option is_located 'no'
 
 config MAPConfig 'MAPConfig'
 	option BSSInstantiationTemplate 'scheme-a.conf'
