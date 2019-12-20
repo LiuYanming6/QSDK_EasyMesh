@@ -81,13 +81,14 @@ void cpeSaveConfig(void);
 
 static void createBasicInstances(int discovery) {
 
-	cpeNetInit(discovery);
-	#ifdef CONFIG_RPCCHANGEDUSTATE
-	/* create initial SoftwareModules. Start the SMM thread and initialize the ExecEnv */
-	cpeSMMInit();
-	#endif
-	//Instance *ip = initEthernetInterfaceLink();
-	// The IP.Interface.1 interface is writeable so the config restore will create it.
+    if(cpeState.fw_upg)
+        cpeNetInit(discovery);
+    #ifdef CONFIG_RPCCHANGEDUSTATE
+    /* create initial SoftwareModules. Start the SMM thread and initialize the ExecEnv */
+    cpeSMMInit();
+    #endif
+    //Instance *ip = initEthernetInterfaceLink();
+    // The IP.Interface.1 interface is writeable so the config restore will create it.
 }
 
 /*
@@ -101,11 +102,12 @@ extern void servicesInstanceRefresh(void);
 #endif
 
 void cpeRefreshInstances(void) {
-	/* Update any instances that have been modified by local CPE configuration */
-	/* functions. */
-	fprintf(stdout, "cpeRefreshInstances()\n");
-	/* Update the CPE predefined instances here*/
-    refreshAssociatedDeviceinstances();
+        /* Update any instances that have been modified by local CPE configuration */
+        /* functions. */
+        fprintf(stdout, "cpeRefreshInstances()\n");
+        /* Update the CPE predefined instances here*/
+        if(cpeState.fw_upg)
+            refreshAssociatedDeviceinstances();
 }
 
 /*

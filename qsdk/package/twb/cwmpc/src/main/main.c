@@ -78,6 +78,7 @@ static void initCpeState(void)
 	/* The following initial session state is defined in the */
 	/* targetsys.h header file. */
 	cpeState.acsContactState = ACS_INITIAL_SESSION_STATE;
+	cpeState.fw_upg = 1;
 }
 static void initTasks(void)
 {
