@@ -133,9 +133,8 @@ void sha256(char *string, char outputBuffer[65])
 {
     int i;
     int length = strlen(string);
-    printf("length: %d\n\n",length);
-    printf("string : %s \n",string);
     unsigned char hash[SHA256_DIGEST_LENGTH];
+
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
     SHA256_Update(&sha256, string, length);
