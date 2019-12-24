@@ -681,7 +681,8 @@ start_service() {
 
 stop_service() {
 	hyfi_get_ieee1905_managed_iface ieee1905managed_bridge ieee1905managed_bridge2
-
+        ### TWB EAP
+        uci set repacd.repacd.wifi_ready='0'
 	# Disable wlan Hy-Fi multicast enhancement
 	__hyd_set_wlan_mcastenhance 2
 }

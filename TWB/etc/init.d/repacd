@@ -3275,10 +3275,6 @@ start() {
 # Script entry point: Stop the daemon
 stop() {
     start-stop-daemon -K -n repacd-run.sh -s SIGTERM >/dev/null
-#TWB EAP
-#RIL-1200-EASYMESH: Agent mode. Set wifi_ready to 0 to tell others Wi-Fi interfaces are not ready
-    uci set repacd.repacd.wifi_ready='0'
-###
 
     if [ -f $WSPLCD_INIT ]; then
         $WSPLCD_INIT stop

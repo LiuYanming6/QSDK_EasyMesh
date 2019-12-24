@@ -13,6 +13,11 @@
 IFNAME=$1
 CMD=$2
 
+#TWB EAP
+role=
+onboard=
+###
+
 if [ $CMD = "CONNECTED" ]; then
 	. /sbin/wifi detect
 fi
@@ -173,6 +178,9 @@ case "$CMD" in
 		for intf in $IFNAME_OVERWRITE_STA; do
 			[ "$IFNAME" != "$intf" ] && wps_pbc_enhc_overwrite_sta_settings $intf $ssid $wpa_version $psk
 		done
+                #TWB EAP
+                uci set repacd.repacd.wps_in_process='0'
+                ###
 		uci commit
 		if [ -r /var/run/wifi-wps-enhc-extn.pid ]; then
 			echo $IFNAME > /var/run/wifi-wps-enhc-extn.done
@@ -181,6 +189,7 @@ case "$CMD" in
 		kill "$(cat "/var/run/wps-hotplug-$IFNAME.pid")"
 		#post hotplug event to whom take care of
 		env -i ACTION="wps-connected" INTERFACE=$IFNAME /sbin/hotplug-call iface
+                
                 #TWB EAP
                 #RIL-1200-EASYMESH: 
                 led_ctrl LED_WLAN_WPS_SUCCESS
@@ -189,10 +198,30 @@ case "$CMD" in
                 ###
 		;;
 	WPS-TIMEOUT)
+                #TWB EAP
+                role=`uci get repacd.repacd.Role`
+                onboard=`uci get repacd.repacd.is_onboard`
+                if [ "$onboard" == 'no' ] && [ "$role" != 'CAP' ]; then
+                    led_ctrl LED_WLAN_RADIO1_DOWN
+                    led_ctrl LED_WLAN_RADIO1_FAST_FLASH
+                fi
+                led_ctrl LED_WLAN_WPS_TIMEOUT
+                uci set repacd.repacd.wps_in_process='0'
+                ###
 		kill "$(cat "/var/run/wps-hotplug-$IFNAME.pid")"
 		env -i ACTION="wps-timeout" INTERFACE=$IFNAME /sbin/hotplug-call iface
 		;;
 	DISCONNECTED)
+                #TWB EAP
+                role=`uci get repacd.repacd.Role`
+                onboard=`uci get repacd.repacd.is_onboard`
+                if [ "$onboard" == 'no' ] && [ "$role" != 'CAP' ]; then
+                    led_ctrl LED_WLAN_RADIO1_DOWN
+                    led_ctrl LED_WLAN_RADIO1_FAST_FLASH
+                fi
+                led_ctrl LED_WLAN_WPS_TIMEOUT
+                uci set repacd.repacd.wps_in_process='0'
+                ###
 		;;
 esac
 
