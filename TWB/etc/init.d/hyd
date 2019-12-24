@@ -669,9 +669,6 @@ start_service() {
             uci set repacd.repacd.wps_in_process='0'
             if [ "$role" == 'CAP' ] ; then
                 led_ctrl LED_WLAN_RADIO1_UP
-            else
-                led_ctrl LED_WLAN_RADIO1_DOWN
-                led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
             fi            
         fi
 

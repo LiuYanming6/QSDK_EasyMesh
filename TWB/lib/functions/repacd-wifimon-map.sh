@@ -50,6 +50,9 @@ measuring_cnt=0 measuring_attempts=0
 force_bsses_down_on_all_bsta_switches=0
 cnt_5g_attempts=0 max_5g_attempts=0
 
+#TWB EAP
+located=
+
 
 # Emit a message at debug level.
 # input: $1 - the message to log
@@ -431,6 +434,19 @@ __repacd_wifimon_measure_link() {
         if [ "$rssi_num" -lt "$rssi_samples" ]; then
             __repacd_wifimon_debug "RSSI sample #$rssi_num = $rssi dBm"
 
+            # TWB EAP: do not wait utill 5 samples completed (2 sample is long enough)
+            if [ "$rssi_num" -eq 1 ]; then
+                located=`uci get repacd.repacd.is_located`
+                if [ "$located" == 'no' ]; then
+                    __repacd_wifimon_debug "Jio agent: user has found the approval placement!"
+                    uci set repacd.repacd.is_located='yes'
+                    uci commit repacd
+                    acfg_tool acfg_set_sens_level wifi1 /-90
+                fi
+            fi
+            ####
+
+
             # Ignore the very first sample since it is taken at the same time
             # the ping is started (and thus the RSSI might not have been
             # updated).
@@ -443,12 +459,6 @@ __repacd_wifimon_measure_link() {
             rssi_num=$((rssi_num + 1))
         elif [ "$rssi_num" -eq "$rssi_samples" ]; then
             __repacd_wifimon_debug "RSSI sample #$rssi_num = $rssi dBm"
-            # TWB EAP
-            __repacd_wifimon_debug "Jio agent: user has found the approval placement!"
-            uci set repacd.repacd.is_located='yes'
-            uci commit repacd
-            acfg_tool acfg_set_sens_level wifi1 /-90 
-            ####
 
             # We will take one more sample and then draw the conclusion.
             # No further measurements will be taken (although this may be
