@@ -142,6 +142,9 @@ IFNAME_OVERWRITE_AP=
 IFNAME_OVERWRITE_STA=
 wps_pbc_enhc_file=/var/run/wifi-wps-enhc-extn.conf
 
+#TWB EAP
+echo "[wps-supplicant-update-uci]-> interface=$1 cmd=$2 " > /dev/console
+###
 case "$CMD" in
 	CONNECTED)
 		wpa_cli -i$IFNAME -p/var/run/wpa_supplicant-$IFNAME save_config
@@ -191,7 +194,9 @@ case "$CMD" in
 		env -i ACTION="wps-connected" INTERFACE=$IFNAME /sbin/hotplug-call iface
                 
                 #TWB EAP
-                #RIL-1200-EASYMESH: 
+                #RIL-1200-EASYMESH:
+                l ed_ctrl LED_WLAN_RADIO1_DOWN
+                led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
                 led_ctrl LED_WLAN_WPS_SUCCESS
                 echo -n 0 >  /var/run/wps_start
                 echo -n 0 > /var/run/wps_timeout
@@ -212,16 +217,6 @@ case "$CMD" in
 		env -i ACTION="wps-timeout" INTERFACE=$IFNAME /sbin/hotplug-call iface
 		;;
 	DISCONNECTED)
-                #TWB EAP
-                role=`uci get repacd.repacd.Role`
-                onboard=`uci get repacd.repacd.is_onboard`
-                if [ "$onboard" == 'no' ] && [ "$role" != 'CAP' ]; then
-                    led_ctrl LED_WLAN_RADIO1_DOWN
-                    led_ctrl LED_WLAN_RADIO1_FAST_FLASH
-                fi
-                led_ctrl LED_WLAN_WPS_TIMEOUT
-                uci set repacd.repacd.wps_in_process='0'
-                ###
 		;;
 esac
 
