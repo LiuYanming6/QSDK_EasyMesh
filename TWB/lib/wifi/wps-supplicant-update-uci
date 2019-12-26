@@ -195,7 +195,7 @@ case "$CMD" in
                 
                 #TWB EAP
                 #RIL-1200-EASYMESH:
-                l ed_ctrl LED_WLAN_RADIO1_DOWN
+                led_ctrl LED_WLAN_RADIO1_DOWN
                 led_ctrl LED_WLAN_RADIO1_SLOW_FLASH
                 led_ctrl LED_WLAN_WPS_SUCCESS
                 echo -n 0 >  /var/run/wps_start
@@ -211,6 +211,8 @@ case "$CMD" in
                     led_ctrl LED_WLAN_RADIO1_FAST_FLASH
                 fi
                 led_ctrl LED_WLAN_WPS_TIMEOUT
+                echo -n 0 >  /var/run/wps_start
+                echo -n 0 > /var/run/wps_timeout
                 uci set repacd.repacd.wps_in_process='0'
                 ###
 		kill "$(cat "/var/run/wps-hotplug-$IFNAME.pid")"
