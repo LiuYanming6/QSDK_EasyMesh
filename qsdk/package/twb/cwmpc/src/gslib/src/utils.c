@@ -1001,31 +1001,31 @@ int get_bkhaul_iface(char *iface)
  */
 /*
  * 
-
 Agent ethernet backhaul
-ath   uci  channel
-01     3   2.4G Fronthaul
-           2.4G Backhaul
-11     4   5G Fronthaul
-           5G Backhaul
+ath   uci  channel            SSID Reference
+0      1   2.4G Fronthaul        1
+01     3   2.4G Backhaul         2
+1      2   5G Fronthaul          3
+11     4   5G Backhaul           4
 *
 
 WiFi backhaul
 ath1 Managed
 
-ath   uci  channel
-01     3    2.4G Fronthaul
-            2.4G Backhaul
-12     4    5G Fronthaul
-1      0    5G Backhaul
+ath   uci  channel            SSID Reference
+0     1    2.4G Fronthaul       1
+01    3    2.4G Backhaul        2
+11    2    5G Fronthaul         3
+1     0    5G Backhaul          4
 
+*
 ath0 Managed
+ath   uci  channel            SSID Reference
+01    1    2.4G Fronthaul       1
+0     0    2.4G Backhaul        2
+1     2    5G Fronthaul         3
+11    4    5G Backhaul          4
 
-ath   uci  channel
-02     3    2.4G Fronthaul
-0      0    2.4G Backhaul
-11     4    5G Fronthaul
-            5G Backhaul
 
 
 */
@@ -1034,26 +1034,34 @@ char *get_topology_iface_name (int role , int id)
     if ( role == 1 )
     {
         if(id==0)
+            return "0";
+        else if (id==1)
             return "01";
         else if (id==2)
+            return "1";
+        else if (id==3)
             return "11";
     }
     else if (role ==2)
     {
         if(id==0)
+            return "0";
+        else if(id==1)
             return "01";
         else if(id==2)
-            return "12";
-        else if(id==3)
+            return "11";
+        else if(id ==3)
             return "1";
     }
     else if (role == 3)
     {
         if(id==0)
-            return "02";
+            return "01";
         else if(id==1)
             return "0";
         else if(id==2)
+            return "1";
+        else if(id ==3)
             return "11";
     }
     else
@@ -1072,28 +1080,28 @@ char *get_topology_iface_name (int role , int id)
  * 
 Agent ethernet backhaul
 ath   uci  channel            SSID Reference
-01     3   2.4G Fronthaul        1
-           2.4G Backhaul         2
-11     4   5G Fronthaul          3
-           5G Backhaul           4
+0      1   2.4G Fronthaul        1
+01     3   2.4G Backhaul         2
+1      2   5G Fronthaul          3
+11     4   5G Backhaul           4
 *
 
 WiFi backhaul
 ath1 Managed
 
 ath   uci  channel            SSID Reference
-01     3    2.4G Fronthaul       1
-            2.4G Backhaul        2
-12     4    5G Fronthaul         3
+01     1    2.4G Fronthaul       1
+       3    2.4G Backhaul        2
+12     2    5G Fronthaul         3
 1      0    5G Backhaul          4
 
 *
 ath0 Managed
 ath   uci  channel            SSID Reference
-02     3    2.4G Fronthaul       1
-0      0    2.4G Backhaul        2
-11     4    5G Fronthaul         3
-            5G Backhaul          4
+0     1    2.4G Fronthaul       1
+01    0    2.4G Backhaul        2
+11    2    5G Fronthaul         3
+1     4    5G Backhaul          4
 *
 
 */
@@ -1103,26 +1111,34 @@ int get_uci_iface_name (int role , int id)
     if ( role == 1 )
     {
         if(id==0)
+            return 1;
+        else if(id==1)
             return 3;
-        else if(id==2)
+        else if (id ==2)
+            return 2;
+        else if (id ==3)
             return 4;
     }
     else if ( role == 2)
     {
         if(id==0)
+            return 1;
+        else if(id==1)
             return 3;
         else if(id==2)
-            return 4;
-        else if(id==3)
+            return 2;
+        else if (id==3)
             return 0;
     }
     else if ( role ==3 )
     {
         if(id==0)
-            return 3;
+            return 1;
         else if(id==1)
             return 0;
         else if(id==2)
+            return 2;
+        else if(id ==3)
             return 4;
     }
     else
