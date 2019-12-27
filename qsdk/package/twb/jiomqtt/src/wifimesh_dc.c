@@ -631,8 +631,8 @@ char *dc_get_stats() {
     {
         strcpy(backhaul_24,  "none");
         strcpy(backhaul_5,   "none");
-        strcpy(fronthaul_24, "ath01");
-        strcpy(fronthaul_5,  "ath11");
+        strcpy(fronthaul_24, "ath0");
+        strcpy(fronthaul_5,  "ath1");
     }else {
 
         get_easymesh_bh_interface(&command_output, &size, "ath1");
@@ -643,20 +643,21 @@ char *dc_get_stats() {
             }
         }
    
+        /* do not handle backhaul APs */
         if (command_output) {
             strip_newline_chars(command_output);
             if (!strcmp(command_output, "Managed")) // 5G backhaul
             {
                 strcpy(backhaul_24,  "none");
-                strcpy(fronthaul_24, "ath01");
+                strcpy(fronthaul_24, "ath0");
                 strcpy(backhaul_5, "ath1");
-                strcpy(fronthaul_5, "ath12");
+                strcpy(fronthaul_5, "ath11");
  
             }else {
                 strcpy(backhaul_24,  "ath0");
-                strcpy(fronthaul_24, "ath02");
+                strcpy(fronthaul_24, "ath01");
                 strcpy(backhaul_5, "none");
-                strcpy(fronthaul_5, "ath11");
+                strcpy(fronthaul_5, "ath1");
             }
             LDEBUG("Wi-Fi interface list:[2.4bh: %s 2.4fh: %s 5bh: %s 5fh: %s]", backhaul_24, fronthaul_24, backhaul_5, fronthaul_5);
         }
