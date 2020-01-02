@@ -4,10 +4,16 @@
 START=25
 
 HELLO_BIN="/usr/sbin/hello"
+KCRASH_DUMP=/sys/kernel/debug/crashlog
+KCRASH_DUMP_BACKUP=/overlay/upper/crashlog
 
 start(){
 
 	${HELLO_BIN}
+        if [ -f "$KCRASH_DUMP" ]; then
+            rm $KCRASH_DUMP_BACKUP
+            cat $KCRASH_DUMP > $KCRASH_DUMP_BACKUP
+        fi
 
 }
 
