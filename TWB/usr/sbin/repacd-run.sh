@@ -36,6 +36,12 @@ __repacd_restart() {
     local __mode="$1"
     __repacd_info "repacd: restart in $__mode mode"
 
+    #TWB EAP (EasyMesh placement)
+    #Hidden Backhaul AP interfaces 
+    uci set wireless.@wifi-iface[3].hidden="1"
+    uci set wireless.@wifi-iface[4].hidden="1"
+    ###
+
     /etc/init.d/repacd "restart_in_${__mode}_mode"
     exit 0
 }
