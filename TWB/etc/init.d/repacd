@@ -3262,6 +3262,10 @@ start() {
         uci set repacd.repacd.is_located='yes'
         uci commit repacd
     fi
+    #Hidden Backhaul AP interfaces 
+    uci set wireless.@wifi-iface[3].hidden="1"
+    uci set wireless.@wifi-iface[4].hidden="1"
+    ###
 
     [ "$enabled" -gt 0 ] || {
         return 1
