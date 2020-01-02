@@ -3255,6 +3255,14 @@ start() {
     config_load 'repacd'
     config_get_bool enabled repacd 'Enable' '0'
 
+    #TWB EAP (EasyMesh placement)
+    config_get located repacd 'is_located'
+    if [ "$located" == "" ] ; then
+        __repacd_info "Jio agent -> is_located is empty... create it and set to 0!!"
+        uci set repacd.repacd.is_located='yes'
+        uci commit repacd
+    fi
+
     [ "$enabled" -gt 0 ] || {
         return 1
     }
