@@ -3259,8 +3259,8 @@ start() {
     config_get located repacd 'is_located'
     if [ "$located" == "" ] ; then
         __repacd_info "Jio agent -> is_located is empty... create it and set to 0!!"
-        uci set repacd.repacd.is_located='yes'
-        uci commit repacd
+        uci set repacd.repacd.is_located='no'
+        #uci commit repacd
     fi
     #Hidden Backhaul AP interfaces 
     uci set wireless.@wifi-iface[3].hidden="1"

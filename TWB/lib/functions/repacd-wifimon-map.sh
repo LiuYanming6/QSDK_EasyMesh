@@ -440,7 +440,7 @@ __repacd_wifimon_measure_link() {
                 if [ "$located" == 'no' ]; then
                     __repacd_wifimon_debug "Jio agent: user has found the approval placement!"
                     uci set repacd.repacd.is_located='yes'
-                    uci commit repacd
+                    #uci commit repacd
                     acfg_tool acfg_set_sens_level wifi1 /-90
                 fi
             fi
@@ -932,6 +932,7 @@ __repacd_wifimon_set_bsta_creds() {
     config_get map "$config" map '0'
     config_get map_type "$config" MapBSSType
 
+
     if [ "$hwmode" != "11ad" ]; then
         if [ "$network" = "$network_to_match" ] && [ "$mode" = "sta" ] && \
             [ "$map" -gt 0 ]; then
@@ -958,7 +959,6 @@ repacd_wifimon_config_bsta() {
     config_load wireless
     config_foreach __repacd_wifimon_resolve_bbss_creds wifi-iface "$1" \
         bbss_ssid bbss_key bbss_enc
-
     # Now apply these values to the bSTA interface.
     config_foreach __repacd_wifimon_set_bsta_creds wifi-iface "$1" \
         "${bbss_ssid}" "${bbss_key}" "${bbss_enc}"
