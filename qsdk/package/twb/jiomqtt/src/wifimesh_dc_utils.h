@@ -99,13 +99,13 @@ static inline int get_device_serial(char **output, int32_t *size) {
 //Function to get device model reporting the data set.
 static inline int get_device_model(char **output, int32_t *size) {
 	// ard code
-     //char model[20] = "JCM0112";
-     //*size = strlen(model);
-     //*output = (char *) malloc (sizeof(char) * (*size));
-     //strcpy (*output, model);
-     //return 0;
+     char model[20] = "JCM0112";
+     *size = strlen(model);
+     *output = (char *) malloc (sizeof(char) * (*size));
+     strcpy (*output, model);
+     return 0;
     //return util_popen_with_output(output, size, "sed -n p /tmp/cpe3/dps.productclass");
-    return util_popen_with_output(output, size, "state_cfg get model_name");
+    //return util_popen_with_output(output, size, "state_cfg get model_name");
 }
 
 //Function to get SW version used in the device.
