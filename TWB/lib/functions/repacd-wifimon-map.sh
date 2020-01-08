@@ -963,3 +963,33 @@ repacd_wifimon_config_bsta() {
     config_foreach __repacd_wifimon_set_bsta_creds wifi-iface "$1" \
         "${bbss_ssid}" "${bbss_key}" "${bbss_enc}"
 }
+
+#TWB EAP: Set backhaul APs SSIDs to hidden (Jio requirement)
+__repacd_wifimon_set_bap_hidden() {
+    local config="$1"
+    local network_to_match="$2"
+    local network mode hwmode
+    local map map_type
+
+    config_get network "$config" network
+    config_get mode "$config" mode
+    config_get hwmode "$device" hwmode
+    config_get map "$config" map '0'
+    config_get map_type "$config" MapBSSType
+ 
+    if [ "$hwmode" != "11ad" ]; then
+        if [ "$network" = "$network_to_match" ] && [ "$mode" = "ap" ] && \
+            [ "$map" -gt 0 ]; then
+            if [ "$map_type" -eq 64 ]; then  # backhaul AP
+                uci_set wireless "$config" hidden "1"
+                uci_commit wireless
+            fi
+        fi
+    fi
+}
+
+repacd_wifimon_hidden_backhual_aps() {
+    config_load wireless
+    config_foreach __repacd_wifimon_set_bap_hidden wifi-iface "$1"
+}
+

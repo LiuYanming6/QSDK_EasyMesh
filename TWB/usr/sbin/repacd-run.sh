@@ -38,8 +38,8 @@ __repacd_restart() {
 
     #TWB EAP (EasyMesh placement)
     #Hidden Backhaul AP interfaces 
-    uci set wireless.@wifi-iface[3].hidden="1"
-    uci set wireless.@wifi-iface[4].hidden="1"
+    #uci set wireless.@wifi-iface[3].hidden="1"
+    #uci set wireless.@wifi-iface[4].hidden="1"
     ###
 
     /etc/init.d/repacd "restart_in_${__mode}_mode"
@@ -177,29 +177,36 @@ if [ "$located" == "no" ] ; then
     acfg_tool acfg_set_sens_level wifi1 /-75
 fi
 
+config_load repacd
+config_get onboard repacd 'is_onboard' 'no'
+previous_onboard='no'
+###
 
-#TWB EAP:
-firsttime=0
 # Loop forever (unless we are killed with SIGTERM which is handled above).
 while true; do
     __gwmon_check
     new_mode=$?
     __repacd_update_mode $new_mode
 
-    #TWB EAP: fixed issue which credentials not pass to bSTA after Ethernet onboarding
-    if [ "$firsttime" -eq 0 ]; then
-        if [ "$start_role" == 'CAP' ] ; then
-            if [ "$cur_role" == 'CAP' ] ; then
-                config_load repacd 
-                config_get onboard repacd 'is_onboard' 'no' # must get it here because reapcd-run keeps running 
-                if [ "$onboard" == 'yes' ] ; then
+    ####TWB EAP: After onboard, we manually save the backhaul credentials into STA and hide backhaul APs SSIDs.
+    if [ "$onboard" == 'no' ]; then 
+        config_load repacd
+        config_get onboard repacd 'is_onboard' 'no'
+        if [ "$onboard" == 'yes' ] && [ "$previous_onboard" == 'no' ]; then
+            if [ "$start_role" == 'CAP' ] ; then # Ethernet onboarding
+                if [ "$cur_role" == 'CAP' ] ; then
                     echo "Previously onboarded via Ethernet.. save the credentials in bSTA" > /dev/console
                     repacd_wifimon_config_bsta "${managed_network}"
-                    firsttime=1
+                    repacd_wifimon_hidden_backhual_aps "${managed_network}"
                 fi
-            fi
-        fi
+            else
+                echo "Previously onboarded via WiFi.. Hide backhaul SSIDs" > /dev/console
+                repacd_wifimon_hidden_backhual_aps "${managed_network}" # Wi-Fi onboarding
+            fi       
+        fi 
     fi
+    previous_onboard=$onboard
+    ####
 
     if [ -n "$cur_state" ]; then
         new_state=''
