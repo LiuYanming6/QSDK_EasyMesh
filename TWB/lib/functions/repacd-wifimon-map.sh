@@ -434,19 +434,6 @@ __repacd_wifimon_measure_link() {
         if [ "$rssi_num" -lt "$rssi_samples" ]; then
             __repacd_wifimon_debug "RSSI sample #$rssi_num = $rssi dBm"
 
-            # TWB EAP: do not wait utill 5 samples completed (2 sample is long enough)
-            if [ "$rssi_num" -eq 1 ]; then
-                located=`uci get repacd.repacd.is_located`
-                if [ "$located" == 'no' ]; then
-                    __repacd_wifimon_debug "Jio agent: user has found the approval placement!"
-                    uci set repacd.repacd.is_located='yes'
-                    #uci commit repacd
-                    acfg_tool acfg_set_sens_level wifi1 /-90
-                fi
-            fi
-            ####
-
-
             # Ignore the very first sample since it is taken at the same time
             # the ping is started (and thus the RSSI might not have been
             # updated).
@@ -469,6 +456,23 @@ __repacd_wifimon_measure_link() {
             local rssi_median
             __repacd_wifimon_compute_median "$rssi_filename" $rssi_num rssi_median
             __repacd_wifimon_debug "Median RSSI = $rssi_median dBm"
+
+            # TWB EAP: do not wait utill 5 samples completed (2 sample is long enough)
+            located=`uci get repacd.repacd.is_located`
+            if [ "$located" == 'no' ]; then
+                if [ "$rssi_median" -lt -75 ]; then
+                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -75dB. Keep STA disconnecting"
+                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g disconnect 0
+                    sleep 2
+                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g resconnect 0
+                else
+                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -75dB. Forming the mesh"
+                    uci set repacd.repacd.is_located='yes'
+                    acfg_tool acfg_set_sens_level wifi1 /-90
+                fi
+            fi
+            ####
+
             __repacd_wifimon_debug "RSSI threshold = $rssi_threshold dBm"
 
             measuring_cnt=0
