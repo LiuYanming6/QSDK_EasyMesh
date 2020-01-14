@@ -330,9 +330,13 @@ __repacd_wifimon_check_associated() {
         # This will drive a timer in the check function that will change the
         # state if we stay disassociated for too long.
         if [ -z "$assoc_start_time" ]; then
+            ###TWB EAP: first time after it is not associated
+            uci set repacd.repacd.is_located='no'
+            acfg_tool acfg_set_sens_level wifi1 /-75
+            echo "Dynamic Mesh Formation: backhaul is not associated, set sensitivity to -75dB" > /dev/console
+            ###
             __repacd_wifimon_get_timestamp assoc_start_time
         fi
-
         last_assoc_state=0
         eval "$5=$WIFIMON_STATE_NOT_ASSOCIATED"
     elif [ "$wps_in_progress" -gt 0 ]; then
