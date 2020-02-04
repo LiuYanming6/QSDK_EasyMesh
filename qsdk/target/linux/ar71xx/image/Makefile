@@ -851,7 +851,7 @@ ifneq ($(SUBTARGET),mikrotik)
 # $(4): output file.
 define MkuImage
 	mkimage -A mips -O linux -T kernel -a 0x80060000 -C $(1) $(2) \
-		-e 0x80060000 -n 'MIPS OpenWrt Linux-$(LINUX_VERSION)' \
+		-e 0x80060000 -n '$(VERSION_NUMBER)' \
 		-d $(3) $(4)
 endef
 
