@@ -3381,6 +3381,7 @@ struct global_ic_list {
 #define IEEE80211_FEXT2_BACKHAUL           0x00000080
 #define IEEE80211_FEXT2_NOCABQ             0x00000100  /* Don't buffer multicast when STA in ps mode */
 #define IEEE80211_FEXT2_FILS               0x00000200
+#define IEEE80211_FEXT2_INWPS              0x00000400  /* TWB EAP*/
 
 /* ic_caps */
 #define IEEE80211_C_WEP                  0x00000001  /* CAPABILITY: WEP available */
@@ -3884,6 +3885,11 @@ IC_FLAG_FUNCS(enh_ind_rpt)
 #define IEEE80211_VAP_FILS_ENABLE(_v)               ((_v)->iv_flags_ext2 |= IEEE80211_FEXT2_FILS)
 #define IEEE80211_VAP_FILS_DISABLE(_v)              ((_v)->iv_flags_ext2 &= ~IEEE80211_FEXT2_FILS)
 #define IEEE80211_VAP_IS_FILS_ENABLED(_v)           ((_v)->iv_flags_ext2 & IEEE80211_FEXT2_FILS)
+
+/*TWB EAP*/
+#define IEEE80211_VAP_INWPS_ENABLE(_v)           ((_v)->iv_flags_ext2 |= IEEE80211_FEXT2_INWPS)
+#define IEEE80211_VAP_INWPS_DISABLE(_v)          ((_v)->iv_flags_ext2 &= ~IEEE80211_FEXT2_INWPS)
+#define IEEE80211_VAP_IS_INWPS_ENABLED(_v)       ((_v)->iv_flags_ext2 & IEEE80211_FEXT2_INWPS)
 
 INLINE static int
 isorbi_ie(wlan_if_t vap, u_int8_t *frm)

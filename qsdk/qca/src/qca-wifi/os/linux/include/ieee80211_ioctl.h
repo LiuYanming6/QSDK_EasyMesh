@@ -1825,6 +1825,7 @@ enum {
     IEEE80211_PARAM_EXTERNAL_AUTH_STATUS       = 562,   /* To indicate exterbal auth status for SAE */
     IEEE80211_PARAM_SAE_AUTH_ATTEMPTS          = 563,   /* To set/get sae maximum auth attempts */
     IEEE80211_PARAM_PROBEREQ_EVENT             = 564,   /* enable probereq recv event to upper layer */
+    IEEE80211_PARAM_INWPS                      = 565,   /* TWB EAP */
 };
 #define WOW_CUSTOM_PKT_LEN 102
 #define WOW_SYNC_PATTERN 0xFF

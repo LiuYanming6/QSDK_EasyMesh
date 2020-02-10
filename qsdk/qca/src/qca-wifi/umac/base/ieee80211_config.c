@@ -465,6 +465,13 @@ wlan_set_param(wlan_if_t vaphandle, ieee80211_param param, u_int32_t val)
             IEEE80211_VAP_BACKHAUL_DISABLE(vap);
         }
         break;
+    case IEEE80211_FEATURE_INWPS:    /*TWB EAP*/
+        if (val) {
+            IEEE80211_VAP_INWPS_ENABLE(vap);
+        } else {
+            IEEE80211_VAP_INWPS_DISABLE(vap);
+        }
+        break;
     case IEEE80211_FEATURE_APBRIDGE:
         if (val == 0)
             IEEE80211_VAP_NOBRIDGE_ENABLE(vap);
@@ -2292,6 +2299,9 @@ wlan_get_param(wlan_if_t vaphandle, ieee80211_param param)
         break;
     case IEEE80211_FEATURE_BACKHAUL:
         val = IEEE80211_VAP_IS_BACKHAUL_ENABLED(vap) ? 1 : 0;
+        break;
+    case IEEE80211_FEATURE_INWPS:    /*TWB EAP*/
+        val = IEEE80211_VAP_IS_INWPS_ENABLED(vap) ? 1 : 0;
         break;
     case IEEE80211_FEATURE_APBRIDGE:
         val = IEEE80211_VAP_IS_NOBRIDGE_ENABLED(vap) ? 0 : 1;

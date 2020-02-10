@@ -164,7 +164,8 @@ ieee80211_beacon_init(struct ieee80211_node *ni, struct ieee80211_beacon_offsets
     *(u_int16_t *)frm = htole16(capinfo);
     frm += 2;
     *frm++ = IEEE80211_ELEMID_SSID;
-    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap)) {
+    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap)
+		&& !(IEEE80211_VAP_IS_INWPS_ENABLED(vap)) ) {  /*TWB EAP*/
         *frm++ = 0;
     } else {
         *frm++ = ni->ni_esslen;

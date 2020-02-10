@@ -3886,6 +3886,10 @@ int ieee80211_ucfg_setparam(wlan_if_t vap, int param, int value, char *extra)
     case IEEE80211_PARAM_BACKHAUL:
         retv = wlan_set_param(vap, IEEE80211_FEATURE_BACKHAUL, value);
         break;
+    case IEEE80211_PARAM_INWPS:    /*TWB EAP*/
+        retv = wlan_set_param(vap, IEEE80211_FEATURE_INWPS, value);
+        vap->iv_update_vendor_ie = 1;
+        break;
 
 #if DYNAMIC_BEACON_SUPPORT
     case IEEE80211_PARAM_DBEACON_EN:
@@ -5682,6 +5686,9 @@ int ieee80211_ucfg_getparam(wlan_if_t vap, int param, int *value)
 
     case IEEE80211_PARAM_BACKHAUL:
         *value = wlan_get_param(vap, IEEE80211_FEATURE_BACKHAUL);
+        break;
+    case IEEE80211_PARAM_INWPS:    /*TWB EAP*/
+        *value = wlan_get_param(vap, IEEE80211_FEATURE_INWPS);
         break;
 
 #if DYNAMIC_BEACON_SUPPORT

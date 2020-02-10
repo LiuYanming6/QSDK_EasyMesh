@@ -1503,6 +1503,7 @@ typedef enum _ieee80211_param {
     IEEE80211_SUPPORT_PMF_ASSOC,              /* enable pmf timeoutie feature */
     IEEE80211_SUPPORT_RSN_OVERRIDE,           /* enable rsn_override feature */
     IEEE80211_DROP_MDNS,                      /* Enable/Disable MDNS pkts throttling */
+    IEEE80211_FEATURE_INWPS,                  /* TWB EAP */
 } ieee80211_param;
 
 #define  IEEE80211_PROTECTION_NONE         0

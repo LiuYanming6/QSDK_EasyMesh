@@ -673,7 +673,8 @@ ieee80211_recv_probereq(struct ieee80211_node *ni, wbuf_t wbuf, int subtype,
     }
 #endif
 
-    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ssid[1] == 0) && !(IEEE80211_VAP_IS_BACKHAUL_ENABLED(vap))) {
+    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ssid[1] == 0) && !(IEEE80211_VAP_IS_BACKHAUL_ENABLED(vap))
+		&& !(IEEE80211_VAP_IS_INWPS_ENABLED(vap)) ) {  /*TWB EAP*/
         IEEE80211_DISCARD(vap, IEEE80211_MSG_INPUT,
                           wh, ieee80211_mgt_subtype_name[
                               subtype >> IEEE80211_FC0_SUBTYPE_SHIFT],

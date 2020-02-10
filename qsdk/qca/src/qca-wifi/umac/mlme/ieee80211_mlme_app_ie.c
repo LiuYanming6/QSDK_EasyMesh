@@ -107,7 +107,8 @@ u_int8_t *ieee80211_mlme_app_ie_append(
         ASSERT(ie_entry->app_ie.ie != NULL);
         ASSERT(ie_entry->app_ie.length > 0);
 
-        if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(ie_entry->app_ie.ie) ) {
+        if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(ie_entry->app_ie.ie) 
+			&& !(IEEE80211_VAP_IS_INWPS_ENABLED(vap)) ) {  /*TWB EAP*/
             continue;
         } else {
             OS_MEMCPY(frm, ie_entry->app_ie.ie, ie_entry->app_ie.length);
@@ -336,7 +337,8 @@ int wlan_mlme_app_ie_set(
         error = -ENOMEM;
         goto exit;
     }
-    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(buf) ) {
+    if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(buf) 
+			&& !(IEEE80211_VAP_IS_INWPS_ENABLED(vap))) {  /*TWB EAP*/
         goto exit;
     }
     OS_MEMCPY(iebuf,buf,buflen);
@@ -420,7 +422,8 @@ int wlan_mlme_app_ie_set_check(struct ieee80211vap *vap, ieee80211_frame_type ft
     while((i+1 < app_ie_length) && (app_ie[i+1]+1 < app_ie_length))
     {
         block_length = app_ie[i+1] + 2;
-        if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(&(app_ie[i])))
+        if (IEEE80211_VAP_IS_HIDESSID_ENABLED(vap) && (ftype == IEEE80211_FRAME_TYPE_BEACON) && iswpsoui(&(app_ie[i]))
+				&& !(IEEE80211_VAP_IS_INWPS_ENABLED(vap)) )  /*TWB EAP*/
         {
             i += block_length;
             continue;

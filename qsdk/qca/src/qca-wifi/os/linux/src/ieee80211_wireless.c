@@ -15487,6 +15487,10 @@ static const struct iw_priv_args ieee80211_priv_args[] = {
     IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "backhaul" },
     { IEEE80211_PARAM_BACKHAUL,0,
     IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "get_backhaul" },
+    { IEEE80211_PARAM_INWPS,    /*TWB EAP*/
+    IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "in_wps" },
+    { IEEE80211_PARAM_INWPS,0,
+    IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "get_in_wps" },
     { IEEE80211_PARAM_EXT_NSS_CAPABLE,
     IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "ext_nss" },
     { IEEE80211_PARAM_EXT_NSS_CAPABLE,
