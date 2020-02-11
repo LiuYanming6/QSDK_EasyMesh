@@ -39,6 +39,8 @@
 
 #include "IP.h"      /* should be in the target data model dir */
 #include "Ethernet.h"/*   "           " */
+#include "../gslib/auxsrc/dns_lookup.h"
+
 
 #define DEBUG
 #ifdef DEBUG
@@ -52,6 +54,7 @@
 
 extern void *acsSession;
 IPDiagnosticsIPPing *cpePingParam;
+extern CPEState cpeState;
 
 void cpeStopPing(void *handle)
 {
@@ -116,6 +119,7 @@ void cpeStartPing( void *handle )
 	char qstr[10];
 	char interface[64];
 	int	 fd;
+	int checkstatus;
 	IPDiagnosticsIPPing *pp = (IPDiagnosticsIPPing *)handle;
 	cpePingParam = pp;
 	stopCallback(&acsSession, cpeStartPing, NULL); /* stop callback */
@@ -144,8 +148,17 @@ void cpeStartPing( void *handle )
 		snprintf(cmd, sizeof(cmd), PINGCMD " -c %d %s %s %s %s >&1",
 				pp->numberOfRepetitions, blkstr, interface, qstr, pp->host);
 #else /* busybox ping cmdline */
-		snprintf(cmd, sizeof(cmd), "%s -w %d -c %d%s %s 2>&1 &", PINGCMD,
-		  		pp->timeout? pp->timeout: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+        checkstatus = check_v4_v6(pp->host);
+        if ( cpeState.ipAddress.inFamily == AF_INET6 && 1 == checkstatus )
+        {
+            snprintf(cmd, sizeof(cmd), "%s -6 -w %d -c %d%s %s 2>&1 &", PINGCMD,
+            pp->timeout? pp->timeout: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+        }
+        else
+        {
+            snprintf(cmd, sizeof(cmd), "%s -4 -w %d -c %d%s %s 2>&1 &", PINGCMD,
+            pp->timeout? pp->timeout: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+        }
 #endif
 		/* the 2>&1 also writes stderr into the stdout pipe */
 		fprintf(stderr, "Start LAN Ping Diagnostic\n %s", cmd);
