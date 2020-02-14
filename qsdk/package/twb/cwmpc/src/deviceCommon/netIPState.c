@@ -797,6 +797,7 @@ static int refreshNetworkInstances(int discovery) {
 	u_char	mac[6];
 	int		id;
 	int		ipcnt;
+	int     ipcnt6;
 
 	Instance *eifip ={0};              // .Ether
 	Instance *lkip ={0};
@@ -909,20 +910,23 @@ static int refreshNetworkInstances(int discovery) {
 							//
 						}
 						ipcnt = 0;
-						do { // look for inet and inet6 records (inet6 has 2 lines).
-							Instance *ipip ={0};
-							if ( fgets(buf, sizeof(buf), fp)!=NULL ){
-								p = strstr(buf, "inet6 ");
-								if ( (inet = p!=NULL) ){
-									++ipcnt;
-									iip->iPv6Enable = 1;
-									p += strlen("inet6 ");
-									snprintf(oName, sizeof(oName), "%s.IP.Interface.%d.IPv6Address.%d.",
-													CWMP_RootObject[0].name, id, ipcnt);
+						ipcnt6 = 0;
+                        do { // look for inet and inet6 records (inet6 has 2 lines).
+                        	Instance *ipip ={0};
+                        	if ( fgets(buf, sizeof(buf), fp)!=NULL )
+                        	{
+                        		p = strstr(buf, "inet6 ");
+                        		if ( (inet = p!=NULL) )
+                        		{
+                        			++ipcnt6;
+                        			iip->iPv6Enable = 1;
+                        			p += strlen("inet6 ");
+                        			snprintf(oName, sizeof(oName), "%s.IP.Interface.%d.IPv6Address.%d.",CWMP_RootObject[0].name, id, ipcnt6);
                                     ipip = cwmpInitObjectInstance(oName);
-									if ( ipip ){
-										IPInterfaceIPv6Address *ipdata= (IPInterfaceIPv6Address *)ipip->cpeData;
-										COPYSTR( ipdata->status, "Enabled");
+                        			if ( ipip )
+                        			{
+                        				IPInterfaceIPv6Address *ipdata= (IPInterfaceIPv6Address *)ipip->cpeData;
+                        				COPYSTR( ipdata->status, "Enabled");
                                         if (!strncmp(ifname , "br-lan" , 6))
                                         {
                                             COPYSTR( ipdata->iPAddressStatus, "Preferred");
@@ -932,34 +936,39 @@ static int refreshNetworkInstances(int discovery) {
                                             COPYSTR( ipdata->iPAddressStatus, "Inaccessible");
                                         }
                                         COPYSTR( ipdata->iPAddress, getIPStr(p) );
-										ipdata->enable = 1;
-									}
-									fgets(buf, sizeof(buf), fp); // valid_lft forever ...
-								} else if ( (inet = (p = strstr(buf, "inet "))!=NULL)){
-									p += strlen("inet ");
-									++ipcnt;
-									iip->iPv4Enable = 1;
-									snprintf(oName, sizeof(oName), "%s.IP.Interface.%d.IPv4Address.%d.",
-													CWMP_RootObject[0].name, id, ipcnt);
+                        				ipdata->enable = 1;
+                        			}
+                        			fgets(buf, sizeof(buf), fp); // valid_lft forever ...
+                        		} 
+                        		else if ( (inet = (p = strstr(buf, "inet "))!=NULL))
+                        		{
+                        			p += strlen("inet ");
+                        			++ipcnt;
+                        			iip->iPv4Enable = 1;
+                        			snprintf(oName, sizeof(oName), "%s.IP.Interface.%d.IPv4Address.%d.",CWMP_RootObject[0].name, id, ipcnt);
                                     ipip = cwmpInitObjectInstance(oName);
-									if ( ipip ){
-										IPInterfaceIPv4Address *ipdata= (IPInterfaceIPv4Address *)ipip->cpeData;
+                        			if ( ipip )
+                        			{
+                        				IPInterfaceIPv4Address *ipdata= (IPInterfaceIPv4Address *)ipip->cpeData;
                                         if(NULL != getIPStr(p) && NULL !=  getSubnetMask(maskSize) )
                                         {
                                             COPYSTR( ipdata->iPAddress, getIPStr(p) );
                                             COPYSTR( ipdata->subnetMask, getSubnetMask(maskSize));
                                         }
-										COPYSTR( ipdata->status, "Enabled");
-										ipdata->enable = 1;
-									}
-									fgets(buf, sizeof(buf), fp); // valid_lft forever ...
-								}
-							} else {
-								inet = 0;
-							}
-							// read until get the "valid_..." line.
-						} while ( inet );
-					} else {
+                        				COPYSTR( ipdata->status, "Enabled");
+                        				ipdata->enable = 1;
+                        			}
+                        			fgets(buf, sizeof(buf), fp); // valid_lft forever ...
+                        		}
+                        	} 
+                        	else {
+                        		inet = 0;
+                        	}
+                        	// read until get the "valid_..." line.
+                        } while ( inet );
+					} 
+					else 
+					{
 						// flush to next interface record
 						do {
 							if ( fgets(buf, sizeof(buf), fp)==NULL)

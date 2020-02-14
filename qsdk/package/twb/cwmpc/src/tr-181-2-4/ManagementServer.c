@@ -39,6 +39,8 @@ CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
             cmd_popen(cmd,cmd_result);
             GS_FREE(cpeState.acsURL);
             cpeState.acsURL = GS_STRDUP(value);
+            system("uci set tr069.firstboot='0'");
+            system("uci commit tr069");
             system("reboot");
         }
         if ( cwmpIsACSSessionActive() )   /* only set this if a session is active. May be initializing. */
