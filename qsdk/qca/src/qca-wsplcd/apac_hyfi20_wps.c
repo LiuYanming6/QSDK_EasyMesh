@@ -292,10 +292,12 @@ int apac_wps_finish_session(struct apac_wps_session* sess)
         if (target->totalRcvdMapConfig &&
                 apacHyfiMapIsEnabled(HYFI20ToMAP(pApacData))) {
 
-            dprintf(MSG_INFO," %s Total %d Map configuration received for freq %d \n",__func__,
+            dprintf(MSG_INFO," %s Total %d Map configuration received for freq (ignore the 3rd SSID if any)%d \n",__func__,
                     target->totalRcvdMapConfig, freq);
 
-            for(i = 0; i < target->totalRcvdMapConfig; i++) {
+            /*TWB EAP*/
+            //for(i = 0; i < target->totalRcvdMapConfig; i++) {
+            for(i = 0; i < 2; i++) {  /*TWB EAP: force agent storing first two ssids only*/
                 if (apac_wps_set_map_configuration(sess, target->RcvdMapConfig[i],
                             target->RcvdMapConfiglen[i])) {
                     dprintf(MSG_DEBUG, "Invalid config,  MAP autoconfig session fails\n");
@@ -303,7 +305,8 @@ int apac_wps_finish_session(struct apac_wps_session* sess)
                 }
             }
 
-            if (i == target->totalRcvdMapConfig) {
+            //if (i == target->totalRcvdMapConfig) {
+            if (i == 2) {  /*TWB EAP: force agent storing first two ssids only*/
                 radioIdx = apacMibGetRadioIdxByMacAddr(sess->radioCap);
                 dprintf(MSG_INFO, "(%s) Map configuration success for [wifi%02d] \n", __func__,
                         radioIdx);
