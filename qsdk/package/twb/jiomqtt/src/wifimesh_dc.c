@@ -598,10 +598,10 @@ char *dc_get_stats() {
     /*TWB EAP: Get device role*/
     char device_role[8];
     int btype;
-    char fronthaul_24[8] = {0};
-    char fronthaul_5[8] = {0};
-    char backhaul_24[8] = {0};
-    char backhaul_5[8] = {0};
+    char fronthaul_24[8] = "none";
+    char fronthaul_5[8] = "none";
+    char backhaul_24[8] = "none";
+    char backhaul_5[8] = "none";
 
     /*TWB EAP: collect Wi-Fi interfaces list. Interfaces are not sorted in consistent order
      *         We need to collect them in run time. When there is Wi-Fi/Ethernet backhaul 
@@ -627,6 +627,58 @@ char *dc_get_stats() {
     if (!strcmp(bkhl, "CAP"))
         btype = 1; // Ethernet
 
+    /*TWB EAP: dynamic Wifi interface sorting*/
+    int m;
+    int bss[5] = {0}; //uci wireless MapBSSType
+    char *dev[5];     //uci wireless device
+    char *radio;      // access Jio API
+
+    for (m = 0; m < 5; m++)
+    {
+        radio = NULL;
+        get_device_radio_name(&radio, &size, m);
+        strip_newline_chars(radio);
+        dev[m] = radio;
+        bss[m] = get_device_map_bss(m);
+    }
+      
+    for (m = 0; m < 5; m++){
+
+        if (m == 0 && bss[m] == 128 && btype == 0) { //backhaul STA is always at wireless[0]
+            if (!strcmp(dev[m], "wifi1")){
+                sprintf(backhaul_5, "ath%d", 1);
+            } else {
+                sprintf(backhaul_24, "ath%d", 0);
+            }
+        }
+
+        if (bss[m] == 32) { //fronthaul APs
+
+            if (btype == 1 || !strcmp(backhaul_5, "ath1")) {
+
+                if (!strcmp(dev[m], "wifi1")) {
+                    if (m > 0 && m < 3) {
+                        sprintf(fronthaul_5, "ath%d", (btype==1?btype:11)); // check if it's in ethernet backhaul
+                    }else if (m > 2 && m < 5) {
+                        sprintf(fronthaul_5, "ath%d", 12-btype);
+                    }
+                } else if (!strcmp(dev[m], "wifi0")) {  // assume no 2.4G sta 
+                    if (m > 0 && m < 3)
+                        strcpy(fronthaul_24, "ath0");
+                    else if (m > 2 && m < 5) {
+                        strcpy(fronthaul_24, "ath01");
+                    }
+                }
+            } else {
+                LERROR("backhaul station is not 5G");  // neither in ethernet backhaul nor 5G backhaul (current version supports only 5G bsta)
+            }
+        } 
+        free(dev[m]); // release memories
+    }
+    LDEBUG("Wi-Fi interface list:[BSTA: %s Fronthaul APs->2.4G: %s 5G: %s]", backhaul_5, fronthaul_24, fronthaul_5);
+    /**/
+    
+#if 0 /* old hard code method */
     if (btype == 1) 
     {
         strcpy(backhaul_24,  "none");
@@ -665,6 +717,7 @@ char *dc_get_stats() {
     free(command_output);
     command_output = NULL;
     /**/
+#endif
 
     char *device_serial_format = "\"DI1\" : \"%s\"";
     char *device_serial_buffer = NULL;

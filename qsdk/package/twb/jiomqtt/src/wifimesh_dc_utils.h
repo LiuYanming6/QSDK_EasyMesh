@@ -131,6 +131,18 @@ static inline int get_device_bkhl_type(char **output, int32_t *size) {
     return util_popen_with_output(output, size, "uci get repacd.repacd.Role"); //TWB EAP: EasyMesh
 }
 
+/*TWB EAP: dynamic Wifi interface sorting*/
+static inline int get_device_map_bss(int32_t index) {
+    char cmd_str[128]={0};
+    sprintf(cmd_str, "uci get wireless.@wifi-iface[%d].MapBSSType", index);
+    return util_popen_with_output_long(cmd_str);
+}
+static inline int get_device_radio_name(char **output, int32_t *size, int32_t index) {
+    char cmd_str[128]={0};
+    sprintf(cmd_str, "uci get wireless.@wifi-iface[%d].device", index);
+    return util_popen_with_output(output, size, cmd_str);
+}
+/**/
 
 //Function to get CPU Usage.
 static inline long get_cpu_usage() {
