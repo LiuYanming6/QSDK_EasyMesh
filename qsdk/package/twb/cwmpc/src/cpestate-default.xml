@@ -4,5 +4,5 @@
     <acsUser></acsUser> 
     <acsPW></acsPW>
     <informEnabled>1</informEnabled> 
-    <informInterval>84000</informInterval> 
+    <informInterval>86400</informInterval> 
 </CPEState>
