@@ -75,13 +75,14 @@ CPE_STATUS getDeviceInfoVendorLogFile_MaximumSize(Instance *ip, char **value)
 /**@param DeviceInfoVendorLogFile_Persistent                     **/
 CPE_STATUS getDeviceInfoVendorLogFile_Persistent(Instance *ip, char **value)
 {
-
+	*value = GS_STRDUP("false");
+#if 0
         char cmd[7] ="";
         if(strlen(cmd) == 0)
             *value = GS_STRDUP("false");
         else
             *value = GS_STRDUP(cmd?"true":"false");
-
+#endif
 #if 0
         DeviceInfoVendorLogFile *p = (DeviceInfoVendorLogFile *)ip->cpeData;
         if ( p ){
