@@ -1,6 +1,15 @@
 #ifndef _GS__DEVICEINFO_H_
 #define _GS__DEVICEINFO_H_
 
+/**@obj DeviceInfoVendorLogFile **/
+typedef struct DeviceInfoVendorLogFile {
+        char *  name;
+        unsigned        maximumSize;
+        unsigned char   persistent;
+} DeviceInfoVendorLogFile;
+/**@endobj  **/
+
+
 /**@obj DeviceInfo **/
 typedef struct DeviceInfo {
 	char *	manufacturer;

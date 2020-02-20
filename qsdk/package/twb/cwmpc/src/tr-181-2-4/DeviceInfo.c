@@ -16,6 +16,7 @@
 #include "gslib/src/utils.h"
 #include "soapRpc/rpcUtils.h"
 #include "soapRpc/rpcMethods.h"
+#include "DeviceInfo.h"
 
 #include "stdlib.h"
 #include "targetsys.h"
@@ -23,6 +24,78 @@
 extern CPEState cpeState;
 #define STRINGIZE(x) #x
 #define STRINGIZE_VALUE_OF(x) STRINGIZE(x)
+
+/**@obj DeviceInfoVendorLogFile **/
+
+/**@param DeviceInfoVendorLogFile_Name                     **/
+CPE_STATUS getDeviceInfoVendorLogFile_Name(Instance *ip, char **value)
+{
+
+        char cmd[7] ="";
+        sprintf(cmd,"/tmp/dbg.log");
+        if(strlen(cmd) == 0)
+            *value = GS_STRDUP("0");
+        else
+            *value = GS_STRDUP(cmd);
+
+
+#if 0
+        DeviceInfoVendorLogFile *p = (DeviceInfoVendorLogFile *)ip->cpeData;
+        if ( p ){
+                if ( p->name )
+                        *value = GS_STRDUP(p->name);
+        }
+#endif
+        return CPE_OK;
+}
+/**@endparam                                               **/
+
+/**@param DeviceInfoVendorLogFile_MaximumSize                     **/
+CPE_STATUS getDeviceInfoVendorLogFile_MaximumSize(Instance *ip, char **value)
+{
+
+        char cmd[7] ="";
+        if(strlen(cmd) == 0)
+            *value = GS_STRDUP("0");
+        else
+            *value = GS_STRDUP(cmd);
+#if 0
+        DeviceInfoVendorLogFile *p = (DeviceInfoVendorLogFile *)ip->cpeData;
+        if ( p ){
+                p->maximumSize = 0;
+                char    buf[10];
+                snprintf(buf,sizeof(buf),"%u", p->maximumSize);
+                *value = GS_STRDUP(buf);
+        }
+#endif
+        return CPE_OK;
+}
+/**@endparam                                               **/
+
+/**@param DeviceInfoVendorLogFile_Persistent                     **/
+CPE_STATUS getDeviceInfoVendorLogFile_Persistent(Instance *ip, char **value)
+{
+
+        char cmd[7] ="";
+        if(strlen(cmd) == 0)
+            *value = GS_STRDUP("false");
+        else
+            *value = GS_STRDUP(cmd?"true":"false");
+
+#if 0
+        DeviceInfoVendorLogFile *p = (DeviceInfoVendorLogFile *)ip->cpeData;
+        if ( p ){
+                *value = GS_STRDUP(p->persistent? "true": "false");
+        }
+#endif
+        return CPE_OK;
+}
+/**@endparam                                               **/
+/**@endobj DeviceInfoVendorLogFile **/
+
+/**@obj DeviceInfo **/
+
+
 
 /**@param DeviceInfo_Manufacturer                     **/
 CPE_STATUS getDeviceInfo_Manufacturer(Instance *ip, char **value) {

@@ -79,6 +79,22 @@ CWMPObject DNS_Objs[]={
 
 /**@endobj Device.DNS.  */
 #endif
+
+
+/**@endobj Device.DeviceInfo.ProcessStatus.  */
+/**@param Device.DeviceInfo.VendorLogFile.{i}. */
+CPEGETFUNC(getDeviceInfoVendorLogFile_Name);
+CPEGETFUNC(getDeviceInfoVendorLogFile_MaximumSize);
+CPEGETFUNC(getDeviceInfoVendorLogFile_Persistent);
+CWMPParam DeviceInfoVendorLogFile_Params[]={
+        { "Name", getDeviceInfoVendorLogFile_Name, NULL, NULL, RPC_R, eString, 0, 64},
+        { "MaximumSize", getDeviceInfoVendorLogFile_MaximumSize, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
+        { "Persistent", getDeviceInfoVendorLogFile_Persistent, NULL, NULL, RPC_R, eBoolean, 0, 0},
+        {NULL}
+};
+/**@endparam Device.DeviceInfo.VendorLogFile.{i}.  */
+
+
 /**@param Device.DeviceInfo. */
 CPEGETFUNC(getDeviceInfo_Manufacturer);
 CPEGETFUNC(getDeviceInfo_ManufacturerOUI);
@@ -106,6 +122,14 @@ CWMPParam DeviceInfo_Params[]={
 	{NULL}
 };
 /**@endparam Device.DeviceInfo.  */
+
+/**@obj Device.DeviceInfo.  */
+CWMPObject DeviceInfo_Objs[]={
+        {"VendorLogFile", NULL, NULL, NULL, NULL, NULL, DeviceInfoVendorLogFile_Params, NULL, eInstance,  0},
+        {NULL}
+};
+/**@endobj Device.DeviceInfo.  */
+
 
 /**@param Device.Ethernet.Interface.{i}.Stats. */
 CPEGETFUNC(getEthernetInterfaceStats_BytesSent);
@@ -1154,7 +1178,7 @@ CPEADDOBJ(initDeviceInfoMemoryStatus);
 CPEADDOBJ(initDeviceInfoProcessStatus);
 CWMPObject Device_Objs[]={
 //	{"DNS", NULL, NULL, NULL, NULL, DNS_Objs, DNS_Params, NULL, eObject,  0},
-	{"DeviceInfo", NULL, NULL, NULL, NULL, NULL, DeviceInfo_Params, NULL, eObject,  0},
+	{"DeviceInfo", NULL, NULL, NULL, NULL, DeviceInfo_Objs, DeviceInfo_Params, NULL, eObject,  0},
 	{"Ethernet", NULL, NULL, NULL, NULL, Ethernet_Objs, Ethernet_Params, NULL, eObject,  0},
 //	{"Hosts", NULL, NULL, NULL, NULL, Hosts_Objs, Hosts_Params, NULL, eObject,  0},
 	{"IP", NULL, initIP, NULL, NULL, IP_Objs, IP_Params, NULL, eObject,  0},
