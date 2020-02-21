@@ -1,0 +1,39 @@
+diff --git a/src/ap/wps_hostapd.c b/src/ap/wps_hostapd.c
+index 71ddfa9..1e036f1 100644
+--- a/src/ap/wps_hostapd.c
++++ b/src/ap/wps_hostapd.c
+@@ -1172,6 +1172,7 @@ int hostapd_init_wps(struct hostapd_data *hapd,
+ 	wps->upc = hapd->conf->upc;
+ #endif /* CONFIG_WPS_UPNP */
+ 	cfg.map = conf->map;
++        wps->map = conf->map;
+ 
+ 	hostapd_register_probereq_cb(hapd, hostapd_wps_probe_req_rx, hapd);
+ 
+diff --git a/src/wps/wps_registrar.c b/src/wps/wps_registrar.c
+index 65f4f6a..c447626 100644
+--- a/src/wps/wps_registrar.c
++++ b/src/wps/wps_registrar.c
+@@ -1594,10 +1594,8 @@ int wps_build_cred(struct wps_data *wps, struct wpabuf *msg)
+ {
+ 	struct wpabuf *cred;
+ 
+-	if (wps->wps->registrar->map & 0x80)
+-		goto skip_cred_build;
+ 
+-	if (wps->wps->registrar->skip_cred_build)
++        if ((wps->wps->registrar->skip_cred_build) && !((wps->wps->map) && (wps->wps->registrar->map != 128)))
+ 		goto skip_cred_build;
+ 
+ 	wpa_printf(MSG_DEBUG, "WPS:  * Credential");
+@@ -1764,6 +1762,10 @@ use_provided:
+ 	wpabuf_put_be16(msg, wpabuf_len(cred));
+ 	wpabuf_put_buf(msg, cred);
+ 	wpabuf_clear_free(cred);
++        if(wps->wps->map) {
++		wpa_printf(MSG_DEBUG, "WPS:  *Credential Configured");
++		return 0;
++	}
+ 
+ skip_cred_build:
+ 	if (wps->wps->registrar->extra_cred) {
