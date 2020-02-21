@@ -4278,12 +4278,16 @@ int apacHyfi20ReceiveWpsE(apacHyfi20Data_t *pData, u8 *frame, u32 frameLen) {
                 goto retransmit;
             }
 
-
             if (apacHyfiMapIsEnabled(HYFI20ToMAP(pData))) {
                 for(i = 0 ; i < parsedIndex; i++) {
                     if (apac_wps_process_message_M2(sess, (u8 *)data->container[i].value.ptr_,
                                 data->container[i].length) < 0) {
                         dprintf(MSG_ERROR, "process M2 error\n");
+                        /*TWB EAP:*/
+                        dprintf(MSG_ERROR, "AP Auto Configuration Failed, some errors in M2, restart search again!");
+                        apacHyfi20ResetState(sess, APAC_FALSE);
+                        apac_wps_del_session(sess);
+                        /**/
                         return -1;
                     }
                 }
