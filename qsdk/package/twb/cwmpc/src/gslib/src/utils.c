@@ -978,6 +978,161 @@ int get_role(void)
         return 0;
 }
 
+/*TWB EAP: dynamic Wifi interface sorting*/
+int get_device_map_bss(int index) {
+    int mapbss;
+    char cmd[128]={0};
+    char cmd_result[128]={0};
+    sprintf(cmd, "uci get wireless.@wifi-iface[%d].MapBSSType", index);
+    cmd_popen(cmd, cmd_result);
+    strtok(cmd_result, "\n");
+    mapbss = atoi(cmd_result);
+    
+    return mapbss;
+}
+
+void get_device_radio_name(char *s, int index) {
+    char cmd[128]={0};
+    char cmd_result[128]={0};
+    sprintf(cmd, "uci get wireless.@wifi-iface[%d].device", index);
+    cmd_popen(cmd, cmd_result);
+    strtok(cmd_result, "\n");
+    strcpy(s, cmd_result);
+
+    return;
+}
+
+int  get_uci_wifi_index(int *uci_idx, int idx) {
+
+    int m;
+    int bss;
+    char dev[16] = {0};
+    *uci_idx = -1;
+    for (m = 0; m < 5; m++)  //go through wifi-iface[0] to [4]
+    {
+        memset(dev , 0 , sizeof(dev));
+        get_device_radio_name(dev, m); //get radio name
+        bss = get_device_map_bss(m);   //get MapBSS type
+
+        switch (idx)
+        {
+            case 0: //2.4 fh
+                if (bss == 32 && !strncmp(dev, "wifi0", 5))
+                {
+                    //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
+                    *uci_idx = m;
+                }
+                break;
+            case 1: //2.4 bh
+                if (bss == 128 && !strncmp(dev, "wifi0", 5))
+                {
+                    //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
+                    *uci_idx = m;
+                }
+                break;
+            case 2: //5 fh
+                if (bss == 32 && !strncmp(dev, "wifi1", 5))
+                {
+                    //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
+                    *uci_idx = m;
+                }
+                break;
+            case 3: //5 bh
+                if (bss == 128 && !strncmp(dev, "wifi1", 5))
+                {
+                    //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
+                    *uci_idx = m;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (*uci_idx == -1)
+        return -1;
+    else
+        return 1;
+}
+
+int get_uci_wifi_intf_name(char *ath, int idx, int role) {
+
+    int m;
+    int bss;
+    char dev[16] = {0};
+
+    for (m = 0; m < 5; m++)
+    {
+        memset(dev , 0 , sizeof(dev));
+        get_device_radio_name(dev, m); //get radio name
+        bss = get_device_map_bss(m);   //get MapBSS type
+
+        switch (idx)
+        {
+            case 0: //2.4 fh
+               if (role == 0 || role == 1) 
+               {
+                    if (bss == 32 && !strcmp(dev, "wifi0")) 
+                    {
+                        if (m > 0 && m < 3) 
+                            strcpy(ath, "0");
+                        else if (m > 2 && m < 5) 
+                            strcpy(ath, "01");
+                    }
+                }
+                //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+            break;
+
+            case 1: //2.4 bh
+                if (role == 0) 
+                { //wifi 
+                    if (bss == 128 && !strcmp(dev, "wifi0"))
+                        strcpy(ath, "0");
+                }
+                else if (role == 1) 
+                {  //ethernet
+                    strcpy(ath, "none");
+                }
+                //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+            break;
+
+            case 2: //5 fh
+                if (bss == 32 && !strcmp(dev, "wifi1")) 
+                {
+                    if (m > 0 && m < 3) 
+                    {
+                        sprintf(ath, "%d", (role==1?role:11));
+                    }
+                    else if (m > 2 && m < 5)
+                        sprintf(ath, "%d", 12-role);
+                }
+                //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+            break;
+
+            case 3: //5 bh
+                if (role == 0) 
+                { 
+                    if (bss == 128 && !strcmp(dev, "wifi1"))
+                        strcpy(ath, "1");
+                }
+                else if (role == 1) 
+                    strcpy(ath, "none");
+
+                //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+            break;
+
+            default:
+            break;
+        }
+    }
+
+    if(!strncmp(ath,"none",4))
+        return -1;
+    else
+        return 1;
+}
+/**/
+
 int get_bkhaul_iface(char *iface)
 {
     static char cmd[128]={0};
@@ -1031,6 +1186,17 @@ ath   uci  channel            SSID Reference
 */
 char *get_topology_iface_name (int role , int id)
 {
+    static char ath[16] = {0};
+    int index;
+
+    index = get_uci_wifi_intf_name(ath, id, role);
+
+    if(index == -1)
+        return "-1";
+    else
+        return ath;
+
+#if 0
     if ( role == 1 )
     {
         if(id==0)
@@ -1068,6 +1234,7 @@ char *get_topology_iface_name (int role , int id)
         DBG_MSG("ERROR : get_role: %d %d",role , id);
 
     return "-1";
+#endif
 }
 
 /*****************************************************************************/
@@ -1107,7 +1274,17 @@ ath   uci  channel            SSID Reference
 */
 int get_uci_iface_name (int role , int id)
 {
+    int uci;
+    int index;
 
+    index = get_uci_wifi_index(&uci, id);
+
+    if(index == -1)
+        return -1;
+    else
+        return uci;
+
+#if 0
     if ( role == 1 )
     {
         if(id==0)
@@ -1145,6 +1322,7 @@ int get_uci_iface_name (int role , int id)
         DBG_MSG("ERROR : get_role: %d %d",role , id);
 
     return -1;
+#endif
 }
 /*****************************************************************************/
 unsigned int util_generate_random_num(void)

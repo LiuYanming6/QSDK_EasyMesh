@@ -2275,7 +2275,7 @@ CPE_STATUS getWiFiSSID_BSSID(Instance *ip, char **value)
             char *pos = NULL;
             char iface[3]={0};
             strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
-            
+
             if(!strncmp(iface,"-1",2))
                 return CPE_OK;
 
@@ -2372,6 +2372,7 @@ CPE_STATUS getWiFiSSID_SSID(Instance *ip, char **value)
         char *pos = NULL;
 
         int uci_iface = get_uci_iface_name(role, ip->id-1);
+        //DBG_MSG("uci_iface : %d, role: %d , num : %d\n\n" , uci_iface , role , ip->id-1);
         if (uci_iface == -1)
             return CPE_OK;
 
@@ -2400,8 +2401,6 @@ CPE_STATUS getWiFiSSID_SSID(Instance *ip, char **value)
 CPE_STATUS  initWiFi(CWMPObject *o, Instance *ip)
 {
     role = get_role();
-    if (role == 0)
-        role = get_bkhaul_iface("ath1");
 
     return CPE_OK;
 }
