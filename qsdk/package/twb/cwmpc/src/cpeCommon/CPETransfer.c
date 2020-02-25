@@ -40,6 +40,7 @@
 #include "../soapRpc/rpcUtils.h"
 #include "../soapRpc/notify.h"
 #include "../soapRpc/cwmpSession.h"
+#include "DeviceInfo.h"
 
 #include "targetsys.h"
 
@@ -645,12 +646,22 @@ upgrade:
  */
 static int fup;
 int  cpeUploadSetup( DownloadMsg *r){
-	/*
-	 * verify that the URL and fileType are present.
-	 */
-	if ( r->URL==NULL || r->fileType==NULL )
-		return 9003;       /* invalid arguments */
 
+    /*
+     * verify that the URL and fileType are present.
+     */
+    if ( r->URL==NULL || r->fileType==NULL )
+    	return 9003;       /* invalid arguments */
+
+#if 1
+    if ( (fup=open("/tmp/dbg.log", O_RDONLY) )) {
+        fprintf(stderr, "cpeUploadSetup() opening %s status = %d\n", "/tmp/dbg.log", fup);
+        r->content_type = "application/octet-stream";       /* optional content-type */
+        return 1;
+    }
+
+    
+#else
     system("sysupgrade -b /tmp/cwmpuploadfile");
 
     /* figure out which file to upload based on the DownloadMsg file type here */
@@ -660,6 +671,8 @@ int  cpeUploadSetup( DownloadMsg *r){
             r->content_type = "application/octet-stream";		/* optional content-type */
             return 1;
         }
+#endif
+
     return 0;
 }
 /* cpeGetUploadData:

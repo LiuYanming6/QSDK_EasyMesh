@@ -39,13 +39,11 @@ CPE_STATUS getDeviceInfoVendorLogFile_Name(Instance *ip, char **value)
             *value = GS_STRDUP(cmd);
 
 
-#if 0
         DeviceInfoVendorLogFile *p = (DeviceInfoVendorLogFile *)ip->cpeData;
         if ( p ){
-                if ( p->name )
-                        *value = GS_STRDUP(p->name);
+            COPYSTR(p->name, cmd);
         }
-#endif
+
         return CPE_OK;
 }
 /**@endparam                                               **/

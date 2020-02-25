@@ -350,12 +350,13 @@ static void sendXferComplete(RPCRequest *r) {
 		stopTimer(downloadWindowEnded, (void*)r);
 #endif
 	r->ud.downloadReq.dlEndTime = time(0);
-#if 0
-	cwmpAddEvent(r->rpcMethod == eDownload ? eEvtMDownload
+	if(cpeState.sigusr1 == 0)
+	{
+		cwmpAddEvent(r->rpcMethod == eDownload ? eEvtMDownload
 			        : r->rpcMethod== eScheduleDownload ? eEvtMScheduleDownload
 			        : eEvtMUpload);
-	cwmpAddEvent(eEvtTransferComplete);
-#endif
+		cwmpAddEvent(eEvtTransferComplete);
+	}
 	cwmpSetPending(PENDING_XFERCOMPL);
 	/* don't send inform if the next transfer is ready to start */
 	if (isTransferReady()) {
