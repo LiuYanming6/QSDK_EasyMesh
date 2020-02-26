@@ -292,12 +292,11 @@ int apac_wps_finish_session(struct apac_wps_session* sess)
         if (target->totalRcvdMapConfig &&
                 apacHyfiMapIsEnabled(HYFI20ToMAP(pApacData))) {
 
-            dprintf(MSG_INFO," %s Total %d Map configuration received for freq (ignore the 3rd SSID if any)%d \n",__func__,
+            dprintf(MSG_INFO," %s Total %d Map configuration received for freq %d \n",__func__,
                     target->totalRcvdMapConfig, freq);
 
-            /*TWB EAP*/
-            //for(i = 0; i < target->totalRcvdMapConfig; i++) {
-            for(i = 0; i < 2; i++) {  /*TWB EAP: force agent storing first two ssids only*/
+            for(i = 0; i < target->totalRcvdMapConfig; i++) {
+            //for(i = 0; i < 2; i++) { /*TWB EAP: pick only first 2 SSIDs*/
                 if (apac_wps_set_map_configuration(sess, target->RcvdMapConfig[i],
                             target->RcvdMapConfiglen[i])) {
                     dprintf(MSG_DEBUG, "Invalid config,  MAP autoconfig session fails\n");
@@ -305,8 +304,8 @@ int apac_wps_finish_session(struct apac_wps_session* sess)
                 }
             }
 
-            //if (i == target->totalRcvdMapConfig) {
-            if (i == 2) {  /*TWB EAP: force agent storing first two ssids only*/
+            if (i == target->totalRcvdMapConfig) {
+            //if (i == 2) {  /*TWB EAP: force agent storing first two ssids only*/
                 radioIdx = apacMibGetRadioIdxByMacAddr(sess->radioCap);
                 dprintf(MSG_INFO, "(%s) Map configuration success for [wifi%02d] \n", __func__,
                         radioIdx);
@@ -4283,10 +4282,10 @@ int apacHyfi20ReceiveWpsE(apacHyfi20Data_t *pData, u8 *frame, u32 frameLen) {
                     if (apac_wps_process_message_M2(sess, (u8 *)data->container[i].value.ptr_,
                                 data->container[i].length) < 0) {
                         dprintf(MSG_ERROR, "process M2 error\n");
-                        /*TWB EAP:*/
-                        dprintf(MSG_ERROR, "AP Auto Configuration Failed, some errors in M2, restart search again!");
-                        apacHyfi20ResetState(sess, APAC_FALSE);
-                        apac_wps_del_session(sess);
+                        /*TWB EAP: trying to delete the sesson when fail processing M2 */
+                        //dprintf(MSG_ERROR, "AP Auto Configuration Failed, some errors in M2, restart search again!");
+                        //apacHyfi20ResetState(sess, APAC_FALSE);
+                        //apac_wps_del_session(sess);
                         /**/
                         return -1;
                     }
