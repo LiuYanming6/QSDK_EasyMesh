@@ -5,5 +5,6 @@ config system
 
 config timeserver ntp
         list server     acs.oss.jio.com
+        list server     1.pool.ntp.org
         option enabled 1
         option enable_server 0
