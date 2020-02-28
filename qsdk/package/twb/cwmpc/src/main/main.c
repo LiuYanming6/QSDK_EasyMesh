@@ -68,7 +68,7 @@ extern void retrytoACS(void);
 char	*defaultNetworkIF = "eth0";
 char	*defaultWANIP;
 static char *cipherList = NULL;
-int		no_ca = 0;
+int		is_tls = 1;
 
 static void initCpeState(void)
 {
@@ -108,7 +108,8 @@ static void initTasks(void)
 	/* INIT Protocol http, ssl */
 	if ( cipherList == NULL )
 		cipherList = ACS_CIPHERS;
-	proto_Init(no_ca?cipherList:"DEFAULT", no_ca?"":SERVER_CERT, CLIENT_CERT);
+
+	proto_Init(is_tls? cipherList:"DEFAULT", is_tls? SERVER_CERT:"", CLIENT_CERT);
 
 	/* start listening for event messages from native CPE processes. */
 	startCPEEventListener();
@@ -177,7 +178,7 @@ int main(int argc, char** argv)
 		} else if (strcmp(argv[i], "-c")==0) {
 			cipherList = argv[++i];
 		} else if (strcmp(argv[i], "-n")==0) {
-			no_ca = 1;
+			is_tls = 0;
 		} else if (strcmp(argv[i], "-h")==0) {
 			printf("Options:\n");
 			printf("  -i <network interface name>");
