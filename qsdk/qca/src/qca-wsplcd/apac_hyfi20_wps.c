@@ -2704,7 +2704,7 @@ int apac_wps_process_message_M2(struct apac_wps_session* sess, u8* rcvMsg, int r
     int ret = -1;
     apacHyfi20Data_t* pData = sess->pData;
     struct apac_wps_data *data = sess->pWpsData;
-    struct apac_wps_target_info *target;
+    struct apac_wps_target_info *target = NULL;
     struct wps_data *wps = 0;
     u8 msg_type;
     u8 kdk[SIZE_256_BITS];
@@ -2714,6 +2714,8 @@ int apac_wps_process_message_M2(struct apac_wps_session* sess, u8* rcvMsg, int r
     u8 authenticator[SIZE_8_BYTES];
     u8 keyWrapAuth[SIZE_64_BITS];
     u8 vendor_ext[1024] = { 0 };
+    int fail = 1, encr_fail = 1;
+    u8 *config = 0;
 
     apacHyfi20TRACE();
 
@@ -2826,7 +2828,7 @@ int apac_wps_process_message_M2(struct apac_wps_session* sess, u8* rcvMsg, int r
             dprintf(MSG_ERROR, "Authenticator validation failed in M2\n");
             break;
         }
-
+        fail = 0;
         /* Encrypted Settings */
         length = 0;
         (void)wps_get_value(wps, WPS_TYPE_ENCR_SETTINGS, 0, &length);
@@ -2835,9 +2837,7 @@ int apac_wps_process_message_M2(struct apac_wps_session* sess, u8* rcvMsg, int r
             u8 *encrs = 0;
             u8 *iv, *cipher;
             int cipher_len;
-            u8 *config = 0;
             int config_len;
-            int fail = 1;
 
             do {
                 encrs = os_malloc(length);
@@ -2896,32 +2896,33 @@ int apac_wps_process_message_M2(struct apac_wps_session* sess, u8* rcvMsg, int r
                     target->totalRcvdMapConfig++;
                 }
 
-                fail = 0;
+                encr_fail = 0;
             } while (0);
 
             if (encrs)
                 os_free(encrs);
 
-            if (fail) {
-                if (!apacHyfiMapIsEnabled(HYFI20ToMAP(pData)) && config) {
-                    os_free(config);
-                    target->config = 0;
-                    target->config_len = 0;
-                } else {
-                    u8 i;
-                    for (i = 0 ; i < target->totalRcvdMapConfig; i++) {
-                        os_free(target->RcvdMapConfig[i]);
-                        target->totalRcvdMapConfig = 0;
-                    }
-                }
-                dprintf(MSG_ERROR, "%s - process failed\n", __func__);
-            } //fail
         } //length
 
         ret = 0;
         dprintf(MSG_DEBUG, "%s: (%d) M2 received\n", __func__,
                 data->target->totalRcvdMapConfig);
     } while (0);
+
+    if (target && (fail || encr_fail)) {
+        if (!apacHyfiMapIsEnabled(HYFI20ToMAP(pData)) && config) {
+            os_free(config);
+            target->config = 0;
+            target->config_len = 0;
+        } else {
+            u8 i;
+            for (i = 0 ; i < target->totalRcvdMapConfig; i++) {
+                os_free(target->RcvdMapConfig[i]);
+                target->totalRcvdMapConfig = 0;
+            }
+        }
+        dprintf(MSG_ERROR, "%s - process failed\n", __func__);
+    } //fail
 
     (void)wps_destroy_wps_data(&wps);
     return ret;
