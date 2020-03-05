@@ -271,7 +271,7 @@ CPE_STATUS getWiFiAccessPointSecurity_ModesSupported(Instance *ip, char **value)
 {
 	WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
 	if ( p ){
-        COPYSTR(p->modesSupported,"WPA2-Personal");
+        COPYSTR(p->modesSupported,"None\nWPA-Personal\nWPA2-Personal\nWPA-WPA2-Personal");
 		if ( p->modesSupported )
 			*value = GS_STRDUP(p->modesSupported);
 	}
@@ -342,8 +342,11 @@ CPE_STATUS getWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char **value)
         cmd_popen(cmd , cmd_result );
         if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
         if (NULL != cmd_result)     ret = atoi(cmd_result);
-        
-        if(ret == 1)
+        if(ret == 0)
+        {
+            COPYSTR(p->modeEnabled ,"None" );
+        }
+        else if (ret == 1)
         {
             COPYSTR(p->modeEnabled ,"WPA-Personal" );
         }
