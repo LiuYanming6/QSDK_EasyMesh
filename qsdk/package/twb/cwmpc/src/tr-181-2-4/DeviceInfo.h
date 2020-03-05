@@ -21,6 +21,7 @@ typedef struct DeviceInfo {
 	char *	softwareVersion;
 	char *	provisioningCode;
 	unsigned	upTime;
+	time_t  firstUseDate;
 } DeviceInfo;
 /**@endobj DeviceInfo **/
 

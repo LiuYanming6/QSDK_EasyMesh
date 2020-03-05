@@ -108,6 +108,7 @@ CPESETFUNC(setDeviceInfo_SoftwareVersion);
 CPEGETFUNC(getDeviceInfo_ProvisioningCode);
 CPESETFUNC(setDeviceInfo_ProvisioningCode);
 CPEGETFUNC(getDeviceInfo_UpTime);
+CPEGETFUNC(getDeviceInfo_FirstUseDate);
 CWMPParam DeviceInfo_Params[]={
 	{ "Manufacturer", getDeviceInfo_Manufacturer, NULL, NULL, RPC_R, eString, 0, 64},
 	{ "ManufacturerOUI", getDeviceInfo_ManufacturerOUI, NULL, NULL, RPC_R, eString, 0, 6},
@@ -119,6 +120,7 @@ CWMPParam DeviceInfo_Params[]={
 	{ "SoftwareVersion", getDeviceInfo_SoftwareVersion, setDeviceInfo_SoftwareVersion, NULL, RPC_R, eString, FORCED_INFORM|FORCED_ACTIVE, 64},
 	{ "ProvisioningCode", getDeviceInfo_ProvisioningCode, setDeviceInfo_ProvisioningCode, NULL, RPC_RW, eString, FORCED_INFORM|FORCED_ACTIVE, 64},
 	{ "UpTime", getDeviceInfo_UpTime, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
+	{ "FirstUseDate", getDeviceInfo_FirstUseDate, NULL, NULL, RPC_R, eDateTime, NOACTIVENOTIFY, 0},
 	{NULL}
 };
 /**@endparam Device.DeviceInfo.  */
@@ -1161,6 +1163,22 @@ CWMPParam DeviceInfoProcessStatus_Params[]={
 };
 /**@endparam Device.DeviceInfo.ProcessStatus.  */
 
+/**@param Device.Time. */
+CPEGETFUNC(getTime_Enable);
+CPESETFUNC(setTime_Enable);
+CPEGETFUNC(getTime_NTPServer1);
+CPESETFUNC(setTime_NTPServer1);
+CPEGETFUNC(getTime_NTPServer2);
+CPESETFUNC(setTime_NTPServer2);
+CWMPParam Time_Params[]={
+        { "Enable", getTime_Enable, setTime_Enable, NULL, RPC_RW, eBoolean, 0, 0},
+        { "NTPServer1", getTime_NTPServer1, setTime_NTPServer1, NULL, RPC_RW, eString, 0, 64},
+        { "NTPServer2", getTime_NTPServer2, setTime_NTPServer2, NULL, RPC_RW, eString, 0, 64},
+        {NULL}
+};
+/**@endparam Device.Time.  */
+
+
 /**@param Device. */
 //CPEGETFUNC(get_InterfaceStackNumberOfEntries);
 CWMPParam Device_Params[]={
@@ -1190,6 +1208,7 @@ CWMPObject Device_Objs[]={
 	{"ProcessStatus", NULL, initDeviceInfoProcessStatus, NULL, NULL, NULL, DeviceInfoProcessStatus_Params, NULL, eObject,  0},
 	{"WiFi", NULL, initWiFi, NULL, NULL, WiFi_Objs, WiFi_Params, NULL, eObject,  0},
 	{"X_RJIL_MeshNode", NULL, initX_RJIL_MeshNode, NULL, NULL, NULL, X_RJIL_MeshNode_Params, NULL, eObject,  0},
+	{"Time", NULL, NULL, NULL, NULL, NULL, Time_Params, NULL, eObject,  0},
 	{NULL}
 };
 

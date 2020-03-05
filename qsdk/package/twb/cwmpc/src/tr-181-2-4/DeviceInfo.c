@@ -223,4 +223,38 @@ CPE_STATUS getDeviceInfo_UpTime(Instance *ip, char **value) {
 	return CPE_OK;
 }
 /**@endparam                                                       **/
+
+/**@param DeviceInfo_FirstUseDate                     **/
+CPE_STATUS getDeviceInfo_FirstUseDate(Instance *ip, char **value)
+{
+
+    char firstusedate[30]="";
+    char buf[64]="";
+    char cmd_result[32] ="";
+    cmd_popen("uci get tr069.firstusedate", firstusedate);
+    if ( !strncmp(firstusedate,"0",1))
+    {
+        memset(firstusedate, 0 , sizeof(firstusedate));
+        time_t t1 = time(NULL);
+        struct tm *nPtr = localtime(&t1);
+        strftime(firstusedate,sizeof(firstusedate),"%Y-%m-%dT%H:%M:%S",nPtr );
+        sprintf(buf, "uci set tr069.firstusedate='%s'", firstusedate);
+        cmd_popen(buf, cmd_result);
+        system("uci commit");
+    }
+    else
+        *value = GS_STRDUP(firstusedate);
+#if 0
+    DeviceInfo *p = (DeviceInfo *)ip->cpeData;
+    if ( p ){
+
+        char buf[30];
+        struct tm *bt=localtime(&p->firstUseDate);
+        strftime(buf,sizeof(buf),"%Y-%m-%dT%H:%M:%S",bt );
+        *value = GS_STRDUP(buf);
+    }
+#endif
+        return CPE_OK;
+}
+/**@endparam **/
 /**@endobj DeviceInfo **/
