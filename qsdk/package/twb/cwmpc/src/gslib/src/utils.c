@@ -1324,6 +1324,30 @@ int get_uci_iface_name (int role , int id)
     return -1;
 #endif
 }
+
+int character_check (char *str)
+{
+    int len = strlen(str);
+    int i;
+    int digits = 0;
+    int alphabets = 0;
+    int special = 0;
+    for(i=0; i < len; i++)
+    {
+        if( (str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') )
+            alphabets ++;
+        else if(str[i] >= '0' && str[i] <='9')
+            digits ++;
+        else
+            special ++;
+    }
+
+    if(alphabets > 0 || special > 0)
+        return 0;
+    else
+        return 1;
+}
+
 /*****************************************************************************/
 unsigned int util_generate_random_num(void)
 {

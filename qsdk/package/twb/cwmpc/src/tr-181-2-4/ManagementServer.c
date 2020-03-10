@@ -96,24 +96,33 @@ CPE_STATUS getManagementServer_PeriodicInformEnable(Instance *ip, char **value)
 /**@param ManagementServer_PeriodicInformInterval                                                      **/
 CPE_STATUS setManagementServer_PeriodicInformInterval(Instance *ip, char *value)
 {
-    cpeState.informInterval = atoi(value);
-    
-    char cmd[128]={0};
-    char cmd_result[128]={0};
-    char *pos =NULL;
-    int interval = -1;
-    memset(cmd , 0x0 , sizeof(cmd));
-    memset(cmd_result , 0x0 , sizeof(cmd_result));
-    sprintf(cmd, "cat /etc/cpestate-default.xml | grep Interval | awk -F '>' '{print $2}' | awk -F '<' '{print $1}'");
-    cmd_popen(cmd, cmd_result);
-    if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-    if ( NULL != cmd_result)    interval = atoi(cmd_result);
-    
-    memset(cmd , 0x0 , sizeof(cmd));
-    memset(cmd_result , 0x0 , sizeof(cmd_result));
-    sprintf(cmd, "sed -i \"s/<informInterval>%d</<informInterval>%d</g\" %s", interval , atoi(value) , CPESTATE_FILENAME_DEFAULT );
-    cmd_popen(cmd, cmd_result);
-    return CPE_OK;
+    int ret = character_check(value);
+    if(ret)
+    {
+        if(value[0] =='0')
+            return CPE_ERR;
+
+        cpeState.informInterval = atoi(value);
+        
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos =NULL;
+        int interval = -1;
+        memset(cmd , 0x0 , sizeof(cmd));
+        memset(cmd_result , 0x0 , sizeof(cmd_result));
+        sprintf(cmd, "cat /etc/cpestate-default.xml | grep Interval | awk -F '>' '{print $2}' | awk -F '<' '{print $1}'");
+        cmd_popen(cmd, cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if ( NULL != cmd_result)    interval = atoi(cmd_result);
+        
+        memset(cmd , 0x0 , sizeof(cmd));
+        memset(cmd_result , 0x0 , sizeof(cmd_result));
+        sprintf(cmd, "sed -i \"s/<informInterval>%d</<informInterval>%d</g\" %s", interval , atoi(value) , CPESTATE_FILENAME_DEFAULT );
+        cmd_popen(cmd, cmd_result);
+        return CPE_OK;
+    }
+    else
+        return CPE_ERR;
 }
 CPE_STATUS getManagementServer_PeriodicInformInterval(Instance *ip, char **value)
 {

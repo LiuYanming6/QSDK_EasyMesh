@@ -253,6 +253,7 @@ int get_role(void);
 int get_bkhaul_iface(char *iface);
 char *get_topology_iface_name (int role , int id);
 int get_uci_iface_name (int role , int id);
+int character_check (char *str);
 unsigned int util_generate_random_num(void);
 void randomstring(char *rstring,int length);
 #endif
