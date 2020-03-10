@@ -647,6 +647,8 @@ upgrade:
 static int fup;
 int  cpeUploadSetup( DownloadMsg *r){
 
+    system("/sbin/dbglog.sh");
+    sleep(3);
     /*
      * verify that the URL and fileType are present.
      */
