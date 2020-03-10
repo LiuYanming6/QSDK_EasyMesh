@@ -775,6 +775,7 @@ static void emptyPostTimeout(void *handle) {
 
 static void sessDisconnect(ACSSession *s, eSessionStatus acsStatus) {
     static int nextsch = 0;
+    static int tmp_interval;
     DBGLOG((DBG_ACSCONNECT, "sessDisconnect: %d", acsStatus));
     stopTimer(emptyPostTimeout, (void *)s);
     //saveNotificationAttributes();
@@ -861,10 +862,21 @@ static void sessDisconnect(ACSSession *s, eSessionStatus acsStatus) {
                 {
                     scheduleNextInform();	/* no pending RPC - schedule next Inform */
                     nextsch = 1;
+                    tmp_interval = cpeState.informInterval;
+                }
+                else
+                {
+                    if(tmp_interval != cpeState.informInterval)
+                    {
+                        tmp_interval = cpeState.informInterval;
+                        stopTimer(startPeriodicInform, NULL);
+                        scheduleNextInform();
+                    }
                 }
 	    	    notifyCallbacks( &acsSession ); /* schedule a call to any CPE function*/
 			}
-	    } else {
+	    } 
+	    else {
 	    	DBGLOG((DBG_ACSCONNECT, "sessDisconnect: Inform retry scheduled"));
 	    }
 
