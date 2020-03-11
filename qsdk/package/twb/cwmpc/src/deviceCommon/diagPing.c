@@ -152,12 +152,12 @@ void cpeStartPing( void *handle )
         if ( cpeState.ipAddress.inFamily == AF_INET6 && 1 == checkstatus )
         {
             snprintf(cmd, sizeof(cmd), "%s -6 -w %d -c %d%s %s 2>&1 &", PINGCMD,
-            pp->timeout? pp->timeout: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+            pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
         }
         else
         {
             snprintf(cmd, sizeof(cmd), "%s -4 -w %d -c %d%s %s 2>&1 &", PINGCMD,
-            pp->timeout? pp->timeout: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+            pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
         }
 #endif
 		/* the 2>&1 also writes stderr into the stdout pipe */
