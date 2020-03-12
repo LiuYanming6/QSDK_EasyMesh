@@ -51,6 +51,7 @@
 IPDiagnosticsTraceRoute *cpeTR;
 extern CPEState cpeState;
 extern void *acsSession;
+int checkstatus;
 
 void cpeStopTraceRt(void *handle)
 {
@@ -100,6 +101,13 @@ void cpeStopTraceRt(void *handle)
 
 static void doTRRead6(void *arg)
 {
+    if (checkstatus == -1)
+    {
+        cpeStopTraceRt((void*)eHostError);
+        DBGPRINT((stderr, "Invaild domain\n"));
+        return;
+    }
+
 	char buf[1024];
 	char oName[257];
 	char *pos =NULL;
@@ -179,6 +187,12 @@ static void doTRRead6(void *arg)
 
 static void doTRRead(void *arg)
 {
+    if (checkstatus == -1)
+    {
+        cpeStopTraceRt((void*)eHostError);
+        DBGPRINT((stderr, "Invaild domain\n"));
+        return;
+    }
     char buf[1024];
     char oName[257];
     char *pos =NULL;
@@ -263,7 +277,6 @@ void cpeStartTraceRt( void *handle )
     memset (ttlopt,0,sizeof(ttlopt));
     int  fd;
     int	 toutSecs;
-    int checkstatus;
 
     cpeTR = (IPDiagnosticsTraceRoute*)handle;
     stopCallback(&acsSession, cpeStartTraceRt, NULL); /* stop callback */
@@ -287,13 +300,16 @@ void cpeStartTraceRt( void *handle )
         snprintf(ttlopt, sizeof(ttlopt), "-m %d -q %d -w %d",
                 cpeTR->maxHopCount, cpeTR->numberOfTries, toutSecs);
         checkstatus = check_v4_v6(cpeTR->host);
-        if ( cpeState.ipAddress.inFamily == AF_INET6 && 1 == checkstatus )
+
+        if ( cpeState.ipAddress.inFamily == AF_INET6  && (checkstatus == 1 || checkstatus == -1))
             snprintf(cmd, sizeof(cmd), "%s %s %s 2>&1\n", "traceroute6", ttlopt, cpeTR->host);
         else
             snprintf(cmd, sizeof(cmd), "%s %s %s 2>&1\n", TRACERTCMD, ttlopt, cpeTR->host);
 
         /* the 2>&1 also writes stderr into the stdout pipe */
         fprintf(stderr, "Start traceroute Diagnostic\n %s", cmd);
+
+
         if ((cpeTR->fp = popen(cmd, "r")) == NULL) {
             cpeLog(LOG_ERR, "Could not start traceroute>%s<", cmd);
             return;
@@ -304,11 +320,11 @@ void cpeStartTraceRt( void *handle )
             return;
         }
         setTimer(cpeStopTraceRt, (void*)eComplete, cpeTR->timeout? (cpeTR->timeout/1000?cpeTR->timeout + 10000:cpeTR->timeout): 10*1000); /* 10000 msec default*/
-        if (cpeState.ipAddress.inFamily == AF_INET6  && 1 == checkstatus)
+
+        if (cpeState.ipAddress.inFamily == AF_INET6 && (checkstatus ==1 || checkstatus -1))
             setListener(fd, doTRRead6, (void*)fd);
         else
             setListener(fd, doTRRead, (void*)fd);
-
     }
     return;
 }

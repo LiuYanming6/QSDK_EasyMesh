@@ -55,6 +55,7 @@
 extern void *acsSession;
 IPDiagnosticsIPPing *cpePingParam;
 extern CPEState cpeState;
+int checkstatus;
 
 void cpeStopPing(void *handle)
 {
@@ -72,6 +73,13 @@ void cpeStopPing(void *handle)
 }
 static void doRead(void *arg)
 {
+    if (checkstatus == -1)
+    {
+        cpeStopPing((void*)eHostError);
+        DBGPRINT((stderr, "Invaild domain\n"));
+        return;
+    }
+
 	char buf[1024];
 	IPDiagnosticsIPPing *pp = cpePingParam;
 	char	  *p;
@@ -119,7 +127,7 @@ void cpeStartPing( void *handle )
 	char qstr[10];
 	char interface[64];
 	int	 fd;
-	int checkstatus;
+
 	IPDiagnosticsIPPing *pp = (IPDiagnosticsIPPing *)handle;
 	cpePingParam = pp;
 	stopCallback(&acsSession, cpeStartPing, NULL); /* stop callback */
@@ -149,7 +157,7 @@ void cpeStartPing( void *handle )
 				pp->numberOfRepetitions, blkstr, interface, qstr, pp->host);
 #else /* busybox ping cmdline */
         checkstatus = check_v4_v6(pp->host);
-        if ( cpeState.ipAddress.inFamily == AF_INET6 && 1 == checkstatus )
+        if ( cpeState.ipAddress.inFamily == AF_INET6 && (1 == checkstatus || -1 == checkstatus) )
         {
             snprintf(cmd, sizeof(cmd), "%s -6 -w %d -c %d%s %s 2>&1 &", PINGCMD,
             pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
