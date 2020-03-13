@@ -509,9 +509,11 @@ int check_v4_v6(char *hostname)
 
 
     err = getaddrinfo(hostname, "http", &hint, &res);
-    if(err != 0) {
+    if(err != 0) 
+    {
         DBG_MSG("ERR: %s", gai_strerror(err));
-        return -1;
+	freeaddrinfo(res);
+	return -1; // Name or service not know
     }
 
     // list all ips
