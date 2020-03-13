@@ -69,11 +69,17 @@ CPE_STATUS setTime_NTPServer1(Instance *ip, char *value)
     if(strlen(cmd) >0) /* NTPServer2*/
     {
         ret = strchr(cmd, ch);
-        strtok(ret,"\n");
-
-        memset(cmd_result, 0 , sizeof(cmd_result));
-        sprintf(cmd_result, "uci set system.ntp.server='%s %s'", value , ret+1);
-
+        if( ret == NULL)
+        {
+            memset(cmd_result, 0 , sizeof(cmd_result));
+            sprintf(cmd_result, "uci set system.ntp.server='%s'", value);
+        }
+        else
+        {
+            strtok(ret,"\n");
+            memset(cmd_result, 0 , sizeof(cmd_result));
+            sprintf(cmd_result, "uci set system.ntp.server='%s %s'", value , ret+1);
+        }
         cmd_popen(cmd_result, cmd_result);
         system("uci commit");
         cmd_popen("/etc/init.d/sysntpd reload", cmd_result);
@@ -89,6 +95,8 @@ CPE_STATUS setTime_NTPServer1(Instance *ip, char *value)
 }
 CPE_STATUS getTime_NTPServer1(Instance *ip, char **value)
 {
+
+
     char cmd_result[128]="";
 
     cmd_popen("uci get system.ntp.server" , cmd_result);
@@ -97,6 +105,7 @@ CPE_STATUS getTime_NTPServer1(Instance *ip, char **value)
         strtok(cmd_result, " ");
         *value = GS_STRDUP(cmd_result);
     }
+
 #if 0
 	GS_Time *p = (GS_Time *)ip->cpeData;
 	if ( p ){
@@ -143,6 +152,10 @@ CPE_STATUS getTime_NTPServer2(Instance *ip, char **value)
     if(strlen(cmd_result) >0)
     {
         ret = strchr(cmd_result, ch);
+
+        if (ret == NULL)
+            return CPE_OK;
+
         strtok(ret,"\n");
         *value = GS_STRDUP(ret+1);
     }
