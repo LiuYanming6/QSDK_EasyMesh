@@ -473,27 +473,16 @@ static void getXferResponse(void *handle) {
 		int lth;
 		char *buf = NULL;
 		int status;//-Werror=unused-but-set-variable
-        int count = 0;
 
 		s->eAuthState = eAuthenticated;
 		if (s->cpeDLBuf) {
 			/* CPE wrapper is providing buffer and data handle functions.*/
-            do
-            {
-                lth = wget_ReadBufResponse(w, s->cpeBufCB, (void *) r, s->cpeDLBuf,
-                        s->cpeDLBufLth);
-                DBGLOG((DBG_TRANSFER, "Download size into CPE buffer= %d\n", lth));
-                status = completeResponse(s, r, buf, lth ); //-Werror=unused-but-set-variable
-                if (status == CPE_9010)
-                {
-                    if (count != 1)
-                        DBGLOG((DBG_TRANSFER, "Download failed,retry...\n", lth));
 
-                    count ++ ;
-                }
-                else
-                    break;
-            }while (count != 2);
+            		lth = wget_ReadBufResponse(w, s->cpeBufCB, (void *) r, s->cpeDLBuf,
+                    		s->cpeDLBufLth);
+            		DBGLOG((DBG_TRANSFER, "Download size into CPE buffer= %d\n", lth));
+
+            		status = completeResponse(s, r, buf, lth ); //-Werror=unused-but-set-variable
 		} else {
 			/* Buffer is allocated by CWMPc downloader functions */
 			buf = wget_ReadResponse(w, &lth, MAXFILESIZE );
