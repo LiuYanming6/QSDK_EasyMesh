@@ -368,8 +368,6 @@ void refreshAssociatedDeviceinstances(void)
         i=0;
     }
 
-
-#if 0
     if (!strncmp(get_topology_iface_name(role,1),"-1",2))
     {
         client_2g_backhaul = 0;
@@ -406,10 +404,7 @@ void refreshAssociatedDeviceinstances(void)
         client_2g_backhaul = i;
         i=0;
     }
-#else
-    client_2g_backhaul = 0;
-    i=0;
-#endif
+
     if (!strncmp(get_topology_iface_name(role,2),"-1",2))
     {
         client_5g = 0;
@@ -447,7 +442,7 @@ void refreshAssociatedDeviceinstances(void)
         client_5g = i;
         i=0;
     }
-#if 0
+
     if (!strncmp(get_topology_iface_name(role,3),"-1",2))
     {
         client_5g_backhaul = 0;
@@ -484,12 +479,8 @@ void refreshAssociatedDeviceinstances(void)
         fclose(fp);
         client_5g_backhaul = i;
         i=0;
-
     }
-#else
-    client_5g_backhaul = 0;
-    i=0;
-#endif
+
 
 
 /*  For RE wired client */
@@ -672,7 +663,6 @@ void refreshAssociatedDeviceinstances(void)
 static void refreshDeviceMemory(void) {
     char oName[257];
     CWMPObject *o;
-
 
     memset(oName , 0x0 , sizeof(oName));
     snprintf(oName, sizeof(oName), "%s.DeviceInfo.VendorLogFile.%d.", CWMP_RootObject[0].name, 1);

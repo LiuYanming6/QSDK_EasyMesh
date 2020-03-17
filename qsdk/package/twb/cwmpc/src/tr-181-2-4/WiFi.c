@@ -50,7 +50,6 @@
 /*                           DEFINITIONS                                   */
 /*-------------------------------------------------------------------------*/
 #define GB_TO_BYTE (long long int)1024*1024*1024
-#define DBGPRINT(X) fprintf X
 /*-------------------------------------------------------------------------*/
 /*                           VARIABLES                                     */
 /*-------------------------------------------------------------------------*/
@@ -272,9 +271,6 @@ CPE_STATUS getWiFiAccessPointSecurity_ModesSupported(Instance *ip, char **value)
 {
 	WiFiAccessPointSecurity *p = (WiFiAccessPointSecurity *)ip->cpeData;
 	if ( p ){
-        if(ip->parent->id-1 == 1 || ip->parent->id-1 == 3)
-            return CPE_OK;
-
         COPYSTR(p->modesSupported,"None\nWPA-Personal\nWPA2-Personal\nWPA-WPA2-Personal");
 		if ( p->modesSupported )
 			*value = GS_STRDUP(p->modesSupported);
@@ -337,11 +333,6 @@ CPE_STATUS getWiFiAccessPointSecurity_ModeEnabled(Instance *ip, char **value)
         char *pos =NULL;
 
         char iface[3]={0};
-
-        // DBGPRINT((stderr, "%d : ath%s\n", ip->parent->id-1, get_topology_iface_name(role , ip->parent->id-1) ));
-        if(ip->parent->id-1 == 1 || ip->parent->id-1 == 3)
-            return CPE_OK;
-
         strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
 
         if(!strncmp(iface,"-1",2))
@@ -540,25 +531,21 @@ CPE_STATUS getWiFiAccessPointWPS_Enable(Instance *ip, char **value)
 {
 	WiFiAccessPointWPS *p = (WiFiAccessPointWPS *)ip->cpeData;
 	if ( p ){
-        if(ip->parent->id == 2 || ip->parent->id == 4)
-            p->enable = 0;
-        else
-        {
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
 
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
 
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
 
-            sprintf(cmd, "iwpriv ath%s get_wps | awk -F \":\" '{print $2}'", iface);
-            cmd_popen(cmd , cmd_result );
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if (NULL != cmd_result)     p->enable = atoi(cmd_result);
-        }
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+
+        sprintf(cmd, "iwpriv ath%s get_wps | awk -F \":\" '{print $2}'", iface);
+        cmd_popen(cmd , cmd_result );
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if (NULL != cmd_result)     p->enable = atoi(cmd_result);
 		*value = GS_STRDUP(p->enable? "true": "false");
 	}
 	return CPE_OK;
@@ -1971,32 +1958,27 @@ CPE_STATUS  initWiFiSSIDStats(CWMPObject *o, Instance *ip)
 CPE_STATUS getWiFiSSIDStats_BytesSent(Instance *ip, char **value)
 {
 //  ifconfig br-lan | grep -r "RX bytes" | awk -F ":" '{print $3}' | awk -F " " '{print $1}'
-    char    buf[30];
+
     WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
     if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->bytesSent = 0;
-        else
-        {
-            
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'"  ,iface );
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->bytesSent = atoi(cmd_result);
-        }
-
-        snprintf(buf,sizeof(buf),"%lld", p->bytesSent);
-        *value = GS_STRDUP(buf);
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'"  ,iface );
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->bytesSent = atoi(cmd_result);
+        
+            snprintf(buf,sizeof(buf),"%lld", p->bytesSent);
+            *value = GS_STRDUP(buf);
     }
     return CPE_OK;
 }
@@ -2006,29 +1988,24 @@ CPE_STATUS getWiFiSSIDStats_BytesSent(Instance *ip, char **value)
 CPE_STATUS getWiFiSSIDStats_BytesReceived(Instance *ip, char **value)
 {
 //  ifconfig br-lan | grep -r "RX bytes" | awk -F ":" '{print $2}' | awk -F " " '{print $1}'
-    char    buf[30];
+
     WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
     if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->bytesReceived = 0;
-        else
-        {
-           
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->bytesReceived = atoi(cmd_result);
-        }
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX bytes\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->bytesReceived = atoi(cmd_result);
 
         snprintf(buf,sizeof(buf),"%lld", p->bytesReceived);
         *value = GS_STRDUP(buf);
@@ -2041,28 +2018,23 @@ CPE_STATUS getWiFiSSIDStats_BytesReceived(Instance *ip, char **value)
 CPE_STATUS getWiFiSSIDStats_PacketsSent(Instance *ip, char **value)
 {
 //  ifconfig br-lan | grep -r "TX packets" | awk -F ":" '{print $2}' | awk -F " " '{print $1}'
-    char    buf[30];
+
     WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
     if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->packetsSent = 0;
-        else
-        {
-            
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-             char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
-            sprintf(cmd, "ifconfig ath%s | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" ,iface );
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->packetsSent = atoi(cmd_result);
-        }
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+         char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
+        sprintf(cmd, "ifconfig ath%s | grep -r \"TX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" ,iface );
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->packetsSent = atoi(cmd_result);
 
         snprintf(buf,sizeof(buf),"%lld", p->packetsSent);
         *value = GS_STRDUP(buf);
@@ -2075,29 +2047,23 @@ CPE_STATUS getWiFiSSIDStats_PacketsSent(Instance *ip, char **value)
 CPE_STATUS getWiFiSSIDStats_PacketsReceived(Instance *ip, char **value)
 {
 //  ifconfig br-lan | grep -r "RX packets" | awk -F ":" '{print $2}' | awk -F " " '{print $1}'
-    char    buf[30];
 	WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
 	if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->packetsReceived = 0;
-        else
-        {
-            
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->packetsReceived = atoi(cmd_result);
-        }
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $2}' | awk -F \" \" '{print $1}'" , iface);
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->packetsReceived = atoi(cmd_result);
 
 		snprintf(buf,sizeof(buf),"%lld", p->packetsReceived);
 		*value = GS_STRDUP(buf);
@@ -2110,29 +2076,23 @@ CPE_STATUS getWiFiSSIDStats_PacketsReceived(Instance *ip, char **value)
 CPE_STATUS getWiFiSSIDStats_ErrorsSent(Instance *ip, char **value)
 {
 // ifconfig br-lan | grep -r "TX packets" | awk -F ":" '{print $3}'| awk -F " " '{print $1}'
-    char    buf[30];
 	WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
 	if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->errorsSent = 0;
-        else
-        {
-            
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->errorsSent = atoi(cmd_result);
-        }
+        sprintf(cmd, "ifconfig ath%s| grep -r \"TX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->errorsSent = atoi(cmd_result);
 
         snprintf(buf,sizeof(buf),"%u", p->errorsSent);
         *value = GS_STRDUP(buf);
@@ -2145,29 +2105,23 @@ CPE_STATUS getWiFiSSIDStats_ErrorsSent(Instance *ip, char **value)
 CPE_STATUS getWiFiSSIDStats_ErrorsReceived(Instance *ip, char **value)
 {
 // ifconfig br-lan | grep -r "RX packets" | awk -F ":" '{print $3}'| awk -F " " '{print $1}'
-    char    buf[30];
 	WiFiSSIDStats *p = (WiFiSSIDStats *)ip->cpeData;
 	if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->errorsReceived = 0;
-        else
-        {
-            
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char    buf[30];
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->parent->id-1),strlen(get_topology_iface_name(role, ip->parent->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
-            cmd_popen(cmd , cmd_result);
-            if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
-            if( NULL != cmd_result)
-                p->packetsReceived = atoi(cmd_result);
-        }
+        sprintf(cmd, "ifconfig ath%s| grep -r \"RX packets\" | awk -F \":\" '{print $3}' | awk -F \" \" '{print $1}'" , iface);
+        cmd_popen(cmd , cmd_result);
+        if ((pos = strchr(cmd_result, '\n')) != NULL)   *pos = '\0';
+        if( NULL != cmd_result)
+            p->packetsReceived = atoi(cmd_result);
 
         snprintf(buf,sizeof(buf),"%u", p->errorsReceived);
         *value = GS_STRDUP(buf);
@@ -2227,32 +2181,26 @@ CPE_STATUS getWiFiSSID_Enable(Instance *ip, char **value)
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p )
     {
-        if(ip->id-1 == 1) // 2.4G backhaul
-            p->enable = 0;
-        else
-        {
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            const char default_status[]="UP";
-            char *pos = NULL;
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        const char default_status[]="UP";
+        char *pos = NULL;
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-            sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , iface);
-            cmd_popen(cmd , cmd_result);
-            if ( NULL != cmd_result)
-            {
-                if ((pos = strchr(cmd_result, '\n')) != NULL)
-                    *pos = '\0';
+        sprintf(cmd, "ifconfig ath%s | grep UP | awk -F \" \" '{print $1}'" , iface);
+        cmd_popen(cmd , cmd_result);
+        if ( NULL != cmd_result){
+            if ((pos = strchr(cmd_result, '\n')) != NULL)
+                *pos = '\0';
 
-                if(!strncmp(cmd_result, default_status, strlen(default_status)))
-                    p->enable = 1;
-                else
-                    p->enable = 0;
-            }
+            if(!strncmp(cmd_result, default_status, strlen(default_status)))
+                p->enable = 1;
+            else
+                p->enable = 0;
         }
         *value = GS_STRDUP(p->enable? "true": "false");
     }
@@ -2265,32 +2213,24 @@ CPE_STATUS getWiFiSSID_Status(Instance *ip, char **value)
 {
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p ){
+        char cmd[128]={0};
+        char cmd_result[128]={0};
+        const char default_status[] = "Not-Associated";
+        char iface[3]={0};
+        strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
+        
+        if(!strncmp(iface,"-1",2))
+            return CPE_OK;
 
-        if(ip->id-1 == 1) // 2.4G backhaul
+        sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", iface);
+        cmd_popen(cmd, cmd_result);
+        if(strncmp(cmd_result, default_status, strlen(default_status)) != 0)
         {
-            COPYSTR(p->status , "Down");
+            COPYSTR(p->status , "UP");
         }
         else
         {
-            char cmd[128]={0};
-            char cmd_result[128]={0};
-            const char default_status[] = "Not-Associated";
-            char iface[3]={0};
-            strncpy(iface,get_topology_iface_name(role , ip->id-1),strlen(get_topology_iface_name(role, ip->id-1)));
-            
-            if(!strncmp(iface,"-1",2))
-                return CPE_OK;
-
-            sprintf(cmd, "iwconfig ath%s | grep \"Access Point\" | awk -F\" \" '{print $6}'", iface);
-            cmd_popen(cmd, cmd_result);
-            if(strncmp(cmd_result, default_status, strlen(default_status)) != 0)
-            {
-                COPYSTR(p->status , "UP");
-            }
-            else
-            {
-                COPYSTR(p->status , "Down");
-            }
+            COPYSTR(p->status , "Down");
         }
         if ( p->status )
             *value = GS_STRDUP(p->status);
@@ -2302,12 +2242,8 @@ CPE_STATUS getWiFiSSID_Status(Instance *ip, char **value)
 /**@param WiFiSSID_Name                     **/
 CPE_STATUS getWiFiSSID_Name(Instance *ip, char **value)
 {
-
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p ){
-            if(ip->id-1 == 1) // 2.4G backhaul
-                return CPE_OK;
-
             char cmd[128]={0};
             char cmd_result[128]={0};
             char *pos = NULL;
@@ -2335,14 +2271,8 @@ CPE_STATUS getWiFiSSID_Name(Instance *ip, char **value)
 /**@param WiFiSSID_BSSID                     **/
 CPE_STATUS getWiFiSSID_BSSID(Instance *ip, char **value)
 {
-
-
-
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p ){
-            if(ip->id-1 == 1) // 2.4G backhaul
-                return CPE_OK;
-
             char cmd[128]={0};
             char cmd_result[128]={0};
             char *pos = NULL;
@@ -2368,12 +2298,8 @@ CPE_STATUS getWiFiSSID_BSSID(Instance *ip, char **value)
 /**@param WiFiSSID_MACAddress                     **/
 CPE_STATUS getWiFiSSID_MACAddress(Instance *ip, char **value)
 {
-
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p ){
-        if(ip->id-1 == 1) // 2.4G backhaul
-            return CPE_OK;
-
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
@@ -2441,14 +2367,9 @@ CPE_STATUS setWiFiSSID_SSID(Instance *ip, char *value)
 }
 CPE_STATUS getWiFiSSID_SSID(Instance *ip, char **value)
 {
-
-
     GS_WiFiSSID *p = (GS_WiFiSSID *)ip->cpeData;
     if ( p )
     {
-        if(ip->id-1 == 1) // 2.4G backhaul
-            return CPE_OK;
-
         char cmd[128]={0};
         char cmd_result[128]={0};
         char *pos = NULL;
