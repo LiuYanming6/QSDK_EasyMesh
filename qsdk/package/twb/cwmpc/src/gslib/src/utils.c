@@ -1024,7 +1024,7 @@ int  get_uci_wifi_index(int *uci_idx, int idx) {
                 }
                 break;
             case 1: //2.4 bh
-                if (bss == 128 && !strncmp(dev, "wifi0", 5))
+                if (bss == 64 && !strncmp(dev, "wifi0", 5))
                 {
                     //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
                     *uci_idx = m;
@@ -1038,7 +1038,7 @@ int  get_uci_wifi_index(int *uci_idx, int idx) {
                 }
                 break;
             case 3: //5 bh
-                if (bss == 128 && !strncmp(dev, "wifi1", 5))
+                if (bss == 64 && !strncmp(dev, "wifi1", 5))
                 {
                     //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d\n", dev, bss, m , idx);
                     *uci_idx = m;
@@ -1084,9 +1084,20 @@ int get_uci_wifi_intf_name(char *ath, int idx, int role) {
             break;
 
             case 1: //2.4 bh
+               if (role == 0 || role == 1)
+               {
+                    if (bss == 64 && !strcmp(dev, "wifi0"))
+                    {
+                        if (m > 0 && m < 3)
+                            strcpy(ath, "0");
+                        else if (m > 2 && m < 5)
+                            strcpy(ath, "01");
+                    }
+               }
+#if 0
                 if (role == 0) 
                 { //wifi 
-                    if (bss == 128 && !strcmp(dev, "wifi0"))
+                    if (bss == 64 && !strcmp(dev, "wifi0"))
                         strcpy(ath, "0");
                 }
                 else if (role == 1) 
@@ -1094,6 +1105,7 @@ int get_uci_wifi_intf_name(char *ath, int idx, int role) {
                     strcpy(ath, "none");
                 }
                 //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+#endif
             break;
 
             case 2: //5 fh
@@ -1101,15 +1113,25 @@ int get_uci_wifi_intf_name(char *ath, int idx, int role) {
                 {
                     if (m > 0 && m < 3) 
                     {
-                        sprintf(ath, "%d", (role==1?role:11));
+                        sprintf(ath, "%d", (role==1?1:11));
                     }
                     else if (m > 2 && m < 5)
-                        sprintf(ath, "%d", 12-role);
+                        sprintf(ath, "%d", (role==1?11:1));
                 }
                 //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
             break;
 
             case 3: //5 bh
+                if (bss == 64 && !strcmp(dev, "wifi1"))
+                {
+                    if (m > 0 && m < 3)
+                    {
+                        sprintf(ath, "%d", (role==1?1:11));
+                    }
+                    else if (m > 2 && m < 5)
+                        sprintf(ath, "%d", (role==1?11:12));
+                }
+#if 0
                 if (role == 0) 
                 { 
                     if (bss == 128 && !strcmp(dev, "wifi1"))
@@ -1119,6 +1141,7 @@ int get_uci_wifi_intf_name(char *ath, int idx, int role) {
                     strcpy(ath, "none");
 
                 //DBG_MSG("dev: %s  ,bss: %d, m: %d ,idx : %d ath: %s\n", dev, bss, m , idx , ath);
+#endif
             break;
 
             default:
@@ -1132,6 +1155,7 @@ int get_uci_wifi_intf_name(char *ath, int idx, int role) {
         return 1;
 }
 /**/
+
 
 int get_bkhaul_iface(char *iface)
 {
