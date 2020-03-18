@@ -85,6 +85,7 @@ struct ar_rx_desc_ops {
     u_int32_t (*msdu_key_id_octet)(ar_handle_t arh,
                 void *rx_desc);
     void      (*dump_desc)(void *rx_desc);
+    u_int32_t (*msdu_end)(void *rx_desc);
     u_int32_t (*check_desc_mgmt_type)(qdf_nbuf_t head_msdu);
     u_int32_t (*check_desc_ctrl_type)(qdf_nbuf_t head_msdu);
     u_int32_t (*check_desc_phy_data_type)(qdf_nbuf_t head_msdu, uint8_t *rx_phy_data_filter);

@@ -783,13 +783,18 @@ htt_rx_debug(rx_handle_t rxh,
 {
     htt_pdev_handle pdev = (htt_pdev_handle)rxh;
     void *rx_desc;
+    int msdu_end;
 
     rx_desc = htt_rx_desc(msdu);
 
-    if (!msdu_done) {
+ again:
+    msdu_end = pdev->ar_rx_ops->msdu_end(rx_desc);
+
+    if (!msdu_done || !msdu_end) {	    
 
             if (pdev->htt_rx_donebit_assertflag == 0) {
-                if ((pdev->g_htt_status != htt_rx_status_ok) && ((*npackets) == 0)) {
+                //if ((pdev->g_htt_status != htt_rx_status_ok) && ((*npackets) == 0)) {
+                if (0) {			
                     pdev->htt_rx_donebit_assertflag = 1;
 
                     QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "DONE BIT NOT SET FOR FIRST MSDU and PEER IS INVALID \n");
@@ -805,7 +810,7 @@ htt_rx_debug(rx_handle_t rxh,
                     qdf_nbuf_map_nbytes(pdev->osdev, msdu, QDF_DMA_FROM_DEVICE, HTT_RX_BUF_SIZE);
                     return NULL;
                 } else {
-                    QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "DONE BIT NOT SET but EITHER PEER IS VALID (OR) NOT A FIRST MSDU\n");
+                    QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "DONE BIT NOT SET but EITHER PEER IS VALID (OR) NOT A FIRST MSDU (OR) msdu_end %d\n", msdu_end);
                     QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "rx_desc %pK msdu %pK rx_ind_msg %pK \n", rx_desc, msdu, rx_ind_msg);
                     QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "status %d peer_id %d tid %d no. of pkts %d\n", pdev->g_htt_status, pdev->g_peer_id, pdev->g_tid, *npackets);
                     QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "peer_mac 0x%x:0x%x:0x%x:0x%x:0x%x:0x%x\n",
@@ -813,8 +818,25 @@ htt_rx_debug(rx_handle_t rxh,
                             pdev->g_peer_mac[3], pdev->g_peer_mac[4], pdev->g_peer_mac[5]);
                     QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "num_mpdus %d mpdu_ranges %d msdu_chained %d\n",
                             pdev->g_num_mpdus, pdev->g_mpdu_ranges, pdev->g_msdu_chained);
-                QDF_PRINT_INFO(QDF_PRINT_IDX_SHARED, QDF_MODULE_ID_ANY, QDF_TRACE_LEVEL_INFO, "Rx Attention 0x%x\n", pdev->ar_rx_ops->get_attn_word(rx_desc));
+                    {
+                        static int count = 0;
 
+                        if (count < 10) {
+                            count++;
+                            printk("Early Indication Hit : Retrying MSDU DONE set operation\n");
+                            mdelay(1);
+                            msdu_done = pdev->ar_rx_ops->attn_msdu_done(rx_desc);
+                            if (msdu_done == 1) {
+                            __dma_sync(dma_addr_to_page(pdev->osdev->dev, QDF_NBUF_CB_PADDR(msdu)),
+                                       QDF_NBUF_CB_PADDR(msdu) & ~PAGE_MASK,
+                                       64,
+                                       DMA_FROM_DEVICE);
+
+                                count = 0;
+                            }
+                            goto again;
+                        }
+                    }
                 HTT_ASSERT_ALWAYS(pdev->ar_rx_ops->attn_msdu_done(rx_desc));
                 }
             } else {

@@ -61,6 +61,11 @@ static void _##target##_rx_desc_init(void *rx_desc) \
     /* Clear rx_desc attention word before posting to Rx ring */ \
     struct rx_desc_base *desc = \
         (struct rx_desc_base *)rx_desc; \
+    u_int32_t *ptr = (u_int32_t *)rx_desc;                              \
+    int32_t word = 0;                                                   \
+    for(word = 0; word < (sizeof(struct rx_desc_base) /4); word++) {    \
+        ptr[word] = 0xdeadbeef;                                         \
+    }                                                                   \
     *(u_int32_t *)&desc->attention = 0; \
     *(((u_int32_t *)&desc->msdu_end) + 4) = 0; \
 }
@@ -371,6 +376,14 @@ static void _##target##_rx_desc_dump(void *rx_desc) \
     printk("++++++++++++++++++++++++++++++++++++++++++++\n"); \
 }
 
+#define FN_RX_GET_MSDU_END(target) \
+static u_int32_t _##target##_rx_desc_msdu_end(void *rx_desc) \
+{ \
+    struct rx_desc_base *desc = \
+        (struct rx_desc_base *) rx_desc; \
+    return (*(((u_int32_t *) &desc->msdu_end) + 4)); \
+}
+
 #define FN_RX_DESC_CHECK_DESC_MGMT_TYPE(target) \
 static u_int32_t _##target##_rx_desc_check_desc_mgmt_type(qdf_nbuf_t head_msdu) \
 { \
@@ -468,6 +481,7 @@ static inline u_int32_t unified_rx_desc_amsdu_pop(ar_handle_t arh,
     int msdu_len, msdu_chaining = 0;
     qdf_nbuf_t msdu;
     struct rx_desc_base *rx_desc;
+    struct rx_desc_base *rx_desc_uncached;
     u_int8_t *rx_ind_data;
     u_int32_t num_msdu_bytes;
     u_int8_t pad_bytes = 0;
@@ -475,6 +489,7 @@ static inline u_int32_t unified_rx_desc_amsdu_pop(ar_handle_t arh,
     uint8_t  rssi_chain0_pri20, rssi_chain0_sec80;
 #endif
     uint32_t rx_desc_size=0;
+    uint32_t first_msdu_found = 0;
 #if QCA_OL_SUPPORT_RAWMODE_TXRX
     /* We have a corner case where vdev is NULL due to peer being unmappable. In
      * this case, we allow the default processing on the nbufs which anyway get
@@ -493,7 +508,7 @@ static inline u_int32_t unified_rx_desc_amsdu_pop(ar_handle_t arh,
     msdu = *head_msdu = ar->rx_callbacks->rx_netbuf_pop(ar->htt_handle);
 #endif
     while (1) {
-        int last_msdu, msdu_len_invalid, fcs_error, msdu_chained;
+        int last_msdu, msdu_len_invalid, fcs_error, msdu_chained, first_msdu, last_mpdu;
         int byte_offset;
         u_int8_t is_validfragchain = 0;
         int rx_buf_size = ar->rx_callbacks->rx_buf_size(ar->htt_handle);
@@ -556,6 +571,84 @@ static inline u_int32_t unified_rx_desc_amsdu_pop(ar_handle_t arh,
         if( msdu == NULL ) {
             return 0;
         }
+
+        first_msdu =
+            ((*(((u_int32_t *) &rx_desc->msdu_end) + 4)) &
+             RX_MSDU_END_4_FIRST_MSDU_MASK) >>
+            RX_MSDU_END_4_FIRST_MSDU_LSB;
+        if (first_msdu_found && first_msdu) {
+            int i = 0;
+            rx_desc_uncached =
+                (struct rx_desc_base *) KSEG1ADDR(rx_desc);
+
+
+            *tail_msdu = msdu;
+
+            last_mpdu =
+                ((*(u_int32_t *) &rx_desc->attention) &
+                 RX_ATTENTION_0_LAST_MPDU_MASK) >>
+                RX_ATTENTION_0_LAST_MPDU_LSB;
+
+            last_msdu =
+                ((*(((u_int32_t *) &rx_desc->msdu_end) + 4)) &
+                 RX_MSDU_END_4_LAST_MSDU_MASK) >>
+                RX_MSDU_END_4_LAST_MSDU_LSB;
+
+            printk("%s 2 First MSDU ... CHECK! npackets : %d num_msdu_bytes : %d \n",
+                   __func__, *npackets, num_msdu_bytes);
+            printk("cach addr %p, uncach addr %p\n", rx_desc, rx_desc_uncached);
+            printk("last_mpdu %d last_msdu %d\n", last_mpdu, last_msdu);
+            for (i = 0; i < 248; i++) {
+                printk (" %02x:%02x", *((uint8_t*)rx_desc_uncached + i), *((uint8_t*)rx_desc + i));
+                if (i && (i % 32 == 0))
+                    printk("\n");
+            }
+            printk("\n");
+            
+            msdu = ar->rx_callbacks->rx_netbuf_pop(ar->htt_handle);
+            rx_desc = ar_rx_desc(msdu);
+            rx_desc_uncached =
+                (struct rx_desc_base *) KSEG1ADDR(rx_desc);
+
+            printk("next rx_desc : %p\n", rx_desc);
+            for (i = 0; i < 248; i++) {
+                //                printk (" %02x", *((uint8_t*)rx_desc + i));
+                printk (" %02x:%02x", *((uint8_t*)rx_desc_uncached + i), *((uint8_t*)rx_desc + i));
+                if (i && (i % 32 == 0))
+                    printk("\n");
+            }
+            printk("\n");
+            
+            {
+                while (1) {
+                    qdf_nbuf_t next = *head_msdu;
+                    rx_desc = ar_rx_desc(next);
+                    rx_desc_uncached =
+                        (struct rx_desc_base *) KSEG1ADDR(rx_desc);
+
+                    printk("rx_desc : %p\n", rx_desc);
+                    for (i = 0; i < 248; i++) {
+                        //                        printk (" %02x", *((uint8_t*)rx_desc + i));
+                        printk (" %02x:%02x", *((uint8_t*)rx_desc_uncached + i), *((uint8_t*)rx_desc + i));
+                        if (i && (i % 32 == 0))
+                            printk("\n");
+                    }
+                    printk("\n");
+
+                    if (*head_msdu == *tail_msdu) {
+                        break;
+                    }
+                    next = qdf_nbuf_next(*head_msdu);
+                    *head_msdu = next;
+                }
+            }
+
+            BUG_ON(1);
+        } else {
+            first_msdu_found = 1;
+        }
+
+            	
         if (((*npackets) == 0) && (msdu != *head_msdu)) {
             /*
              * Update head_msdu in case if previous msdu had DONE BIT

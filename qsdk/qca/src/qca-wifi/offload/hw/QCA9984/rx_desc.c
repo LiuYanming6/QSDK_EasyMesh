@@ -211,6 +211,7 @@ FN_RX_DESC_MSDU_FIRST_MSDU_FLAG(qca9984)
 FN_RX_DESC_MSDU_KEY_ID_OCTET(qca9984)
 FN_RX_DESC_SET_CHECKSUM_RESULT(qca9984)
 FN_RX_DESC_DUMP(qca9984)
+FN_RX_GET_MSDU_END(qca9984)	
 FN_RX_DESC_CHECK_DESC_MGMT_TYPE(qca9984)
 FN_RX_DESC_CHECK_DESC_CTRL_TYPE(qca9984)
 FN_RX_DESC_MSDU_DESC_MSDU_CHAINED(qca9984)
@@ -451,6 +452,7 @@ struct ar_rx_desc_ops qca9984_rx_desc_ops = {
     .msdu_first_msdu_flag = _qca9984_rx_desc_msdu_first_msdu_flag,
     .msdu_key_id_octet = _qca9984_rx_desc_msdu_key_id_octet,
     .dump_desc = _qca9984_rx_desc_dump,
+    .msdu_end = _qca9984_rx_desc_msdu_end,
     .check_desc_mgmt_type = _qca9984_rx_desc_check_desc_mgmt_type,
     .check_desc_ctrl_type = _qca9984_rx_desc_check_desc_ctrl_type,
 #ifndef REMOVE_PKT_LOG
