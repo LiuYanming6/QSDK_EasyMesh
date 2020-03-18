@@ -15,8 +15,43 @@ start(){
             cat $KCRASH_DUMP > $KCRASH_DUMP_BACKUP
         fi
     
-        uci set repacd.repacd.is_located='no' 
+        uci set repacd.repacd.is_located='no'
+######################################################################
+		#NTP Update
+		ntpserver=`uci get system.ntp.server | awk -F ' ' '{print $2}'`
+		if [ -z "$ntpserver" ]
+		then
+			echo "ntp server2 is empty, set 1.pool.ntp.org"
+			uci add_list system.ntp.server="1.pool.ntp.org"
+			uci commit system
+			/etc/init.d/sysntpd restart
+		fi
+######################################################################
+        #For TR069 use
+        firstuse=`uci get tr069.firstusedate`
+        if test -z "$firstuse"
+        then
+        	echo "tr069 firstusedate is empty, set to 0"
+        	uci set tr069.firstusedate='0'
+        	uci commit tr069
+        fi
 
+		firstboot=`uci get tr069.firstboot`
+        if test -z "$firstboot"
+        then
+        	echo "tr069 firstboot is empty, set to 0"
+        	uci set tr069.firstusedate='0'
+        	uci commit tr069
+        fi
+
+		tr_reboot=`uci get tr069.reboot`
+        if test -z "tr_reboot"
+        then
+        	echo "tr069 reboot is empty, set to 0"
+        	uci set tr069.reboot='0'
+        	uci commit tr069
+        fi
+######################################################################
 }
 
 #stop(){
