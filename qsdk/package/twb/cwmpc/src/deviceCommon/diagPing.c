@@ -157,6 +157,27 @@ void cpeStartPing( void *handle )
 				pp->numberOfRepetitions, blkstr, interface, qstr, pp->host);
 #else /* busybox ping cmdline */
         checkstatus = check_v4_v6(pp->host);
+
+        if(strlen(pp->protocolversion) ==0)
+            COPYSTR(pp->protocolversion, "IPv4");
+
+        if(!strncmp(pp->protocolversion, "IPv6", 4))
+        {
+            snprintf(cmd, sizeof(cmd), "%s -6 -w %d -c %d%s %s 2>&1 &", PINGCMD,
+            pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+        }
+        else if (!strncmp(pp->protocolversion, "IPv4", 4))
+        {
+            snprintf(cmd, sizeof(cmd), "%s -4 -w %d -c %d%s %s 2>&1 &", PINGCMD,
+            pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
+        }
+        else
+        {
+            pp->state = eErrorInternal;
+            cwmpDiagnosticComplete(); /* setup for next Inform with Diag Complete event */
+            return;
+        }
+#if 0
         if ( cpeState.ipAddress.inFamily == AF_INET6 && (1 == checkstatus || -1 == checkstatus) )
         {
             snprintf(cmd, sizeof(cmd), "%s -6 -w %d -c %d%s %s 2>&1 &", PINGCMD,
@@ -167,6 +188,7 @@ void cpeStartPing( void *handle )
             snprintf(cmd, sizeof(cmd), "%s -4 -w %d -c %d%s %s 2>&1 &", PINGCMD,
             pp->timeout? pp->timeout/1000: pp->numberOfRepetitions + 10, pp->numberOfRepetitions, blkstr, pp->host);
         }
+#endif
 #endif
 		/* the 2>&1 also writes stderr into the stdout pipe */
 		fprintf(stderr, "Start LAN Ping Diagnostic\n %s", cmd);

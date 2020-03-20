@@ -51,39 +51,40 @@
 IPDiagnosticsTraceRoute *cpeTR;
 extern CPEState cpeState;
 extern void *acsSession;
-int checkstatus;
+static int checkstatus;
 
 void cpeStopTraceRt(void *handle)
 {
     static int state = 0;
-    static int checkstatus;
     char cmd[32]={0};
     char cmd_result[32]={0};
     
     DiagState s = (DiagState)handle;
     DBGPRINT((stderr, "cpeStopTraceRt %d\n", s));
 
-    checkstatus = check_v4_v6(cpeTR->host);
-    if (cpeState.ipAddress.inFamily == AF_INET6  && 1 == checkstatus)
-    {
-        cmd_popen("pidof traceroute6",cmd);
-        sprintf(cmd_result , "kill -9 %s", cmd);
+    
+    cmd_popen("pidof traceroute6",cmd);
+    sprintf(cmd_result , "kill -9 %s", cmd);
+    if(strlen(cmd) >0)
         cmd_popen(cmd_result , cmd);
-    }
-    else
-    {
-        cmd_popen("pidof traceroute",cmd);
-        sprintf(cmd_result , "kill -9 %s", cmd);
+
+    memset(cmd, 0 , sizeof(cmd));
+    memset(cmd, 0 , sizeof(cmd_result));
+    cmd_popen("pidof traceroute",cmd);
+    sprintf(cmd_result , "kill -9 %s", cmd);
+    if(strlen(cmd) >0)
         cmd_popen(cmd_result , cmd);
-    }
+
 
     if ( cpeTR->fp != 0 ){
+        DBGPRINT((stderr, "close cpeTR->fp\n"));
         int fd = fileno(cpeTR->fp);
         stopTimer(cpeStopTraceRt, NULL);
         stopListener(fd);
         pclose(cpeTR->fp);
     }
     cpeTR->fp = 0;
+
 
     if (s == eHostError)
         state = 1;
@@ -95,7 +96,8 @@ void cpeStopTraceRt(void *handle)
     else
         cpeTR->diagnosticState = s;
 
-    cwmpDiagnosticComplete(); /* setup for next Inform */
+    if(s == eComplete)
+        cwmpDiagnosticComplete(); /* setup for next Inform */
 }
 
 
@@ -214,6 +216,7 @@ static void doTRRead(void *arg)
         if ( strncmp(buf, "traceroute",10)==0  ) {
             if ( strstr( buf, "unknown host" ) || strstr(buf, "bad address") || strstr(buf, "can't connect to remote host") ) {
                 /* bad host name -- stop now */
+                DBGPRINT((stderr, "cpeStopTraceRt->eHostError\n"));
                 cpeStopTraceRt((void*)eHostError);
             }
             return; /* ignore information lines of input */
@@ -300,11 +303,27 @@ void cpeStartTraceRt( void *handle )
         snprintf(ttlopt, sizeof(ttlopt), "-m %d -q %d -w %d",
                 cpeTR->maxHopCount, cpeTR->numberOfTries, toutSecs);
         checkstatus = check_v4_v6(cpeTR->host);
+        if (checkstatus == -1)
+        {
+            cpeTR->diagnosticState = eHostError;
+            cwmpDiagnosticComplete();
+            return;
+        }
 
-        if ( cpeState.ipAddress.inFamily == AF_INET6  && (checkstatus == 1 || checkstatus == -1))
+
+        if(strlen(cpeTR->protocolversion) ==0)
+            COPYSTR(cpeTR->protocolversion, "IPv4");
+
+        if(!strncmp(cpeTR->protocolversion, "IPv6", 4))
             snprintf(cmd, sizeof(cmd), "%s %s %s 2>&1\n", "traceroute6", ttlopt, cpeTR->host);
-        else
+        else if (!strncmp(cpeTR->protocolversion, "IPv4", 4))
             snprintf(cmd, sizeof(cmd), "%s %s %s 2>&1\n", TRACERTCMD, ttlopt, cpeTR->host);
+        else
+        {
+            cpeTR->diagnosticState = eHostError;
+            cwmpDiagnosticComplete();
+            return;
+        }
 
         /* the 2>&1 also writes stderr into the stdout pipe */
         fprintf(stderr, "Start traceroute Diagnostic\n %s", cmd);
@@ -320,11 +339,7 @@ void cpeStartTraceRt( void *handle )
             return;
         }
         setTimer(cpeStopTraceRt, (void*)eComplete, cpeTR->timeout? (cpeTR->timeout/1000?cpeTR->timeout + 10000:cpeTR->timeout): 10*1000); /* 10000 msec default*/
-
-        if (cpeState.ipAddress.inFamily == AF_INET6 && (checkstatus ==1 || checkstatus -1))
-            setListener(fd, doTRRead6, (void*)fd);
-        else
-            setListener(fd, doTRRead, (void*)fd);
+        setListener(fd, doTRRead, (void*)fd);
     }
     return;
 }

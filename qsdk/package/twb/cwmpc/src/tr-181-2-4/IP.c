@@ -137,7 +137,8 @@ CPE_STATUS getIPDiagnosticsIPPing_Interface(Instance *ip, char **value)
 {
 	IPDiagnosticsIPPing *p = (IPDiagnosticsIPPing *)ip->cpeData;
 	if ( p ){
-		*value = cwmpGetInstancePathStr(p->interface);
+		//*value = cwmpGetInstancePathStr(p->interface);
+		*value = GS_STRDUP("Device.IP.Interface.1");
 	}
 	return CPE_OK;
 }
@@ -326,6 +327,31 @@ CPE_STATUS getIPDiagnosticsIPPing_MaximumResponseTime(Instance *ip, char **value
 	return CPE_OK;
 }
 /**@endparam                                               **/
+/**@param IPDiagnosticsIPPing_ProtocolVersion                     **/
+CPE_STATUS setIPDiagnosticsIPPing_ProtocolVersion(Instance *ip, char *value)
+{
+    IPDiagnosticsIPPing *p = (IPDiagnosticsIPPing *)ip->cpeData;
+    if ( p )
+    {
+        if (p->state == eRequested )
+            cpeStopPing((void*)eNone);
+
+        COPYSTR(p->protocolversion, value);
+
+    }
+	return CPE_OK;
+}
+CPE_STATUS getIPDiagnosticsIPPing_ProtocolVersion(Instance *ip, char **value)
+{
+    IPDiagnosticsIPPing *p = (IPDiagnosticsIPPing *)ip->cpeData;
+    if ( p ){
+        if(p->protocolversion)
+            *value = GS_STRDUP(p->protocolversion);
+    }
+    return CPE_OK;
+}
+/**@endparam                                               **/
+
 /**@endobj IPDiagnosticsIPPing **/
 
 /**@obj IPInterfaceIPv4Address **/
@@ -1605,7 +1631,8 @@ CPE_STATUS getIPDiagnosticsTraceRoute_Interface(Instance *ip, char **value)
 {
 	IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
 	if ( p ){
-		*value = cwmpGetInstancePathStr(p->interface);
+		//*value = cwmpGetInstancePathStr(p->interface);
+		*value = GS_STRDUP("Device.IP.Interface.1");
 	}
 	return CPE_OK;
 }
@@ -1749,6 +1776,27 @@ CPE_STATUS getIPDiagnosticsTraceRoute_RouteHopsNumberOfEntries(Instance *ip, cha
 }
 /**@endparam                                               **/
 /**@endobj IPDiagnosticsTraceRoute **/
+
+/**@param IPDiagnosticsTraceRoute_ProtocolVersion                     **/
+CPE_STATUS setIPDiagnosticsTraceRoute_ProtocolVersion(Instance *ip, char *value)
+{
+    IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
+    if ( p )
+    {
+        COPYSTR(p->protocolversion, value);
+    }
+	return CPE_OK;
+}
+CPE_STATUS getIPDiagnosticsTraceRoute_ProtocolVersion(Instance *ip, char **value)
+{
+    IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
+    if ( p ){
+        if(p->protocolversion)
+            *value = GS_STRDUP(p->protocolversion);
+    }
+    return CPE_OK;
+}
+/**@endparam                                               **/
 
 /**@obj IPDiagnostics **/
 /**@endobj IPDiagnostics **/

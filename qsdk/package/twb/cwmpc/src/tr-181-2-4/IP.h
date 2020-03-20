@@ -28,6 +28,7 @@ typedef struct IPDiagnosticsIPPing {
 	DiagState	pendingState;
 	unsigned	totRsp;
 	FILE		*fp;
+	char        *protocolversion;
 
 } IPDiagnosticsIPPing;
 /**@endobj IPDiagnosticsIPPing **/
@@ -158,6 +159,7 @@ typedef struct IPDiagnosticsTraceRoute {
 	int			hopCnt;
 	FILE		*fp;
 	unsigned	maxTTL;
+	char        *protocolversion;
 } IPDiagnosticsTraceRoute;
 /**@endobj IPDiagnosticsTraceRoute **/
 

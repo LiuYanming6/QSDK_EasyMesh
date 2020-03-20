@@ -354,9 +354,13 @@ CPEGETFUNC(getIPDiagnosticsIPPing_FailureCount);
 CPEGETFUNC(getIPDiagnosticsIPPing_AverageResponseTime);
 CPEGETFUNC(getIPDiagnosticsIPPing_MinimumResponseTime);
 CPEGETFUNC(getIPDiagnosticsIPPing_MaximumResponseTime);
+CPEGETFUNC(getIPDiagnosticsIPPing_ProtocolVersion);
+CPESETFUNC(setIPDiagnosticsIPPing_ProtocolVersion);
+
 CWMPParam IPDiagnosticsIPPing_Params[]={
 	{ "DiagnosticsState", getIPDiagnosticsIPPing_DiagnosticsState, setIPDiagnosticsIPPing_DiagnosticsState, NULL, RPC_RW, eString, NOACTIVENOTIFY, 0},
-	{ "Interface", getIPDiagnosticsIPPing_Interface, setIPDiagnosticsIPPing_Interface, NULL, RPC_RW,  eString, 0, 256},
+	//{ "Interface", getIPDiagnosticsIPPing_Interface, setIPDiagnosticsIPPing_Interface, NULL, RPC_RW,  eString, 0, 256},
+    { "Interface", getIPDiagnosticsIPPing_Interface, NULL, NULL, RPC_R,  eString, 0, 0},
 	{ "Host", getIPDiagnosticsIPPing_Host, setIPDiagnosticsIPPing_Host, NULL, RPC_RW, eString, 0, 256},
 	{ "NumberOfRepetitions", getIPDiagnosticsIPPing_NumberOfRepetitions, setIPDiagnosticsIPPing_NumberOfRepetitions, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "Timeout", getIPDiagnosticsIPPing_Timeout, setIPDiagnosticsIPPing_Timeout, NULL, RPC_RW, eUnsignedInt, 0, 0},
@@ -367,6 +371,7 @@ CWMPParam IPDiagnosticsIPPing_Params[]={
 	{ "AverageResponseTime", getIPDiagnosticsIPPing_AverageResponseTime, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
 	{ "MinimumResponseTime", getIPDiagnosticsIPPing_MinimumResponseTime, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
 	{ "MaximumResponseTime", getIPDiagnosticsIPPing_MaximumResponseTime, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
+	{ "ProtocolVersion", getIPDiagnosticsIPPing_ProtocolVersion, setIPDiagnosticsIPPing_ProtocolVersion, NULL, RPC_RW, eString, 0, 256},
 	{NULL}
 };
 /**@endparam Device.IP.Diagnostics.IPPing.  */
@@ -396,6 +401,9 @@ CPEGETFUNC(getIPDiagnosticsTraceRoute_NumberOfTries);
 CPESETFUNC(setIPDiagnosticsTraceRoute_NumberOfTries);
 CPEGETFUNC(getIPDiagnosticsTraceRoute_Timeout);
 CPESETFUNC(setIPDiagnosticsTraceRoute_Timeout);
+CPEGETFUNC(getIPDiagnosticsTraceRoute_ProtocolVersion);
+CPESETFUNC(setIPDiagnosticsTraceRoute_ProtocolVersion);
+
 #if 0
 CPEGETFUNC(getIPDiagnosticsTraceRoute_DataBlockSize);
 CPESETFUNC(setIPDiagnosticsTraceRoute_DataBlockSize);
@@ -408,7 +416,8 @@ CPEGETFUNC(getIPDiagnosticsTraceRoute_ResponseTime);
 CPEGETFUNC(getIPDiagnosticsTraceRoute_RouteHopsNumberOfEntries);
 CWMPParam IPDiagnosticsTraceRoute_Params[]={
 	{ "DiagnosticsState", getIPDiagnosticsTraceRoute_DiagnosticsState, setIPDiagnosticsTraceRoute_DiagnosticsState, NULL, RPC_RW, eString, NOACTIVENOTIFY, 0},
-	{ "Interface", getIPDiagnosticsTraceRoute_Interface, setIPDiagnosticsTraceRoute_Interface, NULL, RPC_RW,  eString, 0, 256},
+	//{ "Interface", getIPDiagnosticsTraceRoute_Interface, setIPDiagnosticsTraceRoute_Interface, NULL, RPC_RW,  eString, 0, 256},
+	{ "Interface", getIPDiagnosticsTraceRoute_Interface, NULL, NULL, RPC_R,  eString, 0, 0},
 	{ "Host", getIPDiagnosticsTraceRoute_Host, setIPDiagnosticsTraceRoute_Host, NULL, RPC_RW, eString, 0, 256},
 	{ "NumberOfTries", getIPDiagnosticsTraceRoute_NumberOfTries, setIPDiagnosticsTraceRoute_NumberOfTries, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "Timeout", getIPDiagnosticsTraceRoute_Timeout, setIPDiagnosticsTraceRoute_Timeout, NULL, RPC_RW, eUnsignedInt, 0, 0},
@@ -419,6 +428,7 @@ CWMPParam IPDiagnosticsTraceRoute_Params[]={
 	{ "MaxHopCount", getIPDiagnosticsTraceRoute_MaxHopCount, setIPDiagnosticsTraceRoute_MaxHopCount, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "ResponseTime", getIPDiagnosticsTraceRoute_ResponseTime, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
 	{ "RouteHopsNumberOfEntries", getIPDiagnosticsTraceRoute_RouteHopsNumberOfEntries, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
+	{ "ProtocolVersion", getIPDiagnosticsTraceRoute_ProtocolVersion, setIPDiagnosticsTraceRoute_ProtocolVersion, NULL, RPC_RW, eString, 0, 256},
 	{NULL}
 };
 /**@endparam Device.IP.Diagnostics.TraceRoute.  */
