@@ -664,8 +664,19 @@ static void refreshDeviceMemory(void) {
     char oName[257];
     CWMPObject *o;
 
+/* Create VendorLogFile */
     memset(oName , 0x0 , sizeof(oName));
     snprintf(oName, sizeof(oName), "%s.DeviceInfo.VendorLogFile.%d.", CWMP_RootObject[0].name, 1);
+    o = cwmpFindObject(oName);
+    if ( NULL == o)
+    {
+        cwmpInitObjectInstance(oName);
+        cpeLog(LOG_DEBUG, "createInterfaceEntry: %s", oName);
+    }
+
+/* Create Device.Time */
+    memset(oName , 0x0 , sizeof(oName));
+    snprintf(oName, sizeof(oName), "%s.DeviceInfo.Time.", CWMP_RootObject[0].name);
     o = cwmpFindObject(oName);
     if ( NULL == o)
     {
