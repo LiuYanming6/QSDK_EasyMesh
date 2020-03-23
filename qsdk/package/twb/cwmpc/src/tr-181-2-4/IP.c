@@ -336,7 +336,12 @@ CPE_STATUS setIPDiagnosticsIPPing_ProtocolVersion(Instance *ip, char *value)
         if (p->state == eRequested )
             cpeStopPing((void*)eNone);
 
-        COPYSTR(p->protocolversion, value);
+        if(!strncmp(value, "IPv4", 4) || !strncmp(value, "IPv6", 4))
+        {
+            COPYSTR(p->protocolversion, value);
+        }
+        else
+            return CPE_ERR;
 
     }
 	return CPE_OK;
@@ -1783,7 +1788,12 @@ CPE_STATUS setIPDiagnosticsTraceRoute_ProtocolVersion(Instance *ip, char *value)
     IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
     if ( p )
     {
-        COPYSTR(p->protocolversion, value);
+        if(!strncmp(value, "IPv4", 4) || !strncmp(value, "IPv6", 4))
+        {
+            COPYSTR(p->protocolversion, value);
+        }
+        else
+            return CPE_ERR;
     }
 	return CPE_OK;
 }
