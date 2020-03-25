@@ -390,14 +390,9 @@ static int addXferEvents(XMLWriter *xp) {
 	while (r) {
 		if (r->ud.downloadReq.dlStatus != 2 && r->ud.downloadReq.dlStatus != -1) {
 			/* completed transfer found, it may be an AutonomousTransferComplete */
-			if (r->rpcMethod == eDownload ) {
-				if ( cpeState.sigusr1 ==1 )
-				{
-				    addEvent(eEvtMDownload, r->commandKey, xp);	
-				    ++i;
-				}
-				else
-				    break;
+			if (r->rpcMethod == eDownload && cpeState.sigusr1 ==1 ) {
+				addEvent(eEvtMDownload, r->commandKey, xp);
+				++i;
 			} else if (r->rpcMethod == eScheduleDownload) {
 				addEvent(eEvtMScheduleDownload, r->commandKey, xp);
 				++i;

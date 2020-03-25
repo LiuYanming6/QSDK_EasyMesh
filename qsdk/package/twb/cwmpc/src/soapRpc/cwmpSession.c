@@ -1554,13 +1554,9 @@ static int addEvent(eEventCode eEvent, char *ckey, XMLWriter *xp) {
 
 void retrytoACS(void)
 {
-	DBGPRINT((stderr, "Receive SIGUSR1, cwmpAddEvent\n"));
-	XMLWriter *xp = xmlOpenWriter(SOAP_SENDBUFSZ, XML_WRITER_FLG);
-        xmlOpenTagGrp(xp, "Event %sarrayType=\"%sEventStruct[!^^!]\"", nsSOAP_ENC, nsCWMP);
-	RPCRequest *r = cpeState.dlQActive;
-	addEvent(eEvtMDownload, r->commandKey, xp);
-        cwmpAddEvent(eEvtTransferComplete);
-	setTimer(retryACSInform, NULL, 1*1000);
+    DBGPRINT((stderr, "Receive SIGUSR1, cwmpAddEvent\n"));
+    cwmpAddEvent(eEvtTransferComplete);
+    setTimer(retryACSInform, NULL, 1*1000);
 }
 
 

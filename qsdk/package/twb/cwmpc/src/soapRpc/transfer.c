@@ -349,22 +349,25 @@ static void sendXferComplete(RPCRequest *r) {
 	if (r->rpcMethod == eScheduleDownload )
 		stopTimer(downloadWindowEnded, (void*)r);
 #endif
-	r->ud.downloadReq.dlEndTime = time(0);
-	if(cpeState.sigusr1 == 0)
-	{
-		cwmpAddEvent(r->rpcMethod == eDownload ? eEvtMDownload
-			        : r->rpcMethod== eScheduleDownload ? eEvtMScheduleDownload
-			        : eEvtMUpload);
-		cwmpAddEvent(eEvtTransferComplete);
-	}
-	cwmpSetPending(PENDING_XFERCOMPL);
-	/* don't send inform if the next transfer is ready to start */
-	if (isTransferReady()) {
-		DBGPRINT((stderr, "Next Transfer is ready\n"));
-		return;
-	}
-	DBGPRINT((stderr, "cwmpStartPending\n"));
-	cwmpStartPending();
+    r->ud.downloadReq.dlEndTime = time(0);
+
+    if(r->rpcMethod == eDownload || r->rpcMethod == eScheduleDownload)
+        DBGPRINT((stderr, "system upgrading...\n"));
+    else
+    {
+        cwmpAddEvent(r->rpcMethod == eDownload ? eEvtMDownload
+                    : r->rpcMethod== eScheduleDownload ? eEvtMScheduleDownload
+                    : eEvtMUpload);
+        cwmpAddEvent(eEvtTransferComplete);
+    }
+    cwmpSetPending(PENDING_XFERCOMPL);
+    /* don't send inform if the next transfer is ready to start */
+    if (isTransferReady()) {
+        DBGPRINT((stderr, "Next Transfer is ready\n"));
+        return;
+    }
+    DBGPRINT((stderr, "cwmpStartPending\n"));
+    cwmpStartPending();
 }
 
 static void dlTransferQuit(ACSSession *s, int fault) {
