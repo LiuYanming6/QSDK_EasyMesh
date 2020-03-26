@@ -318,9 +318,9 @@ void refreshAssociatedDeviceinstances(void)
 
 
 /* Clean all client exist instance first */
-    for (i=1; i<=5 ; i++)
+    for (i=1; i<=4 ; i++)
     {
-        for (j=1; j<= (client_wired + client_2g + client_5g + client_2g_backhaul + client_5g_backhaul); j++)
+        for (j=1; j<= ( client_2g + client_5g + client_2g_backhaul + client_5g_backhaul); j++)
         {
             memset(oName , 0x0 , sizeof(oName));
             snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.AssociatedDevice.%d.", CWMP_RootObject[0].name, i , j);
@@ -331,6 +331,18 @@ void refreshAssociatedDeviceinstances(void)
                 cwmpDeleteAllInstances(o);
             }
         }
+    }
+
+/* Clean all client wired with AccessPoint.5 object*/
+    Instance *accesspoint;
+    memset(oName , 0x0 , sizeof(oName));
+    snprintf(oName, sizeof(oName), "%s.WiFi.AccessPoint.%d.", CWMP_RootObject[0].name, 5);
+    o = cwmpFindObject(oName);
+    if (o)
+    {
+       // DBG_MSG("clean");
+        accesspoint = cwmpGetCurrentInstance();
+        cwmpDeleteObjectInstance( o, accesspoint);
     }
 
     role = get_role();
