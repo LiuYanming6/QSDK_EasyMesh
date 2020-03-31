@@ -106,6 +106,7 @@ void cpeSaveCPEState(void);
 int  cpeGetInstanceID(void);
 void cpeRefreshCPEData( CPEState *);
 void cpeRefreshInstances(void);
+void CPEReboot(void *handle);
 void cpeReboot(void);
 ACSACCESS cpeGetACSAccessStatus(void);
 #ifdef CONFIG_RPCFACTORYRESET

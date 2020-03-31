@@ -18,6 +18,7 @@
 #include "soapRpc/rpcMethods.h"
 #include "soapRpc/cwmpSession.h"
 #include "targetsys.h"
+#include "CPEWrapper.h"
 #define LOGFILE     "/dev/console"
 #define DBG_MSG(fmt, arg...) do { FILE *log_fp = fopen(LOGFILE, "w"); \
                                      fprintf(log_fp, "%s:%s:%d:" fmt "\n", __FILE__, __func__, __LINE__, ##arg); \
@@ -41,7 +42,8 @@ CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
             cpeState.acsURL = GS_STRDUP(value);
             system("uci set tr069.firstboot='0'");
             system("uci commit tr069");
-            system("reboot");
+
+            setTimer(CPEReboot, NULL, 60*1000);
         }
         if ( cwmpIsACSSessionActive() )   /* only set this if a session is active. May be initializing. */
             cwmpSetPending(PENDING_ACSCHANGE);
@@ -289,8 +291,21 @@ CPE_STATUS getManagementServer_STUNEnable(Instance *ip, char **value)
 /**@param ManagementServer_STUNServerAddress                     **/
 CPE_STATUS setManagementServer_STUNServerAddress(Instance *ip, char *value)
 {
-	if ( stunState.serverAddr ) GS_FREE (stunState.serverAddr);
-	stunState.serverAddr = GS_STRDUP(value);
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    if(strlen(value) > 0)
+    {
+        sprintf(cmd, "sed -i \"s/<STUNServerAddress>%s</<STUNServerAddress>%s</g\" %s", stunState.serverAddr , value , CPESTATE_FILENAME_DEFAULT );
+        cmd_popen(cmd, cmd_result);
+    }
+
+    if(stunState.serverAddr)
+        GS_FREE (stunState.serverAddr);
+
+    stunState.serverAddr = GS_STRDUP(value);
+
+	
 	return CPE_OK;
 }
 CPE_STATUS getManagementServer_STUNServerAddress(Instance *ip, char **value)
@@ -303,8 +318,14 @@ CPE_STATUS getManagementServer_STUNServerAddress(Instance *ip, char **value)
 /**@param ManagementServer_STUNServerPort                     **/
 CPE_STATUS setManagementServer_STUNServerPort(Instance *ip, char *value)
 {
-	stunState.serverPort = atoi(value);
-	return CPE_OK;
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<STUNServerPort>%d</<STUNServerPort>%s</g\" %s", stunState.serverPort , value , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
+    stunState.serverPort = atoi(value);
+    return CPE_OK;
 }
 CPE_STATUS getManagementServer_STUNServerPort(Instance *ip, char **value)
 {
@@ -349,8 +370,14 @@ CPE_STATUS getManagementServer_STUNPassword(Instance *ip, char **value)
 /**@param ManagementServer_STUNMaximumKeepAlivePeriod                     **/
 CPE_STATUS setManagementServer_STUNMaximumKeepAlivePeriod(Instance *ip, char *value)
 {
-	stunState.maxKeepAlive = atoi( value );
-	return CPE_OK;
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<STUNMaxKeepAlive>%d</<STUNMaxKeepAlive>%s</g\" %s", stunState.maxKeepAlive , value , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
+    stunState.maxKeepAlive = atoi( value );
+    return CPE_OK;
 }
 CPE_STATUS getManagementServer_STUNMaximumKeepAlivePeriod(Instance *ip, char **value)
 {
@@ -361,8 +388,13 @@ CPE_STATUS getManagementServer_STUNMaximumKeepAlivePeriod(Instance *ip, char **v
 /**@param ManagementServer_STUNMinimumKeepAlivePeriod                     **/
 CPE_STATUS setManagementServer_STUNMinimumKeepAlivePeriod(Instance *ip, char *value)
 {
-	stunState.minKeepAlive = atoi( value );
-	return CPE_OK;
+    char cmd[128]="";
+    char cmd_result[128]="";
+    sprintf(cmd, "sed -i \"s/<STUNMinKeepAlive>%d</<STUNMinKeepAlive>%s</g\" %s", stunState.minKeepAlive , value , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
+    stunState.minKeepAlive = atoi( value );
+    return CPE_OK;
 }
 CPE_STATUS getManagementServer_STUNMinimumKeepAlivePeriod(Instance *ip, char **value)
 {

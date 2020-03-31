@@ -817,6 +817,12 @@ void cpeRefreshCPEData(CPEState *cpe) {
 /*
 * Perform a reboot function. Return to CWMPC is not required.
 */
+
+void CPEReboot(void *handle)
+{
+    cpeReboot();
+}
+
 void cpeReboot(void)
 {
 	cpeSaveCPEState();
