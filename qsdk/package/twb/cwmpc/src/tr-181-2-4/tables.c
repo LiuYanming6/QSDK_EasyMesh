@@ -1190,9 +1190,9 @@ CWMPParam Time_Params[]={
 
 
 /**@param Device. */
-//CPEGETFUNC(get_InterfaceStackNumberOfEntries);
+CPEGETFUNC(get_InterfaceStackNumberOfEntries);
 CWMPParam Device_Params[]={
-//	{ "InterfaceStackNumberOfEntries", get_InterfaceStackNumberOfEntries, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
+	{ "InterfaceStackNumberOfEntries", get_InterfaceStackNumberOfEntries, NULL, NULL, RPC_R, eUnsignedInt, 0, 0},
 	{NULL}
 };
 /**@endparam Device.  */
