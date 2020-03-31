@@ -60,6 +60,12 @@ CPE_STATUS getManagementServer_URL(Instance *ip, char **value)
 /**@param ManagementServer_Username                                                      **/
 CPE_STATUS setManagementServer_Username(Instance *ip, char *value)
 {
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<acsUser>%s</<acsUser>%s</g\" %s", cpeState.acsUser , value , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
     COPYSTR( cpeState.acsUser,value);
     return CPE_OK;
 }
@@ -73,6 +79,13 @@ CPE_STATUS getManagementServer_Username(Instance *ip, char **value)
 /**@param ManagementServer_Password                                                       **/
 CPE_STATUS setManagementServer_Password(Instance *ip, char *value)
 {
+
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<acsPW>%s</<acsPW>%s</g\" %s", cpeState.acsPW , value , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
     COPYSTR(cpeState.acsPW, value);
     return CPE_OK;
 }
@@ -86,6 +99,12 @@ CPE_STATUS getManagementServer_Password(Instance *ip, char **value)
 /**@param ManagementServer_PeriodicInformEnable                                                      **/
 CPE_STATUS setManagementServer_PeriodicInformEnable(Instance *ip, char *value)
 {
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<informEnabled>%d</<informEnabled>%d</g\" %s", cpeState.informEnabled , testBoolean(value) , CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
     cpeState.informEnabled = testBoolean(value);
     return CPE_OK;
 }
@@ -336,6 +355,13 @@ CPE_STATUS getManagementServer_STUNServerPort(Instance *ip, char **value)
 /**@param ManagementServer_STUNUsername                     **/
 CPE_STATUS setManagementServer_STUNUsername(Instance *ip, char *value)
 {
+
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<STUNUsername>%s</<STUNUsername>%s</g\" %s", stunState.username?stunState.username:"" , *value? GS_STRDUP(value):"", CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
 	if ( stunState.username ) GS_FREE (stunState.username);
 	if (*value)
 		stunState.username = GS_STRDUP(value);
@@ -353,6 +379,14 @@ CPE_STATUS getManagementServer_STUNUsername(Instance *ip, char **value)
 /**@param ManagementServer_STUNPassword                     **/
 CPE_STATUS setManagementServer_STUNPassword(Instance *ip, char *value)
 {
+
+    char cmd[128]="";
+    char cmd_result[128]="";
+
+    sprintf(cmd, "sed -i \"s/<STUNPassword>%s</<STUNPassword>%s</g\" %s", stunState.password?stunState.password:"" , *value? GS_STRDUP(value):"", CPESTATE_FILENAME_DEFAULT );
+    cmd_popen(cmd, cmd_result);
+
+
 	if ( stunState.password ) GS_FREE (stunState.password);
 	if (*value)
 		stunState.password = GS_STRDUP(value);
