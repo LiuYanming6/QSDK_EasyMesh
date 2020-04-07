@@ -26,6 +26,8 @@ void cpeStopPing(void *);
 void cpeStartPing(void *);
 extern void *acsSession;
 extern char *strptime(const char *, const char *, struct tm *);
+extern CPEState cpeState;
+
 
 /**@obj IPDiagnosticsIPPing **/
 /* This function is called only once when the configuration is restored on
@@ -340,6 +342,17 @@ CPE_STATUS setIPDiagnosticsIPPing_ProtocolVersion(Instance *ip, char *value)
         {
             COPYSTR(p->protocolversion, value);
         }
+        else if(!strncmp(value, "Any", 3))
+        {
+             if ( cpeState.acsIPAddress.inFamily == AF_INET6)
+             {
+                COPYSTR(p->protocolversion, "IPv6");
+             }
+             else
+             {
+                COPYSTR(p->protocolversion, "IPv4");
+             }
+        }
         else
             return CPE_ERR;
 
@@ -352,6 +365,11 @@ CPE_STATUS getIPDiagnosticsIPPing_ProtocolVersion(Instance *ip, char **value)
     if ( p ){
         if(p->protocolversion)
             *value = GS_STRDUP(p->protocolversion);
+        else
+        {
+           COPYSTR(p->protocolversion, "IPv4");
+            *value = GS_STRDUP(p->protocolversion);
+        }
     }
     return CPE_OK;
 }
@@ -1792,6 +1810,17 @@ CPE_STATUS setIPDiagnosticsTraceRoute_ProtocolVersion(Instance *ip, char *value)
         {
             COPYSTR(p->protocolversion, value);
         }
+        else if(!strncmp(value, "Any", 3))
+        {
+             if ( cpeState.acsIPAddress.inFamily == AF_INET6)
+             {
+                COPYSTR(p->protocolversion, "IPv6");
+             }
+             else
+             {
+                COPYSTR(p->protocolversion, "IPv4");
+             }
+        }
         else
             return CPE_ERR;
     }
@@ -1803,6 +1832,11 @@ CPE_STATUS getIPDiagnosticsTraceRoute_ProtocolVersion(Instance *ip, char **value
     if ( p ){
         if(p->protocolversion)
             *value = GS_STRDUP(p->protocolversion);
+        else
+        {
+            COPYSTR(p->protocolversion, "IPv4");
+            *value = GS_STRDUP(p->protocolversion);
+        }
     }
     return CPE_OK;
 }
