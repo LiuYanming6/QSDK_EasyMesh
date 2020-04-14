@@ -31,7 +31,7 @@ extern CPEState cpeState;
 /**@param ManagementServer_URL                                                      **/
 CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
 {
-    if ( !streq(cpeState.acsURL, value) ){
+    if ( strlen(value) > 0 && !streq(cpeState.acsURL, value) ){
         if (cpeState.acsURL)
         {
             char cmd[256]={0};
@@ -41,9 +41,9 @@ CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
             GS_FREE(cpeState.acsURL);
             cpeState.acsURL = GS_STRDUP(value);
             system("uci set tr069.firstboot='0'");
-	    system("uci set tr069.reboot='0'");
+            system("uci set tr069.reboot='0'");
             system("uci commit tr069");
-	
+
             setTimer(CPEReboot, NULL, 60*1000);
         }
         if ( cwmpIsACSSessionActive() )   /* only set this if a session is active. May be initializing. */
