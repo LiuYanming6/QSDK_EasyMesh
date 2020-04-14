@@ -31,7 +31,7 @@ start(){
         firstuse=`uci get tr069.firstusedate`
         if test -z "$firstuse"
         then
-        	echo "tr069 firstusedate is empty, set to 0"
+        	echo "hello.init: tr069 firstusedate is empty, set to 0"
         	uci set tr069.firstusedate='0'
         	uci commit tr069
         fi
@@ -39,7 +39,7 @@ start(){
 		firstboot=`uci get tr069.firstboot`
         if test -z "$firstboot"
         then
-        	echo "tr069 firstboot is empty, set to 0"
+        	echo "hello.init: tr069 firstboot is empty, set to 0"
         	uci set tr069.firstusedate='0'
         	uci commit tr069
         fi
@@ -47,10 +47,17 @@ start(){
 		tr_reboot=`uci get tr069.reboot`
         if test -z "tr_reboot"
         then
-        	echo "tr069 reboot is empty, set to 0"
+        	echo "hello.init: tr069 reboot is empty, set to 0"
         	uci set tr069.reboot='0'
         	uci commit tr069
         fi
+
+	if [ "$tr_reboot" -eq "1" ];
+	then
+		echo "hello.init: set tr069.reboot='0'"
+		uci set tr069.reboot='0'
+		uci commit tr069
+	fi
 ######################################################################
 }
 
