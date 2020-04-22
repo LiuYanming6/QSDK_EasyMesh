@@ -201,11 +201,16 @@ static void doTRRead(void *arg)
     memset(buf,0, sizeof(buf));
     memset(oName,0,sizeof(oName));
 
-    if ( fgets(buf, 1024, cpeTR->fp) == NULL ) {
-        /* EOF */
-        cpeStopTraceRt((void*)eComplete);
+    if ( fgets(buf, 1024, cpeTR->fp) == NULL ) 
+    {
         if ( cpeTR->hopCnt == cpeTR->maxHopCount )
+        {
             cpeTR->diagnosticState = eMaxHopExceeded;
+            cpeStopTraceRt((void*)eMaxHopExceeded);
+        }
+        else
+            cpeStopTraceRt((void*)eComplete);
+
     } else {
 
         if(NULL != (pos = strchr(buf,'\n')));
@@ -223,6 +228,7 @@ static void doTRRead(void *arg)
         }
         else if(NULL != strchr(buf,'*')){
             DBGPRINT((stderr, "Timeout...skipped\n"));
+            cpeStopTraceRt((void*)eComplete);
         }
         else {
             char *cp = buf;
@@ -314,6 +320,7 @@ void cpeStartTraceRt( void *handle )
         if(strlen(cpeTR->protocolversion) ==0)
             COPYSTR(cpeTR->protocolversion, "IPv4");
 
+
         if(!strncmp(cpeTR->protocolversion, "IPv6", 4))
             snprintf(cmd, sizeof(cmd), "%s %s %s 2>&1\n", "traceroute6", ttlopt, cpeTR->host);
         else if (!strncmp(cpeTR->protocolversion, "IPv4", 4))
@@ -338,7 +345,7 @@ void cpeStartTraceRt( void *handle )
                  errno, strerror(errno));
             return;
         }
-        setTimer(cpeStopTraceRt, (void*)eComplete, cpeTR->timeout? (cpeTR->timeout/1000?cpeTR->timeout + 10000:cpeTR->timeout): 10*1000); /* 10000 msec default*/
+        //setTimer(cpeStopTraceRt, (void*)eComplete, cpeTR->timeout? (cpeTR->timeout/1000?cpeTR->timeout + 10000:cpeTR->timeout): 10*1000); /* 10000 msec default*/
         setListener(fd, doTRRead, (void*)fd);
     }
     return;
