@@ -173,8 +173,8 @@ fi
 config_load repacd
 config_get located repacd 'is_located' 'no'
 if [ "$located" == "no" ] ; then
-    __repacd_info "Jio agent starts mesh placement. STA looks for an AP (RSSI greater than -75 dB)"
-    acfg_tool acfg_set_sens_level wifi1 /-75
+    __repacd_info "Jio agent starts mesh placement. STA looks for an AP (RSSI greater than -72 dB)"
+    acfg_tool acfg_set_sens_level wifi1 /-72
 fi
 
 config_load repacd
