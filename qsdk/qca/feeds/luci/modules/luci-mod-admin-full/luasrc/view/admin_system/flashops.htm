@@ -7,14 +7,15 @@
 <%+header%>
 
 <h2><a id="content" name="content"><%:Flash operations%></a></h2>
-
+<!--
 <ul class="cbi-tabmenu">
 	<li class="cbi-tab"><a href="#"><%:Actions%></a></li>
 	<li class="cbi-tab-disabled"><a href="<%=REQUEST_URI%>/backupfiles"><%:Configuration%></a></li>
+
 </ul>
-
+-->
 <fieldset class="cbi-section">
-
+<!--
 	<fieldset class="cbi-section">
 		<legend><%:Backup / Restore%></legend>
 		<form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
@@ -50,12 +51,12 @@
 	</fieldset>
 
 	<br />
-
+	-->
 	<fieldset class="cbi-section">
 		<legend><%:Flash new firmware image%></legend>
 		<% if upgrade_avail then %>
 			<form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
-				<div class="cbi-section-descr"><%:Upload a sysupgrade-compatible image here to replace the running firmware. Check "Keep settings" to retain the current configuration (requires an OpenWrt compatible firmware image).%></div>
+				<div class="cbi-section-descr"><%:Upload a sysupgrade-compatible image here to replace the running firmware. Check "Keep settings" to retain the current configuration.%></div>
 				<div class="cbi-section-node">
 					<div class="cbi-value">
 						<label class="cbi-value-title" for="keep"><%:Keep settings%>:</label>
@@ -81,5 +82,6 @@
 	</fieldset>
 
 </fieldset>
-
+<!--
 <%+footer%>
+-->

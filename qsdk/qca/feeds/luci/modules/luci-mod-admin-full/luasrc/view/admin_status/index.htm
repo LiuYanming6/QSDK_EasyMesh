@@ -558,19 +558,22 @@
 	<legend><%:System%></legend>
 
 	<table width="100%" cellspacing="10">
+<!--		
 		<tr><td width="33%"><%:Hostname%></td><td><%=luci.sys.hostname() or "?"%></td></tr>
-		<tr><td width="33%"><%:Model%></td><td><%=pcdata(boardinfo.model or boardinfo.system or "?")%></td></tr>
-		<tr><td width="33%"><%:Firmware Version%></td><td>
-			<%=pcdata(ver.distname)%> <%=pcdata(ver.distversion)%> /
-			<%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)
-		</td></tr>
+-->		
+                <tr><td width="33%"><%:Model%></td><td><%:JCM0112%></td></tr>
+                <tr><td width="33%"><%:Firmware Version%></td><td><%=luci.sys.exec("cat /etc/openwrt_version")%></td></tr>
+                <tr><td width="33%"><%:Serial Number%></td><td><%=luci.sys.exec("state_cfg get sn")%></td></tr>
+
+<!--		
 		<tr><td width="33%"><%:Kernel Version%></td><td><%=unameinfo.release or "?"%></td></tr>
 		<tr><td width="33%"><%:Local Time%></td><td id="localtime">-</td></tr>
 		<tr><td width="33%"><%:Uptime%></td><td id="uptime">-</td></tr>
 		<tr><td width="33%"><%:Load Average%></td><td id="loadavg">-</td></tr>
+-->		
 	</table>
 </fieldset>
-
+<!--
 <fieldset class="cbi-section">
 	<legend><%:Memory%></legend>
 
@@ -704,3 +707,4 @@
 -%>
 
 <%+footer%>
+-->

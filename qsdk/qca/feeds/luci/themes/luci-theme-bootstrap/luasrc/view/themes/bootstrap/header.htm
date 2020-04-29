@@ -114,7 +114,7 @@
   <header>
    <div class="fill">
     <div class="container">
-     <a class="brand" href="#"><%=boardinfo.hostname or "?"%></a>
+     <a class="brand" href="#"><img src="<%=resource%>/icons/jioLogo.png" height="40" width="40"/></a>
      <ul class="nav">
 	 <%-
 		local function submenu(prefix, node)
@@ -190,11 +190,11 @@
    </div>
   </header>
 
-<%- if luci.sys.process.info("uid") == 0 and luci.sys.user.getuser("root") and not luci.sys.user.getpasswd("root") then -%>
+<%- if luci.sys.process.info("uid") == 0 and luci.sys.user.getuser("admin") and not luci.sys.user.getpasswd("admin") then -%>
 <div class="container">
 	<div class="alert-message warning">
 		<h4><%:No password set!%></h4>
-		<%:There is no password set on this router. Please configure a root password to protect the web interface and enable SSH.%><br>
+		<%:There is no password set on this router. Please configure a admin password to protect the web interface and enable SSH.%><br>
         <a href="<%=pcdata(luci.dispatcher.build_url("admin/system/admin"))%>"><%:Go to password configuration...%></a>
 	</div>
 </div>
