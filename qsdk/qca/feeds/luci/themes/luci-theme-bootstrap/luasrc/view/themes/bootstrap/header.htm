@@ -95,7 +95,7 @@
 <html lang="<%=luci.i18n.context.lang%>">
  <head>
   <meta charset="utf-8">
-  <title><%=striptags( (boardinfo.hostname or "?") .. ( (node and node.title) and ' - ' .. translate(node.title) or '')) %> - LuCI</title>
+  <title><%=striptags( ( (node and node.title) and '' .. translate(node.title) or '')) %></title>
   <!--[if lt IE 9]><script src="<%=media%>/html5.js"></script><![endif]-->
   <meta name="viewport" content="initial-scale=1.0">
   <link rel="stylesheet" href="<%=media%>/cascade.css">
@@ -177,6 +177,7 @@
 			end
 	%>
 	<div class="pull-right">
+<!--		
 	<% if ucichanges > 0 then %>
 	  <a class="label notice" href="<%=controller%>/<%=category%>/uci/changes"><%:Unsaved Changes%>: <%=ucichanges%></a>
 	<% end %>
@@ -184,6 +185,7 @@
        <span class="label success" id="xhr_poll_status_on"><%:Auto Refresh%> <%:on%></span>
        <span class="label" id="xhr_poll_status_off" style="display:none"><%:Auto Refresh%> <%:off%></span>
       </span>
+-->      
      </div>
 	<% end %>
     </div>
