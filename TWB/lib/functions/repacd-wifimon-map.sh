@@ -332,8 +332,8 @@ __repacd_wifimon_check_associated() {
         if [ -z "$assoc_start_time" ]; then
             ###TWB EAP: first time after it is not associated
             uci set repacd.repacd.is_located='no'
-            acfg_tool acfg_set_sens_level wifi1 /-72
-            echo "Dynamic Mesh Formation: backhaul is not associated, set sensitivity to -72dB" > /dev/console
+            acfg_tool acfg_set_sens_level wifi1 /-70
+            echo "Dynamic Mesh Formation: backhaul is not associated, set sensitivity to -70dB" > /dev/console
             ###
             __repacd_wifimon_get_timestamp assoc_start_time
         fi

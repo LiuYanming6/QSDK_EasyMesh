@@ -2067,8 +2067,8 @@ enable_qcawifi() {
         ###TWB EAP
         if [ "$device == 'wifi1' "]; then 
             uci set repacd.repacd.is_located='no'
-            acfg_tool acfg_set_sens_level wifi1 /-72
-            echo "Dynamic Mesh Formation: enable $device, set sensitivity to -72dB" > /dev/console
+            acfg_tool acfg_set_sens_level wifi1 /-70
+            echo "Dynamic Mesh Formation: enable $device, set sensitivity to -70dB" > /dev/console
         fi 
         ###
 
