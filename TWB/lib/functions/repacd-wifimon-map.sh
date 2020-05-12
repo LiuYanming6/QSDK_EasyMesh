@@ -464,13 +464,13 @@ __repacd_wifimon_measure_link() {
             # TWB EAP: do not wait utill 5 samples completed (2 sample is long enough)
             located=`uci get repacd.repacd.is_located`
             if [ "$located" == 'no' ]; then
-                if [ "$rssi_median" -lt -75 ]; then
-                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -75dB. Keep STA disconnecting"
+                if [ "$rssi_median" -lt -70 ]; then
+                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -70dB. Keep STA disconnecting"
                     wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g disconnect 0
                     sleep 2
                     wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g resconnect 0
                 else
-                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -75dB. Forming the mesh"
+                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -70dB. Forming the mesh"
                     uci set repacd.repacd.is_located='yes'
                     acfg_tool acfg_set_sens_level wifi1 /-90
                 fi
