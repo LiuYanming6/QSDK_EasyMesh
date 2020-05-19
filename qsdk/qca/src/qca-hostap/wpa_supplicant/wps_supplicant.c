@@ -450,6 +450,8 @@ static int wpa_supplicant_wps_cred(void *ctx,
 		ssid->disabled_until.sec = 0;
 		ssid->disabled_until.usec = 0;
 		ssid->auth_failures = 0;
+                ssid->scan_ssid = 1;
+                wpa_printf(MSG_DEBUG, "WPS: Harris: add scan_ssid = 1");
 	} else {
 		wpa_printf(MSG_DEBUG, "WPS: Create a new network based on the "
 			   "received credential");
