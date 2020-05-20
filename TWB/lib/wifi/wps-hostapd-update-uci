@@ -79,9 +79,14 @@ case "$CMD" in
                 #TWB EAP
                 onboard=`uci get repacd.repacd.is_onboard`
                 if [ "$onboard" == 'yes' ]; then
+                    role=`uci get repacd.repacd.Role`
                     echo "$CMD: release in_wps to 0 on backhaul APs" >/dev/console
                     iwpriv ath01 in_wps 0
-                    iwpriv ath12 in_wps 0
+                    if [ "$role" == 'CAP' ]; then
+                        iwpriv ath11 in_wps 0                    
+                    else
+                        iwpriv ath12 in_wps 0
+                    fi
                     led_ctrl LED_WLAN_WPS_TIMEOUT
                 fi
 		;;
@@ -95,9 +100,14 @@ case "$CMD" in
                 #TWB EAP
                 onboard=`uci get repacd.repacd.is_onboard`
                 if [ "$onboard" == 'yes' ]; then
+                    role=`uci get repacd.repacd.Role`
                     echo "$CMD: release in_wps to 0 on backhaul APs" >/dev/console
                     iwpriv ath01 in_wps 0
-                    iwpriv ath12 in_wps 0
+                    if [ "$role" == 'CAP' ]; then
+                        iwpriv ath11 in_wps 0
+                    else
+                        iwpriv ath12 in_wps 0
+                    fi
                     led_ctrl LED_WLAN_WPS_TIMEOUT
                 fi
 		;;
