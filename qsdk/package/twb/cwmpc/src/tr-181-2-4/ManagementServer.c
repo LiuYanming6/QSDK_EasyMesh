@@ -100,14 +100,20 @@ CPE_STATUS getManagementServer_Password(Instance *ip, char **value)
 /**@param ManagementServer_PeriodicInformEnable                                                      **/
 CPE_STATUS setManagementServer_PeriodicInformEnable(Instance *ip, char *value)
 {
-    char cmd[128]="";
-    char cmd_result[128]="";
+    if(testBoolean(value) == 1 || (stricmp(value, "false")==0  ))
+    {
+        char cmd[128]="";
+        char cmd_result[128]="";
 
-    sprintf(cmd, "sed -i \"s/<informEnabled>%d</<informEnabled>%d</g\" %s", cpeState.informEnabled , testBoolean(value) , CPESTATE_FILENAME_DEFAULT );
-    cmd_popen(cmd, cmd_result);
+        sprintf(cmd, "sed -i \"s/<informEnabled>%d</<informEnabled>%d</g\" %s", cpeState.informEnabled , testBoolean(value) , CPESTATE_FILENAME_DEFAULT );
+        cmd_popen(cmd, cmd_result);
 
-    cpeState.informEnabled = testBoolean(value);
-    return CPE_OK;
+        cpeState.informEnabled = testBoolean(value);
+
+        return CPE_OK;
+    }
+    else
+        return CPE_9007;
 }
 CPE_STATUS getManagementServer_PeriodicInformEnable(Instance *ip, char **value)
 {
