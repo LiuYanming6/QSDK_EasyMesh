@@ -1722,20 +1722,29 @@ CPE_STATUS getIPDiagnosticsTraceRoute_Timeout(Instance *ip, char **value)
 /**@param IPDiagnosticsTraceRoute_DataBlockSize                     **/
 CPE_STATUS setIPDiagnosticsTraceRoute_DataBlockSize(Instance *ip, char *value)
 {
-	IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
-	if ( p ){
-		p->dataBlockSize=atoi(value);
-	}
-	return CPE_OK;
+    int datasize;
+    IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
+    if ( p ){
+        datasize = atoi(value);
+        if(datasize == 0)
+            return CPE_ERR;
+        else
+            p->dataBlockSize=datasize;
+    }
+    return CPE_OK;
 }
 CPE_STATUS getIPDiagnosticsTraceRoute_DataBlockSize(Instance *ip, char **value)
 {
-	IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
-	if ( p ){
-		char    buf[10];
-		snprintf(buf,sizeof(buf),"%u", p->dataBlockSize);
-		*value = GS_STRDUP(buf);
-	}
+    IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
+    if ( p )
+    {
+        if(p->dataBlockSize == 0)
+            p->dataBlockSize = 38;
+
+        char    buf[10];
+        snprintf(buf,sizeof(buf),"%u", p->dataBlockSize);
+        *value = GS_STRDUP(buf);
+    }
 	return CPE_OK;
 }
 /**@endparam                                               **/

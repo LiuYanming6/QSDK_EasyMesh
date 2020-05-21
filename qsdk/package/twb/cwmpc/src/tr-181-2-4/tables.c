@@ -403,13 +403,10 @@ CPEGETFUNC(getIPDiagnosticsTraceRoute_Timeout);
 CPESETFUNC(setIPDiagnosticsTraceRoute_Timeout);
 CPEGETFUNC(getIPDiagnosticsTraceRoute_ProtocolVersion);
 CPESETFUNC(setIPDiagnosticsTraceRoute_ProtocolVersion);
-
-#if 0
 CPEGETFUNC(getIPDiagnosticsTraceRoute_DataBlockSize);
 CPESETFUNC(setIPDiagnosticsTraceRoute_DataBlockSize);
 CPEGETFUNC(getIPDiagnosticsTraceRoute_DSCP);
 CPESETFUNC(setIPDiagnosticsTraceRoute_DSCP);
-#endif
 CPEGETFUNC(getIPDiagnosticsTraceRoute_MaxHopCount);
 CPESETFUNC(setIPDiagnosticsTraceRoute_MaxHopCount);
 CPEGETFUNC(getIPDiagnosticsTraceRoute_ResponseTime);
@@ -421,10 +418,8 @@ CWMPParam IPDiagnosticsTraceRoute_Params[]={
 	{ "Host", getIPDiagnosticsTraceRoute_Host, setIPDiagnosticsTraceRoute_Host, NULL, RPC_RW, eString, 0, 256},
 	{ "NumberOfTries", getIPDiagnosticsTraceRoute_NumberOfTries, setIPDiagnosticsTraceRoute_NumberOfTries, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "Timeout", getIPDiagnosticsTraceRoute_Timeout, setIPDiagnosticsTraceRoute_Timeout, NULL, RPC_RW, eUnsignedInt, 0, 0},
-#if 0
 	{ "DataBlockSize", getIPDiagnosticsTraceRoute_DataBlockSize, setIPDiagnosticsTraceRoute_DataBlockSize, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "DSCP", getIPDiagnosticsTraceRoute_DSCP, setIPDiagnosticsTraceRoute_DSCP, NULL, RPC_RW, eUnsignedInt, 0, 0},
-#endif
 	{ "MaxHopCount", getIPDiagnosticsTraceRoute_MaxHopCount, setIPDiagnosticsTraceRoute_MaxHopCount, NULL, RPC_RW, eUnsignedInt, 0, 0},
 	{ "ResponseTime", getIPDiagnosticsTraceRoute_ResponseTime, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
 	{ "RouteHopsNumberOfEntries", getIPDiagnosticsTraceRoute_RouteHopsNumberOfEntries, NULL, NULL, RPC_R, eUnsignedInt, NOACTIVENOTIFY, 0},
