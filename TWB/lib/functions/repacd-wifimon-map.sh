@@ -468,7 +468,7 @@ __repacd_wifimon_measure_link() {
                     __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -70dB. Keep STA disconnecting"
                     wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g disconnect 0
                     sleep 2
-                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g resconnect 0
+                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g reconnect 0
                 else
                     __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -70dB. Forming the mesh"
                     uci set repacd.repacd.is_located='yes'
