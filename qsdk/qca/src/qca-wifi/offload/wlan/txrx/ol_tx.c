@@ -331,9 +331,6 @@ ol_txrx_classify(struct ol_txrx_vdev_t *vdev, qdf_nbuf_t nbuf,
             nbuf_class->is_igmp = 1;
             return;
         }
-        if (ip->protocol == 0x01) {   /*TWB EAP: for ICMP*/
-            tos = OSDEP_EAPOL_TID;
-        }
         if (ol_txrx_is_dhcp(nbuf, ip)) {
             /* Only for unicast frames - mcast frame check is there above*/
             if (!is_mcast) {
