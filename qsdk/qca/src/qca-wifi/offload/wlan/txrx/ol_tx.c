@@ -1904,8 +1904,14 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
 
     struct ol_txrx_nbuf_classify nbuf_class;
     int tid_q_map;
-
-    ATH_DEBUG_SET_RTSCTS_ENABLE((osif_dev *)vdev->osif_vdev);
+	osif_dev  *osdev = (osif_dev *)vdev->osif_vdev;
+	struct ieee80211vap *vap = osdev->os_if;
+	struct ethhdr * eh;
+	struct iphdr *iph = NULL;
+	eh = (struct ethhdr *)(netbuf->data + vap->mhdr_len);
+	iph = (struct iphdr*)(((uint8_t *)eh) + sizeof(struct ethhdr));
+	
+	ATH_DEBUG_SET_RTSCTS_ENABLE((osif_dev *)vdev->osif_vdev);
 
     qdf_nbuf_num_frags_init(netbuf);
     ftype = qdf_nbuf_get_ftype(netbuf);
@@ -1996,6 +2002,15 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
                 if (tid_q_map >= 0) {
                     tid = tid_q_map;
                 }
+
+if (iph->protocol == IPPROTO_ICMP )
+{
+	tid = QDF_TID_VO; /* send it on VO queue */
+
+printk("ICMP Packet is classiflied and tid is 0x%x.\n", tid);
+
+
+}
                 status = ol_tx_ll_cachedhdr(vdev, netbuf, HTT_INVALID_PEER, tid);
             }
 
