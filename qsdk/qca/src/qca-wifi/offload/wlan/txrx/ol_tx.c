@@ -2003,14 +2003,11 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
                     tid = tid_q_map;
                 }
 
-if (iph->protocol == IPPROTO_ICMP )
-{
-	tid = QDF_TID_VO; /* send it on VO queue */
-
-printk("ICMP Packet is classiflied and tid is 0x%x.\n", tid);
-
-
-}
+                if (iph->protocol == IPPROTO_ICMP )
+                {
+      	            tid = QDF_TID_VO; /* send it on VO queue */
+                   //printk("ICMP Packet is classiflied and tid is 0x%x.\n", tid);
+                }
                 status = ol_tx_ll_cachedhdr(vdev, netbuf, HTT_INVALID_PEER, tid);
             }
 
