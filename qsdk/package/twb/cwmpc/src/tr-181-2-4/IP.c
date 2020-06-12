@@ -160,9 +160,10 @@ CPE_STATUS setIPDiagnosticsIPPing_Host(Instance *ip, char *value)
 CPE_STATUS getIPDiagnosticsIPPing_Host(Instance *ip, char **value)
 {
 	IPDiagnosticsIPPing *p = (IPDiagnosticsIPPing *)ip->cpeData;
-	if ( p ){
-		if ( p->host )
-			*value = GS_STRDUP(p->host);
+    if ( p )
+    {
+        if ( p->host )
+            *value = GS_STRDUP(p->host);
 	}
 	return CPE_OK;
 }
@@ -205,6 +206,10 @@ CPE_STATUS setIPDiagnosticsIPPing_Timeout(Instance *ip, char *value)
 			if (p->state == eRequested ){
 				cpeStopPing((void*)eNone);
 			}
+            else if (p->state == eComplete)
+            {
+                cpeStopPing((void*)eNone);
+            }
 			p->timeout = v;
 			return CPE_OK;
 		} else
@@ -1702,11 +1707,16 @@ CPE_STATUS getIPDiagnosticsTraceRoute_NumberOfTries(Instance *ip, char **value)
 /**@param IPDiagnosticsTraceRoute_Timeout                     **/
 CPE_STATUS setIPDiagnosticsTraceRoute_Timeout(Instance *ip, char *value)
 {
-	IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
-	if ( p ){
-		p->timeout=atoi(value);
-	}
-	return CPE_OK;
+    IPDiagnosticsTraceRoute *p = (IPDiagnosticsTraceRoute *)ip->cpeData;
+    if ( p ){
+        if (p->diagnosticState == eComplete)
+        {
+            p->diagnosticState = eNone;
+            cpeRemoveRouteHops();
+        }
+        p->timeout=atoi(value);
+    }
+    return CPE_OK;
 }
 CPE_STATUS getIPDiagnosticsTraceRoute_Timeout(Instance *ip, char **value)
 {
