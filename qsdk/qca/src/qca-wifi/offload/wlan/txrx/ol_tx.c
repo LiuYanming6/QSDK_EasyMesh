@@ -1908,9 +1908,24 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
 	struct ieee80211vap *vap = osdev->os_if;
 	struct ethhdr * eh;
 	struct iphdr *iph = NULL;
-	eh = (struct ethhdr *)(netbuf->data + vap->mhdr_len);
-	iph = (struct iphdr*)(((uint8_t *)eh) + sizeof(struct ethhdr));
+       uint8_t is_dhcp=0;
+       struct udphdr *udp ;
+    int udpSrc, udpDst;
+    uint8_t *datap = NULL;
 	
+    eh = (struct ethhdr *)(netbuf->data + vap->mhdr_len);
+    iph = (struct iphdr*)(((uint8_t *)eh) + sizeof(struct ethhdr));
+
+    datap = (uint8_t *) iph;
+    if (iph->protocol == IPPROTO_UDP)
+    {
+        udp = (struct udphdr *) (datap + sizeof(struct iphdr));
+        udpSrc = qdf_htons(udp->source);
+        udpDst = qdf_htons(udp->dest);
+            if ((udpSrc == 67) || (udpSrc == 68)) {
+                is_dhcp=1;
+            }
+    }
 	ATH_DEBUG_SET_RTSCTS_ENABLE((osif_dev *)vdev->osif_vdev);
 
     qdf_nbuf_num_frags_init(netbuf);
@@ -2003,7 +2018,7 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
                     tid = tid_q_map;
                 }
 
-                if (iph->protocol == IPPROTO_ICMP )
+                if (iph->protocol == IPPROTO_ICMP || is_dhcp == 1)
                 {
       	            tid = QDF_TID_VO; /* send it on VO queue */
                    //printk("ICMP Packet is classiflied and tid is 0x%x.\n", tid);
