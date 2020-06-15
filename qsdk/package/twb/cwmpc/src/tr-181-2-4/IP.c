@@ -178,6 +178,10 @@ CPE_STATUS setIPDiagnosticsIPPing_NumberOfRepetitions(Instance *ip, char *value)
 			if (p->state == eRequested ){
 				cpeStopPing((void*)eNone);
 			}
+            else if (p->state == eComplete)
+            {
+                cpeStopPing((void*)eNone);
+            }
 			p->numberOfRepetitions = v;
 			return CPE_OK;
 		} else
