@@ -1117,7 +1117,7 @@ int runSetParameterValues(char *sessionID, RPCRequest *r, int *pending,
 						} else if (pv->cpeStatus >= CPE_9000 && pv->cpeStatus
 								<= CPE_VNDR_END) {
 							pv->fault = pv->cpeStatus;
-							error = 9003;
+							error = pv->fault;
 						} else if (pv->cpeStatus == CPE_REBOOT)
 							rebootFlag |= 1;
 						/* else if (pv->cpeStatus==CPE_OBJCOMMIT)
