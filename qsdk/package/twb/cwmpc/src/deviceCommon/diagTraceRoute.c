@@ -147,7 +147,8 @@ static void doTRRead(void *arg)
             return; /* ignore information lines of input */
         }
         else if(NULL != strchr(buf,'*')){
-            DBGPRINT((stderr, "Timeout...skipped\n"));
+            DBGPRINT((stderr, "Timeout, Send cpeStopTraceRt->eHostError\n"));
+            cpeStopTraceRt((void*)eHostError);
         }
         else {
             char *cp = buf;
