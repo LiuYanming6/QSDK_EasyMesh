@@ -331,12 +331,18 @@ ol_txrx_classify(struct ol_txrx_vdev_t *vdev, qdf_nbuf_t nbuf,
             nbuf_class->is_igmp = 1;
             return;
         }
-        if (ol_txrx_is_dhcp(nbuf, ip)) {
+
+        if (ol_txrx_is_dhcp(nbuf, ip) || ip->protocol == IPPROTO_ICMP) {
             /* Only for unicast frames - mcast frame check is there above*/
-            if (!is_mcast) {
+            //if (!is_mcast) 
+			{			
                 tos = OSDEP_EAPOL_TID;  /* send it on VO queue */
             }
+			if(ip->protocol == IPPROTO_ICMP)
+	            nbuf_class->is_icmp = 1;
+			else
             nbuf_class->is_dhcp = 1;
+		
         }
         else {
             /*
@@ -421,8 +427,18 @@ out:
      * Assign all MCAST packets to BE
      */
     if (OL_CFG_NONRAW_TX_LIKELINESS(vdev->tx_encap_type != htt_pkt_type_raw)) {
-        if(is_mcast) {
+        if(is_mcast)
+        {
+
+if(nbuf_class->is_dhcp == 1 || nbuf_class->is_icmp == 1)
+{
+//	printk("tos=[0x%x] __[%d].\n", tos, __LINE__);
+}
+else
+{
             tos = 0;
+        }
+
         }
     }
 #if ATH_SUPPORT_DSCP_OVERRIDE
@@ -1904,29 +1920,8 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
 
     struct ol_txrx_nbuf_classify nbuf_class;
     int tid_q_map;
-	osif_dev  *osdev = (osif_dev *)vdev->osif_vdev;
-	struct ieee80211vap *vap = osdev->os_if;
-	struct ethhdr * eh;
-	struct iphdr *iph = NULL;
-       uint8_t is_dhcp=0;
-       struct udphdr *udp ;
-    int udpSrc, udpDst;
-    uint8_t *datap = NULL;
-	
-    eh = (struct ethhdr *)(netbuf->data + vap->mhdr_len);
-    iph = (struct iphdr*)(((uint8_t *)eh) + sizeof(struct ethhdr));
 
-    datap = (uint8_t *) iph;
-    if (iph->protocol == IPPROTO_UDP)
-    {
-        udp = (struct udphdr *) (datap + sizeof(struct iphdr));
-        udpSrc = qdf_htons(udp->source);
-        udpDst = qdf_htons(udp->dest);
-            if ((udpSrc == 67) || (udpSrc == 68)) {
-                is_dhcp=1;
-            }
-    }
-	ATH_DEBUG_SET_RTSCTS_ENABLE((osif_dev *)vdev->osif_vdev);
+    ATH_DEBUG_SET_RTSCTS_ENABLE((osif_dev *)vdev->osif_vdev);
 
     qdf_nbuf_num_frags_init(netbuf);
     ftype = qdf_nbuf_get_ftype(netbuf);
@@ -2013,16 +2008,21 @@ ol_tx_ll_pflow_ctrl(ol_txrx_vdev_handle vdev, qdf_nbuf_t netbuf)
                     if (peer)
                         PFLOW_TXRX_TIDQ_STATS_ADD(peer, nbuf_class.pkt_tid, TX_MSDU_TOTAL_FROM_OSIF, 1);
                 }
+
+				ol_txrx_classify(vdev, netbuf, tx_direction, &nbuf_class);
+
                 tid_q_map = ol_tx_get_tid_override_queue_mapping(pdev, netbuf);
+				
                 if (tid_q_map >= 0) {
                     tid = tid_q_map;
                 }
+				else if(nbuf_class.is_dhcp == 1 || nbuf_class.is_icmp == 1)
+					tid = nbuf_class.tid;
 
-                if (iph->protocol == IPPROTO_ICMP || is_dhcp == 1)
-                {
-      	            tid = QDF_TID_VO; /* send it on VO queue */
-                   //printk("ICMP Packet is classiflied and tid is 0x%x.\n", tid);
-                }
+if (nbuf_class.is_dhcp == 1 || nbuf_class.is_icmp == 1)
+{
+//printk(" nbuf_class.is_dhcp=[%d], nbuf_class.is_icmp=[%d], tid=[0x%x] __[%d].\n",nbuf_class.is_dhcp, nbuf_class.is_icmp, tid, __LINE__);
+}
                 status = ol_tx_ll_cachedhdr(vdev, netbuf, HTT_INVALID_PEER, tid);
             }
 

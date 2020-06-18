@@ -74,6 +74,7 @@ enum ol_txrx_pkt_direction {
  * @is_igmp  : igmp pkt check
  * @is_ipv4  : ip version 4 pkt check
  * @is_ipv6  : ip version 6 pkt check
+ * @is_icmp  : icmp pkt check
  */
 struct ol_txrx_nbuf_classify {
     uint16_t peer_id;
@@ -91,6 +92,7 @@ struct ol_txrx_nbuf_classify {
     uint8_t is_igmp;
     uint8_t is_ipv4;
     uint8_t is_ipv6;
+    uint8_t is_icmp;
 };
 
 /**
