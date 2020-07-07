@@ -250,6 +250,13 @@ __repacd_wifimon_check_associated() {
         # Only update the LED state if we transitioned from not associated
         # to associated.
         if [ "$last_assoc_state" -eq 0 ]; then
+            # TWB EAP:
+            # Re-config bSTA threshold to -70 when bSTA just get associated
+            # It is necessary to be done here since 1905.1 autoconfig will
+            # change agent's credentials and reload WiFi interfaces. And it
+            # resets the acfg_set_sens_level too. Therefore we must re-config
+            # -70 back here (once agent get synchronized with controller).
+            acfg_tool acfg_set_sens_level wifi1 /-70 
             if [ "$wps_in_progress" -gt 0 ]; then
                 # If WPS was triggered, it could take some time for the
                 # interfaces to settle into their final state. Thus, update
@@ -464,16 +471,16 @@ __repacd_wifimon_measure_link() {
             # TWB EAP: do not wait utill 5 samples completed (2 sample is long enough)
             located=`uci get repacd.repacd.is_located`
             if [ "$located" == 'no' ]; then
-                if [ "$rssi_median" -lt -70 ]; then
-                    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -70dB. Keep STA disconnecting"
-                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g disconnect 0
-                    sleep 2
-                    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g reconnect 0
-                else
+                #if [ "$rssi_median" -lt -70 ]; then
+                #    __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is lower than -70dB. Keep STA disconnecting"
+                #    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g disconnect 0
+                #    sleep 2
+                #    wpa_cli -p /var/run/wpa_supplicant-$sta_iface_5g reconnect 0
+                #else
                     __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -70dB. Forming the mesh"
                     uci set repacd.repacd.is_located='yes'
                     acfg_tool acfg_set_sens_level wifi1 /-90
-                fi
+                #fi
             fi
             ####
 
