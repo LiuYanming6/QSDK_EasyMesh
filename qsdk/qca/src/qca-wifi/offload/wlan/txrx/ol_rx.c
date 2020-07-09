@@ -1824,11 +1824,11 @@ ol_rx_deliver(
                         PFLOW_TXRX_TIDQ_STATS_ADD(peer, nbuf_class.pkt_tid, RX_MSDU_DELIVERED_TO_STACK, 1);
                 }
             }
-        }
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 14, 0))
         qdf_nbuf_record_rx_queue(msdu, 0);
         skb_set_hash(msdu, 0xaa , PKT_HASH_TYPE_L4);
 #endif
+        }
         msdu = next;
     }
     /* sanity check - are there any frames left to give to the OS shim? */
