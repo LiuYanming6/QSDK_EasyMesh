@@ -103,12 +103,14 @@ firmware: world
 firmware:
 		@$(eval MD5NUMBER = $(shell md5sum $(BIN_DIR)/openwrt-ar71xx-generic-ap151-16M-squashfs-sysupgrade.bin | cut -c 1-8 ))
 		@cp $(BIN_DIR)/openwrt-ar71xx-generic-ap151-16M-squashfs-sysupgrade.bin $(BIN_DIR)/$(DATE)_$(strip $(VERSION_NUMBER))_QSDK5.3_$(MD5NUMBER).bin
+		@cp $(BIN_DIR)/openwrt-ar71xx-generic-ap151-16M-squashfs-sysupgrade.bin $(BIN_DIR)/$(strip $(VERSION_NUMBER)).bin
 		@echo "====================================================================";
 		@echo "Build Date: $(DATE)";
 		@echo "Git Commit: $(GIT_VERSION)";
 		@echo "MD5sum: $(MD5NUMBER)";
 		@echo "file path: $(BIN_DIR)";
 		@echo "file Name: $(DATE)_$(strip $(VERSION_NUMBER))_QSDK5.3_$(MD5NUMBER).bin";
+		@echo "file Name: $(strip $(VERSION_NUMBER)).bin";
 		@echo "====================================================================";
 
 
