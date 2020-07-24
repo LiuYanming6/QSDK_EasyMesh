@@ -46,6 +46,7 @@
 #define DBGPRINT(X)
 #endif
 
+void cpeSaveConfig(void);
 extern CPEState cpeState;
 extern char **cwmpConnReqUser;        /* linkage to Connection Request Credentials */
 extern char **cwmpConnReqPW;
@@ -112,7 +113,7 @@ static int updateStunState( StunResponse *sp )
 		stunState.natIP = sp->mappedAddr.ipv4.addr;
 		stunState.natPort = sp->mappedAddr.ipv4.port;
 		DBGPRINT((stderr, "NAT mapping changed\n"));
-		cwmpStartACSInform(); //Update Inform when changed
+//		cwmpStartACSInform(); //Update Inform when changed
 	}
 	if ( sp->mappedAddr.ipv4.addr != stunState.cpeIP
 	    || sp->mappedAddr.ipv4.port != UDPCONNECTIONREQPORT ) {
@@ -125,6 +126,10 @@ static int updateStunState( StunResponse *sp )
 		stunState.natDetected = 0;
 		DBGPRINT((stderr, "No NAT detected\n"));
 	}
+    
+	if(changed) /*if NAT mapping change save the confg file to mentatin the state of UDP connection accross the reboot */
+	cpeSaveConfig();    
+    
 	return changed;
 }
 /*
@@ -761,9 +766,9 @@ int startStun(void)
         DBGPRINT((stderr,"startStun()\n"));
         stunState.cpeIP = cpeState.ipAddress.u.inAddr.s_addr;
         COPYSTR(stunState.serverAddr, cpeState.stunURL);
-        stunState.serverPort = 3478;
-        stunState.minKeepAlive=30;
-        stunState.maxKeepAlive=45;
+//        stunState.serverPort = 3478;
+//        stunState.minKeepAlive=30;
+//        stunState.maxKeepAlive=45;
         /* setup to be notified if IP address changes */
         setCallback(&cpeState.ipAddress, restartStun, NULL);
         if ( stunState.cpeIP == 0 ){

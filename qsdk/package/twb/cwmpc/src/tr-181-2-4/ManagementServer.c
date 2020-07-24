@@ -287,6 +287,44 @@ CPE_STATUS getManagementServer_UDPConnectionRequestAddress(Instance *ip, char **
 		*value = NULL;
 	return CPE_OK;
 }
+
+int str_last_occurance(char delim, char *str)
+{
+    int i=0;
+//    int index_occurance;
+    int last = 0;
+    char *strptr = str;
+    while (*strptr != '\0') {
+        if (*strptr == delim){
+            last = i;
+        }
+        i++;
+        strptr++;
+    }
+    return last;
+}
+
+CPE_STATUS setManagementServer_UDPConnectionRequestAddress(Instance *ip, char *value)
+{
+    /* get parameter */
+    int length_occurance;
+    char *cp_natIP=NULL,*cp_natPort ;
+    struct in_addr n;
+    if (*value ) {
+        if(strstr(value,":")!= NULL){
+            //length_occurance=CUSTOM_CALLBACK_FUNCTION(FIND_LAST_OCCURANCE_STRING,':',value,NULL);
+            length_occurance = str_last_occurance(':',value);            
+            cp_natIP=value;
+            cp_natPort=cp_natIP+length_occurance+1;
+            *(cp_natIP+length_occurance)='\0';
+            inet_pton(AF_INET, cp_natIP, &n.s_addr);
+            stunState.natIP=htonl(n.s_addr);
+            stunState.natPort= atoi(cp_natPort);
+        }
+    }
+    return CPE_OK;
+}
+
 /**@endparam                                               **/
 /**@param ManagementServer_STUNEnable                     **/
 CPE_STATUS setManagementServer_STUNEnable(Instance *ip, char *value)
@@ -448,6 +486,14 @@ CPE_STATUS getManagementServer_NATDetected(Instance *ip, char **value)
 {
 	*value = GS_STRDUP(stunState.natDetected?"true": "false");
 	return CPE_OK;
+}
+CPE_STATUS setManagementServer_NATDetected(Instance *ip, char *value)
+{
+    if(testBoolean(value)){
+        stunState.natDetected=1;
+    }else
+    stunState.natDetected=0;
+    return CPE_OK;
 }
 #endif // CONFIG_TR111P2
 /**@endparam                                               **/
