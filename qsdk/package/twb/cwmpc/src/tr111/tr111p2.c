@@ -69,6 +69,8 @@ extern void cwmpCheckValueChange(void);
 
 void tr111p2ActiveNotify(void)
 {
+//	DBGPRINT((stderr, "Wait for 60 seconds delay before cwmpCheckValueChange()\n"));
+//	sleep(60);
 	DBGPRINT((stderr, "tr111ActiveNotify - value change check\n"));
 	cwmpCheckValueChange();
 }

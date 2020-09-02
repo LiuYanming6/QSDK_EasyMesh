@@ -143,6 +143,8 @@ static void checkStunStateUpdate( void *handle ){
 		DBGPRINT((stderr, "%d: Binding changed\n", (int)time(NULL)));
 		if ( stunState.natDetected )
 			sendBindRequest(NULL);
+//		DBGPRINT((stderr, "Wait for 60 seconds delay before tr111p2ActiveNotify\n"));
+//		sleep(60);
 		tr111p2ActiveNotify();    /* something changed - chk for active notify*/
 	} else if ( stunState.natDetected )
 		discoveryKeepAlive();
@@ -584,6 +586,8 @@ static void rcvdResponse(void *handle)
 						DBGPRINT((stderr, "%d: Binding changed\n", (int)time(NULL)));
 						if ( stunState.natDetected )
 							sendBindRequest(NULL);
+						//DBGPRINT((stderr, "Wait for 60 seconds delay before tr111p2ActiveNotify\n"));
+						//sleep(60);
 						tr111p2ActiveNotify();    /* something changed - chk for active notify*/
 					} else if ( stunState.natDetected )
 						discoveryKeepAlive();
@@ -755,6 +759,8 @@ void stopStun(void)
 
 int startStun(void)
 {
+//    DBGPRINT((stderr, "Wait for 60 seconds delay before startStun()\n"));
+//    sleep(60);
     retryTO = 0;
     discState = eDiscoveryInitial;
     if ( stunState.sfd <= 0 ) { /* check if stun already running */

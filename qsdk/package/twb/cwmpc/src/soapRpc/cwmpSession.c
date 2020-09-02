@@ -536,7 +536,12 @@ static int startInformRetryTimer(ACSSession *s) {
 				exit(-1);
 			}
 #endif
+			#if 1 //changes by narendra Date : 02-02-2015 CLMID=96751
 			cpeState.basePTime = time(NULL)+waitTime;   /* reset periodic inform reference time on retries */
+			#else
+			cpeState.basePTime = cpeState.basePTime + (waitTime/1000);
+			//cpeState.basePTime = waitTime;   /* reset periodic inform reference time on retries */
+			#endif
 			return -1;   /* return that retry timer is running */
     	} else {
     		/* new active event */
@@ -616,7 +621,11 @@ static void scheduleNextInform(void) {
         	if ( diff>0)
         		next = cpeState.informInterval - next;
         } else {
+		#if 1 //changes by narendra 
             next = cpeState.informInterval-(abs(now-cpeState.basePTime)%cpeState.informInterval);
+        #else //calculate the next periodic interval on the basis of system boot up time insted of system clock
+            next = cpeState.informInterval-(abs(GET_DEVICE_UP_TIME()-cpeState.basePTime)%cpeState.informInterval);
+        #endif
         }
         cpeDbgLog(DBG_ACSCONNECT, "next periodic inform = %d\n", (int) next);
         setTimer(startPeriodicInform, NULL, next*1000);
@@ -630,7 +639,7 @@ void cwmpStartACSInform(void) {
     char    *infBuf;
     const char	*p;
     char firstboot[10]={0};
-    char reboot[10]={0};
+//    char reboot[10]={0};
     char	dfltIP[IP_ADDRSTRLEN];
     /* set starting CWMP protocol version */
     cpeState.cwmpVersion = CWMP_VERSION;
@@ -647,7 +656,8 @@ void cwmpStartACSInform(void) {
 
     /* init RPC Methods */
     initRPCMethods();
-    
+
+#if 0    
     /* set all Inform events from saved state */
     //DBG_MSG("0x%08x\n",cpeState.eventMask);
     cmd_popen("uci get tr069.firstboot", firstboot);
@@ -665,16 +675,18 @@ void cwmpStartACSInform(void) {
     }
     else if (!strncmp(reboot,"0",1) && !(cpeState.eventMask&EVT_REBOOT))
     {
+//	DBGPRINT((stderr,"Waiting for 60 Sec to synce Nat value(1)\n"));
+//        sleep(60);
         cwmpAddEvent(eEvtBoot);
         system("uci set tr069.reboot='1'");
     }
     else
     {
-#if 0
+//#if 1
         if(cpeState.eventMask&EVT_BOOTSTRAP)
             cwmpAddEvent(eEvtBoot);
-#endif
-        if (cpeState.eventMask&EVT_VALUECHANGE)
+//#endif
+    if (cpeState.eventMask&EVT_VALUECHANGE)
                 cwmpAddEvent(eEvtValueChange);
 
         if (anyCompleteXfer(eUpload) ) 
@@ -691,12 +703,48 @@ void cwmpStartACSInform(void) {
 
         if (cpeState.eventMask&EVT_REBOOT)
         {
+//	    DBGPRINT((stderr,"Waiting for 60 Sec to synce Nat value(2)\n"));
+//            sleep(60);
             cwmpAddEvent(eEvtBoot);
             cwmpAddEvent(eEvtMReboot);
             system("uci set tr069.reboot='1'");
         }
         cpeState.eventMask = 0;
     }
+#else
+	DBG_MSG("0x%08x\n",cpeState.eventMask);
+	cmd_popen("uci get tr069.firstboot", firstboot);
+	if ((cpeState.eventMask&EVT_BOOTSTRAP)==0 && !strncmp(firstboot,"0",1)){ /* EVT_BOOTSTRAP is 0 active */
+        cwmpAddEvent(eEvtBootstrap);
+//        DBGPRINT((stderr,"Waiting for 1 Sec to send 1 Boot\n"));
+//        sleep(1);    
+        cwmpAddEvent(eEvtBoot);
+	system("uci set tr069.firstboot='1'");
+	system("uci commit tr069");	
+        cpeState.eventMask = 0;                 /* if BOOTSTRAP is 0 then this is first time */
+                                                                        /* to attempt to inform this ACS. Thus all   */
+                                                                        /* other pending events are forced to 0 */
+        } else {
+            cwmpAddEvent(eEvtBoot);                     /* alway add EV_BOOT */
+            if (cpeState.eventMask&EVT_VALUECHANGE)
+                cwmpAddEvent(eEvtValueChange);
+            if (anyCompleteXfer(eUpload) ) {
+                cwmpAddEvent(eEvtTransferComplete);
+                cwmpSetPending( PENDING_XFERCOMPL );
+            }
+            if (anyCompleteXfer(eAutonomousTransferComplete) ) {
+                cwmpAddEvent(eEvtAutonomousTransferComplete);
+                cwmpSetPending( PENDING_AUTOXFRCMPT );
+            }
+
+            if (cpeState.eventMask&EVT_REBOOT) {
+//                DBGPRINT((stderr,"Waiting for 60 Sec to synce Nat value before MReboot\n"));
+//                sleep(60);    
+                cwmpAddEvent(eEvtMReboot);
+            }      
+            cpeState.eventMask = EVT_BOOTSTRAP;                 /* make sure BootStrap is set */
+        }
+#endif    
     cpeLockConfiguration();
     cpeRefreshCPEData(&cpeState);
     cpeRefreshInstances();
@@ -708,7 +756,11 @@ void cwmpStartACSInform(void) {
         strcpy(dfltIP, p);
     else
         dfltIP[0]='\0';
+   #if 1 //changes by narendra 
     cpeState.basePTime= time(NULL);
+    #else //initialise periodic bast with device up time
+    cpeState.basePTime= GET_DEVICE_UP_TIME();
+    #endif
     if ( (infBuf=cwmpInformRPC( acsSession.sessID, acsSession.retryCount, dfltIP ))) {
         if ( postToAcs(infBuf)== -1){
             startInformRetryTimer(&acsSession); /* only if initial post call fails */
@@ -1423,6 +1475,14 @@ static void acsConnected(void *handle) {
         GS_FREE(s->postMsg); s->postMsg = NULL;
         sessDisconnect(s, eConnectError);
         cpeLog(LOG_ERR, "acsConnect Status = %s(%d)", w->msg, w->status);
+#if 0
+	//Added By Narnedra To increament iteration count in case of connection fail
+        if(cpeState.acsIPAddress.inFamily == AF_INET)
+            IPv4_iter++;
+        else
+            IPv6_iter++;
+        cpeLog(LOG_INFO,"\n at line %d in function %s()\n ACS IP Address is == %s",__LINE__,__FUNCTION__,writeInIPAddr(&cpeState.acsIPAddress) );
+#endif	
         return;
     }
     if (s->wio==NULL) {
