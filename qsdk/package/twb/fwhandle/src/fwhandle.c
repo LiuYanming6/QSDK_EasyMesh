@@ -234,6 +234,7 @@ DECODE_END:
         {
             DBG_MSG("FWHANDLE, DECODE %s\n", ret == 0 ? "PASS" : "FAIL");
             printf("FWHANDLE, DECODE %s\n", ret == 0 ? "PASS" : "FAIL");
+            system("killall -SIGUSR1 cwmpc");
         }
         goto END; 
     }
