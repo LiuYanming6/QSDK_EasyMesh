@@ -128,7 +128,7 @@ CPE_STATUS setManagementServer_PeriodicInformInterval(Instance *ip, char *value)
     if(ret)
     {
         if(value[0] =='0')
-            return CPE_ERR;
+            return CPE_9007;
 
         cpeState.informInterval = atoi(value);
         
@@ -150,7 +150,7 @@ CPE_STATUS setManagementServer_PeriodicInformInterval(Instance *ip, char *value)
         return CPE_OK;
     }
     else
-        return CPE_ERR;
+        return CPE_9007;
 }
 CPE_STATUS getManagementServer_PeriodicInformInterval(Instance *ip, char **value)
 {
