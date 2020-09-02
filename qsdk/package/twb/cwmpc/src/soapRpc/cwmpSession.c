@@ -1550,6 +1550,8 @@ static int postToAcs(char *buf ){
                 s->wio=wget_Connect(s->sessACSURL, acsConnected, s);
                 sleep(5);
             }
+
+	    cpeState.sigusr1 = 0;
         }
         else
         {
