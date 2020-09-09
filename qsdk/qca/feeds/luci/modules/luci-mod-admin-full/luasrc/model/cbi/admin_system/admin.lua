@@ -4,7 +4,7 @@
 
 local fs = require "nixio.fs"
 
-m = Map("system", translate("Router Password"),
+m = Map("system", translate("Password"),
 	translate("Changes the administrator password for accessing the device"))
 
 s = m:section(TypedSection, "_dummy", "")
@@ -27,11 +27,15 @@ function m.on_commit(map)
 
 	if v1 and v2 and #v1 > 0 and #v2 > 0 then
 		if v1 == v2 then
+		if string.len(v1) >= 8 and string.match(v1,"%w") and string.match(v1,"%u") and  v1:lower() ~= "password" and v1 ~= "12345678" and v1:lower() ~= "reliance" and v1:lower() ~= "reliancejio" then			    
 			if luci.sys.user.setpasswd(luci.dispatcher.context.authuser, v1) == 0 then
 				m.message = translate("Password successfully changed!")
 			else
 				m.message = translate("Unknown Error, password not changed!")
 			end
+		    else
+			     m.message = translate("Password not follow requirement")
+		    end	    
 		else
 			m.message = translate("Given password confirmation did not match, password not changed!")
 		end
@@ -116,4 +120,4 @@ end
 
 end
 
-return m, m2
+return m

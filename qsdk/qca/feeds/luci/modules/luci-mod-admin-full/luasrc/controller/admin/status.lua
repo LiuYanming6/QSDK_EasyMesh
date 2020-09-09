@@ -6,7 +6,7 @@ module("luci.controller.admin.status", package.seeall)
 
 function index()
 	entry({"admin", "status"}, alias("admin", "status", "overview"), _("Status"), 20).index = true
-	entry({"admin", "status", "overview"}, template("admin_status/index"), _("Overview"), 1)
+	entry({"admin", "status", "overview"}, call("action_overview"), _("Overview"), 1)
 --	entry({"admin", "status", "iptables"}, call("action_iptables"), _("Firewall"), 2).leaf = true
 --	entry({"admin", "status", "routes"}, template("admin_status/routes"), _("Routes"), 3)
 --	entry({"admin", "status", "syslog"}, call("action_syslog"), _("System Log"), 4)
@@ -28,6 +28,17 @@ function index()
 --	entry({"admin", "status", "realtime", "connections_status"}, call("action_connections")).leaf = true
 
 --	entry({"admin", "status", "nameinfo"}, call("action_nameinfo")).leaf = true
+end
+
+function action_overview()
+        file = io.open("/etc/shadow","r")
+        str_shadow = file:read()
+        file:close()
+        if string.match(str_shadow, "admin:$1$reliance$7xYhkhthA1bV2bQlrNa1n0") then
+        luci.http.redirect(luci.dispatcher.build_url("admin", "system", "admin"))
+        else
+        luci.template.render("admin_status/index")
+        end
 end
 
 function action_syslog()
