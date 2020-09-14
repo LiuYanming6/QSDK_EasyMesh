@@ -27,7 +27,11 @@ function m.on_commit(map)
 
 	if v1 and v2 and #v1 > 0 and #v2 > 0 then
 		if v1 == v2 then
-		    if string.len(v1) >= 8 and string.match(v1,"%w") and string.match(v1,"%u") and not string.match(v1:lower(),"password") and not string.match(v1:lower(),"12345678") and not string.match(v1:lower(),"reliance") and not string.match(v1:lower(),"reliancejio") and not string.match(v1:lower(),"admin") then
+                    if string.len(v1) >= 8 and string.match(v1,"%u") and string.match(v1,"%l") and string.match(v1,"%d")
+                        and string.match(v1,"%p") and not string.match(v1:lower(),"password") and not string.match(v1:lower(),"12345678")
+                        and not string.match(v1:lower(),"reliance") and not string.match(v1:lower(),"reliancejio")
+                        and not string.match(v1:lower(),"admin") and not string.match(v1:lower(),"jio") then
+
 			if luci.sys.user.setpasswd(luci.dispatcher.context.authuser, v1) == 0 then
 				m.message = translate("Password successfully changed!")
 			else
