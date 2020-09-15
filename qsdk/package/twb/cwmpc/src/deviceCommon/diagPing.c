@@ -91,9 +91,11 @@ static void doRead(void *arg)
 		DBGPRINT((stderr, "buf=>%s", buf));
 		if ( strncmp(buf, "PING", 4)==0  ) {
 			return; /* ignore first line of input */
-		} else if ( strstr(buf, "unknown host") || strstr(buf, "bad address") || strstr(buf, "100% packet loss") ){
+		} else if ( strstr(buf, "unknown host") || strstr(buf, "bad address") ){
 			/* ping: unknown host xxxxxxxxx */
 			cpeStopPing((void*)eHostError);
+		} else if ( strstr(buf, "100% packet loss") ){
+			cpeStopPing((void*)eErrorInternal);
 		} else if ( strstr(buf, "packets transmitted") ){
 			/* looking for:  n packets transmitted, x received, y errors ...*/
 			sscanf(buf,"%*d packets transmitted, %d received", &pp->successCount);
