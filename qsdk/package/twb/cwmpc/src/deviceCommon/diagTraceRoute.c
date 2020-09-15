@@ -52,12 +52,15 @@ IPDiagnosticsTraceRoute *cpeTR;
 extern CPEState cpeState;
 extern void *acsSession;
 static int checkstatus;
+static char buf_addr[256];
 
 void cpeStopTraceRt(void *handle)
 {
     static int state = 0;
     char cmd[32]={0};
     char cmd_result[32]={0};
+    int family = AF_INET;
+    InAddr result ;
     
     DiagState s = (DiagState)handle;
     DBGPRINT((stderr, "cpeStopTraceRt %d\n", s));
@@ -90,6 +93,8 @@ void cpeStopTraceRt(void *handle)
         state = 1;
     else if (s == eMaxHopExceeded)
         state = 2;
+    else if (s == eErrorInternal)
+        state = 3;
     else if ( state == 1)
     {
         state = 0;
@@ -100,11 +105,35 @@ void cpeStopTraceRt(void *handle)
         state = 0;
         cpeTR->diagnosticState = eMaxHopExceeded;
     }
+    else if ( state == 3)
+    {
+        state = 0;
+        cpeTR->diagnosticState = eErrorInternal;
+    }
     else
         cpeTR->diagnosticState = s;
 
     if(s == eComplete)
+    {
+        // check final ip addr
+        if(cpeTR->diagnosticState == eComplete)
+        {
+            if(!strncmp(cpeTR->protocolversion, "IPv6", 4))
+                family  = AF_INET6;
+            else
+                family = AF_INET;
+
+            dns_lookup(cpeTR->host, SOCK_DGRAM, family , &result);
+            //DBG_MSG("result : %s \n", writeInIPAddr(&result));
+            //DBG_MSG("buf_addr : %s \n",buf_addr);
+            
+            if(strcmp(writeInIPAddr(&result), buf_addr) != 0)
+            {
+                cpeTR->diagnosticState = eErrorInternal;
+            }
+        }
         cwmpDiagnosticComplete(); /* setup for next Inform */
+    }
 }
 
 static void doTRRead(void *arg)
@@ -147,8 +176,7 @@ static void doTRRead(void *arg)
             return; /* ignore information lines of input */
         }
         else if(NULL != strchr(buf,'*')){
-            DBGPRINT((stderr, "Timeout, Send cpeStopTraceRt->eHostError\n"));
-            cpeStopTraceRt((void*)eHostError);
+            //do nothing
         }
         else {
             char *cp = buf;
@@ -173,6 +201,8 @@ static void doTRRead(void *arg)
                         /* h points to Hop host name */;
                         p->host = GS_STRDUP(h);
                         p->hostAddress = GS_STRDUP(strtok(NULL, ")"));
+                        memset(buf_addr,0, sizeof(buf_addr));
+                        sprintf(buf_addr, p->hostAddress);
                         /*
                          * Find and accumulate the ResponseTime
                          */

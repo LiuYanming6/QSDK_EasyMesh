@@ -1638,6 +1638,8 @@ CPE_STATUS getIPDiagnosticsTraceRoute_DiagnosticsState(Instance *ip, char **valu
 			case eMaxHopExceeded:
 				*value = GS_STRDUP("Error_MaxHopCountExceeded");
 				break;
+                        case eErrorInternal:
+                                *value = GS_STRDUP("Error_Internal");
 			default:
 				break;
 		}
