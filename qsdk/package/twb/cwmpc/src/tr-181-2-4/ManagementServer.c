@@ -19,6 +19,7 @@
 #include "soapRpc/cwmpSession.h"
 #include "targetsys.h"
 #include "CPEWrapper.h"
+
 #define LOGFILE     "/dev/console"
 #define DBG_MSG(fmt, arg...) do { FILE *log_fp = fopen(LOGFILE, "w"); \
                                      fprintf(log_fp, "%s:%s:%d:" fmt "\n", __FILE__, __func__, __LINE__, ##arg); \
@@ -31,12 +32,27 @@ extern CPEState cpeState;
 /**@param ManagementServer_URL                                                      **/
 CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
 {
-    if ( strlen(value) > 0 && !streq(cpeState.acsURL, value) ){
+    if ( strlen(value) > 0 && !streq(cpeState.acsURL, value) )
+    {
         if (cpeState.acsURL)
         {
-            char cmd[256]={0};
-            char cmd_result[128]={0};
-            sprintf(cmd, "sed -i \'s~%s~%s~g\' %s", cpeState.acsURL , value , CPESTATE_FILENAME_DEFAULT );
+            char cmd[512]={0};
+            char cmd_result[64]={0};
+
+            char *str1 = NULL;
+            char *str2 = NULL;
+
+            if(strchr(cpeState.acsURL,'['))
+            {
+                str1 = str_replace(cpeState.acsURL, "[","\\[");
+                str2 = str_replace(str1, "]", "\\]");
+                sprintf(cmd, "sed -i \'s~%s~%s~g\' %s", str2 , value , CPESTATE_FILENAME_DEFAULT );
+            }
+
+            else
+            {
+                sprintf(cmd, "sed -i \'s~%s~%s~g\' %s", cpeState.acsURL , value , CPESTATE_FILENAME_DEFAULT );
+            }
             cmd_popen(cmd,cmd_result);
             GS_FREE(cpeState.acsURL);
             cpeState.acsURL = GS_STRDUP(value);
@@ -46,6 +62,7 @@ CPE_STATUS setManagementServer_URL(Instance *ip, char *value)
 
             setTimer(CPEReboot, NULL, 60*1000);
         }
+
         if ( cwmpIsACSSessionActive() )   /* only set this if a session is active. May be initializing. */
             cwmpSetPending(PENDING_ACSCHANGE);
     }

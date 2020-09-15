@@ -256,5 +256,6 @@ int get_uci_iface_name (int role , int id);
 int character_check (char *str);
 unsigned int util_generate_random_num(void);
 void randomstring(char *rstring,int length);
+char *str_replace (char *source, char *find,  char *rep);
 #endif
 
