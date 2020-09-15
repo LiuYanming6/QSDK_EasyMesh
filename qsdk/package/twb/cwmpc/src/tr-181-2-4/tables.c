@@ -939,14 +939,13 @@ CPEGETFUNC(getWiFiAccessPoint_SSIDAdvertisementEnabled);
 CPEGETFUNC(getWiFiAccessPoint_AssociatedDeviceNumberOfEntries);
 CPEGETFUNC(getWiFiAccessPoint_ParentAPMAC);
 CPEGETFUNC(getWiFiAccessPoint_CAPMODE);
-
-#if 0
 CPESETFUNC(setWiFiAccessPoint_Enable);
+#if 0
 CPESETFUNC(setWiFiAccessPoint_SSIDAdvertisementEnabled);
 #endif
 
 CWMPParam WiFiAccessPoint_Params[]={
-	{ "Enable", getWiFiAccessPoint_Enable, NULL, NULL, RPC_R, eBoolean, 0, 0},
+	{ "Enable", getWiFiAccessPoint_Enable, setWiFiAccessPoint_Enable, NULL, RPC_R, eBoolean, 0, 0},
 	{ "Status", getWiFiAccessPoint_Status, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "SSIDReference", getWiFiAccessPoint_SSIDReference, NULL, NULL, RPC_R,  eString, 0, 256},
 	{ "SSIDAdvertisementEnabled", getWiFiAccessPoint_SSIDAdvertisementEnabled, NULL, NULL, RPC_R, eBoolean, 0, 0},

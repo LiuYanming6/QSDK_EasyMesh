@@ -549,8 +549,8 @@ void refreshAssociatedDeviceinstances(void)
             {
                 COPYSTR(eassociateddevice->mACAddress, clients_2g[j-1].mac);
                 eassociateddevice->authenticationState = (clients_2g[j-1].state == '1') ? 1:0;
-                eassociateddevice->lastDataDownlinkRate = atoi(clients_2g[j-1].rx);
-                eassociateddevice->lastDataUplinkRate = atoi(clients_2g[j-1].tx);
+                eassociateddevice->lastDataDownlinkRate = atoi(clients_2g[j-1].rx) * 1024;
+                eassociateddevice->lastDataUplinkRate = atoi(clients_2g[j-1].tx) * 1024;
                 eassociateddevice->active = (clients_2g[j-1].idle == '1') ? 1:0;
                 eassociateddevice->signalStrength = clients_2g[j-1].rssi;
             }
@@ -572,8 +572,8 @@ void refreshAssociatedDeviceinstances(void)
             {
                 COPYSTR(eassociateddevice->mACAddress, clients_2g_backhaul[j-1].mac);
                 eassociateddevice->authenticationState = (clients_2g_backhaul[j-1].state == '1') ? 1:0;
-                eassociateddevice->lastDataDownlinkRate = atoi(clients_2g_backhaul[j-1].rx);
-                eassociateddevice->lastDataUplinkRate = atoi(clients_2g_backhaul[j-1].tx);
+                eassociateddevice->lastDataDownlinkRate = atoi(clients_2g_backhaul[j-1].rx) * 1024;
+                eassociateddevice->lastDataUplinkRate = atoi(clients_2g_backhaul[j-1].tx) * 1024;
                 eassociateddevice->active = (clients_2g_backhaul[j-1].idle == '1') ? 1:0;
                 eassociateddevice->signalStrength = clients_2g_backhaul[j-1].rssi;
             }
@@ -597,8 +597,8 @@ void refreshAssociatedDeviceinstances(void)
             {
                 COPYSTR(eassociateddevice->mACAddress, clients_5g[j-1].mac);
                 eassociateddevice->authenticationState = (clients_5g[j-1].state == '1') ? 1:0;
-                eassociateddevice->lastDataDownlinkRate = atoi(clients_5g[j-1].rx);
-                eassociateddevice->lastDataUplinkRate = atoi(clients_5g[j-1].tx);
+                eassociateddevice->lastDataDownlinkRate = atoi(clients_5g[j-1].rx) * 1024;
+                eassociateddevice->lastDataUplinkRate = atoi(clients_5g[j-1].tx) * 1024;
                 eassociateddevice->active = (clients_5g[j-1].idle == '1') ? 1:0;
                 COPYSTR(eassociateddevice->signalStrength , clients_5g[j-1].rssi);
             }
@@ -620,8 +620,8 @@ void refreshAssociatedDeviceinstances(void)
             {
                 COPYSTR(eassociateddevice->mACAddress, clients_5g_backhaul[j-1].mac);
                 eassociateddevice->authenticationState = (clients_5g_backhaul[j-1].state == '1') ? 1:0;
-                eassociateddevice->lastDataDownlinkRate = atoi(clients_5g_backhaul[j-1].rx);
-                eassociateddevice->lastDataUplinkRate = atoi(clients_5g_backhaul[j-1].tx);
+                eassociateddevice->lastDataDownlinkRate = atoi(clients_5g_backhaul[j-1].rx) * 1024;
+                eassociateddevice->lastDataUplinkRate = atoi(clients_5g_backhaul[j-1].tx) * 1024;
                 eassociateddevice->active = (clients_5g_backhaul[j-1].idle == '1') ? 1:0;
                 COPYSTR(eassociateddevice->signalStrength , clients_5g_backhaul[j-1].rssi);
             }

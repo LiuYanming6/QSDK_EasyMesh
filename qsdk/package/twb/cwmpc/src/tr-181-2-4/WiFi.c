@@ -620,22 +620,20 @@ CPE_STATUS setWiFiAccessPoint_Enable(Instance *ip, char *value)
 {
     WiFiAccessPoint *p = (WiFiAccessPoint *)ip->cpeData;
     if ( p ){
-#if 0
         char cmd[128]={0};
         char cmd_result[128]={0};
 
         p->enable=testBoolean(value);
         if ( p->enable)
         {
-            sprintf(cmd, "ifconfig ath%s up", get_topology_iface_name(ip->id-1) );
+            sprintf(cmd, "ifconfig ath%s up", get_topology_iface_name(role, ip->id-1) );
             cmd_popen(cmd, cmd_result);
         }
         else
         {
-            sprintf(cmd, "ifconfig ath%s down", get_topology_iface_name(ip->id-1) );
+            sprintf(cmd, "ifconfig ath%s down", get_topology_iface_name(role, ip->id-1) );
             cmd_popen(cmd, cmd_result);
         }
-#endif
     }
     return CPE_ERR;
 }
