@@ -16,7 +16,7 @@ config internal languages
 	
 config internal sauth
 	option sessionpath "/tmp/luci-sessions"
-	option sessiontime 180
+	option sessiontime 3600
 	
 config internal ccache
 	option enable 1

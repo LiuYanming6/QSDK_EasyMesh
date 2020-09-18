@@ -107,6 +107,7 @@
   <%-= css %>
   </style>
   <% end -%>
+  <script src="<%=resource%>/xhr.js"></script>
  </head>
 
  <body class="lang_<%=luci.i18n.context.lang%> <%- if node then %><%= striptags( node.title ) %><%- end %>">
