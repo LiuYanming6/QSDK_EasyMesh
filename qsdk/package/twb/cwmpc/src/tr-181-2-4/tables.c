@@ -945,7 +945,7 @@ CPESETFUNC(setWiFiAccessPoint_SSIDAdvertisementEnabled);
 #endif
 
 CWMPParam WiFiAccessPoint_Params[]={
-	{ "Enable", getWiFiAccessPoint_Enable, setWiFiAccessPoint_Enable, NULL, RPC_R, eBoolean, 0, 0},
+	{ "Enable", getWiFiAccessPoint_Enable, setWiFiAccessPoint_Enable, NULL, RPC_RW, eBoolean, 0, 0},
 	{ "Status", getWiFiAccessPoint_Status, NULL, NULL, RPC_R, eString, 0, 0},
 	{ "SSIDReference", getWiFiAccessPoint_SSIDReference, NULL, NULL, RPC_R,  eString, 0, 256},
 	{ "SSIDAdvertisementEnabled", getWiFiAccessPoint_SSIDAdvertisementEnabled, NULL, NULL, RPC_R, eBoolean, 0, 0},
