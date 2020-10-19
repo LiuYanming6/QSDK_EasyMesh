@@ -34,6 +34,7 @@ function m.on_commit(map)
 
 			if luci.sys.user.setpasswd(luci.dispatcher.context.authuser, v1) == 0 then
 				m.message = translate("Password successfully changed!")
+				m.redirect = luci.dispatcher.build_url("admin", "logout")
 			else
 				m.message = translate("Unknown Error, password not changed!")
 			end
