@@ -125,4 +125,28 @@ end
 
 end
 
-return m
+if fs.access("/etc/config/luci") then                                                                                                    
+m3 = Map("luci", "")                                                                                              
+s = m3:section(NamedSection, "sauth", "")                                                                   
+s.addremove = false                    
+s.anonymous = true                                                                                
+                                                                                       
+st = s:option(Value, "sessiontime", translate("Idle Time Out"),                          
+                translate("[Range: 1 - 999] Minutes"))            
+st.datatype = "range(1,999)"                                                                 
+                                                                                
+function st.cfgvalue(self, section)
+        return m3.uci:get("luci", "sauth", "sessiontime") / 60                        
+end                    
+                         
+function st.write(self, section, value)                                                                          
+        local value1 = m3.uci:get("luci", "sauth", "sessiontime") / 60
+        if value ~= tostring(value1) then                     
+        m3.uci:set("luci", "sauth", "sessiontime", value * 60)                                            
+        m3.redirect = luci.dispatcher.build_url("admin", "logout")
+        end        
+end                                      
+ 
+end
+
+return m, m3
