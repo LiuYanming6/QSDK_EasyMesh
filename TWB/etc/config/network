@@ -12,6 +12,7 @@ config interface 'lan'
     option type 'bridge'
     option proto 'dhcp'
     option ieee1905managed '1'
+    option multicast_querier '0'
 
 config interface 'lan6'
     option ifname 'br-lan'

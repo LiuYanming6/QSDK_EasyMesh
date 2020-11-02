@@ -59,6 +59,15 @@ start(){
 		uci commit tr069
 	fi
 ######################################################################
+	#For network use
+	multicast_querier=`uci get network.lan.multicast_querier`
+	if test -z "$multicast_querier"
+	then
+		echo "hello.init: network multicast_querier is empty, set to 0"
+		uci set network.lan.multicast_querier="0"
+		uci commit network
+	fi
+######################################################################
 }
 
 #stop(){
