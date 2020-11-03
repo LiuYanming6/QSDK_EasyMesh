@@ -168,6 +168,14 @@ function action_packages()
 end
 
 function action_flashops()
+
+    file = io.open("/etc/shadow","r")                                    
+    str_shadow = file:read()                                                                          
+    file:close()                                                                             
+    if string.match(str_shadow, "admin:$1$reliance$7xYhkhthA1bV2bQlrNa1n0") then
+        luci.http.redirect(luci.dispatcher.build_url("admin", "system", "admin"))      
+    else   
+
 	local sys = require "luci.sys"
 	local fs  = require "nixio.fs"
 
@@ -298,6 +306,7 @@ function action_flashops()
 			upgrade_avail = upgrade_avail
 		})
 	end
+    end
 end
 
 function action_passwd()
