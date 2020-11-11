@@ -16,6 +16,7 @@
  *----------------------------------------------------------------------*/
 
 int dns_lookup(const char *name, int sockType, int family, InAddr *);
+int dns_lookup2(const char *name, int sockType,  InAddr *);
 int dns_lookup_auto(const char *name, int sockType, unsigned int port, int family, InAddr *);
 void dns_set_cache_host(const char *name);
 void dns_set_cache_host_ip(const char *name, InAddr *ip);

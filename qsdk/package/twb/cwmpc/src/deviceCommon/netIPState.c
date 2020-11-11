@@ -1125,7 +1125,9 @@ EthernetLink *cpeGetNetIPInfo(int discovery){
                 fprintf(stdout, "parserUrl fail\n");
                 return NULL;
             }
-		dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
+		//dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
+		dns_lookup2( host, SOCK_DGRAM, &cpeState.acsIPAddress );
+
         COPYSTR(cpeState.stunURL, writeInIPAddr(&cpeState.acsIPAddress));
 		//}
 		SET_SockADDR(acsp, htons(port), &cpeState.acsIPAddress);

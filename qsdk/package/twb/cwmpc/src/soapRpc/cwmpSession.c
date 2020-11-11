@@ -1589,7 +1589,8 @@ void updateConnection(void *handle)
         if (www_ParseUrl(cpeState.acsURL, proto, host, &port, uri) < 0) {
             fprintf(stdout, "parserUrl fail\n");
         }
-        dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
+        //dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
+        dns_lookup2(host, SOCK_DGRAM,  &cpeState.acsIPAddress);
 
         setTimer(retryACSInform, NULL, 1*1000);
 }

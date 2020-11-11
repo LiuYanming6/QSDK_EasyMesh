@@ -45,6 +45,7 @@
 
 void cpeLog(int level, const char *fmt, ...);
 int dns_lookup(const char *name, int sockType, int family, InAddr *res);
+int dns_lookup2(const char *name, int sockType,  InAddr *);
 int dns_lookup_auto(const char *name, int sockType, unsigned int port, int family, InAddr *);
 int dns_get_next_ip( const char *name, InAddr *res);
 
@@ -571,8 +572,9 @@ tWgetInternal *wget_Connect(const char *url, EventHandler callback, void *handle
 	wg->port = port;
 	if (strlen(wg->uri)== 0)
 	    strcpy(wg->uri, "/");
-	if (dns_lookup_auto(wg->host, SOCK_STREAM, htons(wg->port), AF_UNSPEC, &wg->host_addr)) {
+	//if (dns_lookup_auto(wg->host, SOCK_STREAM, htons(wg->port), AF_UNSPEC, &wg->host_addr)) {
 	//if (dns_lookup(wg->host, SOCK_STREAM, htons(wg->port), AF_UNSPEC, &wg->host_addr)) {
+    if (dns_lookup2(wg->host, SOCK_STREAM,  &wg->host_addr)) {
 		cpeLog(LOG_DEBUG, "Host IP address: %s", writeInIPAddr(&wg->host_addr));
 	    /* immediate return requires special handling. */
 	    int res; int fd;

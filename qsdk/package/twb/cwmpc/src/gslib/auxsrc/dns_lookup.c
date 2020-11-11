@@ -41,7 +41,18 @@
 
 #include <net/if.h>
 #include <sys/ioctl.h>
+#include <dirent.h>
 
+
+int IPv6_iter;
+int IPv4_iter;
+
+#define IPV6_ADDR_GLOBAL    0x0000U  
+#define IPV6_ADDR_LOOPBACK  0x0010U  
+#define IPV6_ADDR_LINKLOCAL 0x0020U  
+#define IPV6_ADDR_SITELOCAL 0x0040U  
+  
+#define IPV6_ADDR_COMPATv4  0x0080U  
 /*
  * The macro USE_GETADDRINFO will compile the DNS functions to use the
  * getaddrinfo() library call instead of the gethostbyname() function.
@@ -58,6 +69,7 @@
 
 #include "../src/utils.h"
 #include "cpelog.h"
+#include "../../tr111/stun.h"
 //#define DEBUG
 #ifdef DEBUG
 #define DBGPRINT(X) fprintf X
@@ -565,3 +577,239 @@ int check_v4_v6(char *hostname)
 }
 
 #endif
+/*************************************************************************
+Function Name : int get_iPV6_inteface_status()
+Description : Get to know the IPv6 status is up or down
+Input : (void)
+Return : return value of 1 if UP or else return zero if down/disable
+Crated Date : 19-06-2013
+Created By : Narendra Badhekar Email: narendra.badhekar@ril.com
+***************************************************************************/
+
+int get_IPV6_inteface_status(const char *ifname) 
+{
+    FILE *f;
+    int  scope, prefix;
+    unsigned char ipv6[16];
+    char dname[IFNAMSIZ];
+    char address[INET6_ADDRSTRLEN];
+    char *scopestr;
+
+    f = fopen("/proc/net/if_inet6", "r");
+    if (f == NULL) 
+    {
+        return 0;
+    }
+
+    while 
+    (19 == fscanf(f, " %2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx %*x %x %x %*x %s",
+    &ipv6[0],
+    &ipv6[1],
+    &ipv6[2],
+    &ipv6[3],
+    &ipv6[4],
+    &ipv6[5],
+    &ipv6[6],
+    &ipv6[7],
+    &ipv6[8],
+    &ipv6[9],
+    &ipv6[10],
+    &ipv6[11],
+    &ipv6[12],
+    &ipv6[13],
+    &ipv6[14],
+    &ipv6[15],
+    &prefix,
+    &scope,
+    dname)) 
+    {
+        if (strcmp(ifname, dname) != 0) 
+        {
+            continue;
+        }
+
+        if (inet_ntop(AF_INET6, ipv6, address, sizeof(address)) == NULL) 
+        {
+            continue;
+        }
+
+        switch (scope) 
+        {
+            case IPV6_ADDR_GLOBAL:
+            scopestr = "Global";
+            break;
+            case IPV6_ADDR_LINKLOCAL:
+            scopestr = "Link";
+            break;
+            case IPV6_ADDR_SITELOCAL:
+            scopestr = "Site";
+            break;
+            case IPV6_ADDR_COMPATv4:
+            scopestr = "Compat";
+            break;
+            case IPV6_ADDR_LOOPBACK:
+            scopestr = "Host";
+            break;
+            default:
+            scopestr = "Unknown";
+        }
+
+        if(strcmp(scopestr, "Global") == 0)
+        {
+            cpeLog(LOG_INFO,"IPv6 address: %s, prefix: %d, scope: %s\n", address, prefix, scopestr);
+            fclose(f);
+            return 1;
+        }
+    /* else
+    {
+    printf("IPv6 Status Failed \n");
+    return FAILED;
+    }
+    */
+    }
+    
+    fclose(f);
+    cpeLog(LOG_INFO,"Device doesn't have IPv6 address");
+    return 0;
+}
+
+int dns_lookup2(const char *name, int sockType, InAddr *result)
+{
+    struct addrinfo *r;
+    struct addrinfo hints;
+    //char buf[16];
+    DIR *dir;
+    struct dirent *de;
+    int ipv6_status = 0;
+    int status=-1;
+
+    result->inFamily = 0;
+    if ( readInIPAddr(result, name) > 0 )
+    {
+        /* already a digit string */
+        return 1;
+    } 
+    else 
+    {
+        memset(&hints, 0, sizeof(struct addrinfo));
+        hints.ai_flags = AI_ADDRCONFIG;
+        //hints.ai_family = family;
+        hints.ai_socktype = sockType;
+        if ( getaddrinfo( name, NULL, &hints, &r ) == 0 )
+        {
+            HostCache *hc;
+            if ( (hc = findCache(name)))
+            {
+                updateCache(result, hc, r);
+            }
+            else 
+            {
+                if ( lastHost )
+                    freeHostCache(lastHost);
+                if ( (lastHost = createCacheEntry(name, NULL)) )
+                {
+                    updateCache(result, lastHost, r);
+                    DBGPRINT((stdout, "No cache set return %s\n", writeInIPAddr(result)));
+                }
+            }
+            freeaddrinfo(r);
+            //return 1;
+            
+        } 
+        else 
+        {
+            clearInIPAddr(result);
+        }
+    }
+    dir = opendir("/sys/class/net/");
+    if (dir == NULL) 
+    {
+        return -1;
+    }
+
+    while (NULL != (de = readdir(dir))) 
+    {
+        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0) 
+        {
+            continue;
+        }
+
+        if(strcmp(de->d_name, "br-lan") == 0) 
+        {
+            ipv6_status =get_IPV6_inteface_status(de->d_name);
+            cpeLog (LOG_DEBUG,"IPv6 status =%d of internface %s \n",ipv6_status,de->d_name);
+        }
+    }
+
+    if (result != NULL)
+    {
+        if(ipv6_status == 1)
+        {
+                if(IPv6_iter < 2)
+                {
+                    while(result->inFamily == AF_INET)
+                    {
+                        IPv6_iter++;
+                        dns_get_next_ip(name, result);
+                    }
+
+                    if(result->inFamily == 0 )
+                                IPv6_iter++;
+
+                    cpeLog (LOG_INFO,"IPv6 Iteration is = %d\n", IPv6_iter);
+                    cpeLog (LOG_INFO,"dns_lookup(%s) = [%s]\n", name, writeInIPAddr(result));
+                    status=closedir(dir);
+                    if(status==-1)
+                    {
+                        DBGLOG((LOG_ERR,"pclose error :at line %d in function %s()",__LINE__,__FUNCTION__));
+                    }
+
+                    return 1;
+                }
+        }
+
+        if(IPv4_iter < 2)
+        {
+            while(result->inFamily == AF_INET6)
+            {
+                IPv4_iter++;
+                dns_get_next_ip(name, result);
+                reStartStun();
+            }
+
+            if(result->inFamily == 0 )
+                    IPv4_iter++;
+        }
+        
+        if(IPv4_iter == 2)
+        {
+            IPv6_iter=0;
+            IPv4_iter=0;
+
+
+            cpeLog (LOG_INFO,"IPv4 Iteration is = %d\n", IPv4_iter);
+            cpeLog (LOG_INFO,"dns_lookup(%s) = %s\n", name, writeInIPAddr(result));
+
+            status=closedir(dir);
+            if(status==-1)
+            {
+                DBGLOG((LOG_ERR,"pclose error :at line %d in function %s()",__LINE__,__FUNCTION__));
+            }
+            return 1;
+        }
+        else
+        {
+            IPv4_iter=0;
+            cpeLog (LOG_INFO,"dns_lookup(%s) = %s\n", name, writeInIPAddr(result));
+            status=closedir(dir);
+            if(status==-1)
+            {
+                DBGLOG((LOG_ERR,"pclose error :at line %d in function %s()",__LINE__,__FUNCTION__));
+            }
+            return 1;
+        }
+
+    }
+    return -1;
+}
+
