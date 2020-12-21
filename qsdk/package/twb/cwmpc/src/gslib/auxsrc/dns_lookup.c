@@ -747,7 +747,7 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
         {
                 if(IPv6_iter < 2)
                 {
-                    while(result->inFamily == AF_INET)
+                    while(result->inFamily == AF_INET6)
                     {
                         IPv6_iter++;
                         dns_get_next_ip(name, result);
@@ -770,7 +770,7 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
 
         if(IPv4_iter < 2)
         {
-            while(result->inFamily == AF_INET6)
+            while(result->inFamily == AF_INET)
             {
                 IPv4_iter++;
                 dns_get_next_ip(name, result);
