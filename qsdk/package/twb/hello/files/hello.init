@@ -68,6 +68,16 @@ start(){
 		uci commit network
 	fi
 ######################################################################
+	#For rfs_hash use
+	rfs_ro_hash=`state_cfg get rfs_ro_hash`
+	if test -z "$rfs_ro_hash"
+	then
+		dd if=/dev/mtd3 of=/tmp/rootfs_ro.bin bs=1k count=12416
+		md5=`md5sum /tmp/rootfs_ro.bin`
+		rm /tmp/rootfs_ro.bin
+		state_cfg set rfs_ro_hash $md5
+	fi	
+######################################################################
 }
 
 #stop(){
