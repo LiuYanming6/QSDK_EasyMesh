@@ -1113,6 +1113,7 @@ EthernetLink *cpeGetNetIPInfo(int discovery){
     SockAddrStorage na;
     struct sockaddr_in *np = (struct sockaddr_in *)&na;
     sa_family_t afamily;
+    int respDnsLookup=0;
 
     /*  */
 	clearInIPAddr( &wanIP );
@@ -1126,13 +1127,15 @@ EthernetLink *cpeGetNetIPInfo(int discovery){
                 return NULL;
             }
 		//dns_lookup_auto( host, SOCK_DGRAM, htons(port), AF_UNSPEC, &cpeState.acsIPAddress );
-		dns_lookup2( host, SOCK_DGRAM, &cpeState.acsIPAddress );
+		respDnsLookup=dns_lookup2( host, SOCK_DGRAM, &cpeState.acsIPAddress );
 
         COPYSTR(cpeState.stunURL, writeInIPAddr(&cpeState.acsIPAddress));
 		//}
 		SET_SockADDR(acsp, htons(port), &cpeState.acsIPAddress);
 		if ( (fd=socket(cpeState.acsIPAddress.inFamily, SOCK_DGRAM, 0))<0 ){
 			cpeLog(LOG_ERR, "cpeGetNetIPInfo: Unable to create socket");
+			cpeLog(LOG_ERR, "errno string: %s", strerror(errno));
+			/*cpeLog(LOG_ERR, "socket fd: %d", fd);*/
 			return NULL;
 		}
 		/* since this is a DGRAM connection there shouldn't be any traffic */

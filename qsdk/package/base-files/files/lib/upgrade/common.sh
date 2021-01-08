@@ -278,6 +278,11 @@ do_upgrade() {
 	# TWB Angus: Sending SIGUSR1 after sysupgrade start
     	v "Sending M Dowloand And 7 Transfer to tr069 server"
     	killall -SIGUSR1 cwmpc
+        # TWB Jay: for test, and can evaluate if it is required to resend SIGUSR1 signal in busy environment
+        #sleep 10
+        #killall -SIGUSR1 cwmpc
+        #sleep 10
+        #killall -SIGUSR1 cwmpc
 
 	[ -n "$DELAY" ] && sleep "$DELAY"
 	ask_bool 1 "Reboot" && {

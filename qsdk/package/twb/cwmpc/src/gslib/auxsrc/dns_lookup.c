@@ -510,15 +510,12 @@ int dns_lookup_auto(const char *name, int sockType, unsigned int port, int famil
 // Check the hostname Use v6 or v4
 int check_v4_v6(char *hostname)
 {
-
     struct addrinfo hint, *res, *p;
     int err;
-
 
     memset(&hint, 0, sizeof hint);
     hint.ai_family = AF_UNSPEC;
     hint.ai_socktype = SOCK_STREAM;
-
 
     err = getaddrinfo(hostname, "http", &hint, &res);
     if(err != 0) 
@@ -572,7 +569,7 @@ int check_v4_v6(char *hostname)
 
      if (i > 0)  // ipv6
         return 1;
-     else // ipv4
+     else        // ipv4
         return 0;
 }
 
@@ -676,12 +673,17 @@ int get_IPV6_inteface_status(const char *ifname)
 int dns_lookup2(const char *name, int sockType, InAddr *result)
 {
     struct addrinfo *r;
+    struct addrinfo *res;
+    struct addrinfo *pres=NULL;
     struct addrinfo hints;
     //char buf[16];
     DIR *dir;
     struct dirent *de;
     int ipv6_status = 0;
     int status=-1;
+    int errcode;
+    int isv6found=0;
+    int isv4found=0; /*reserved when necessary*/
 
     result->inFamily = 0;
     if ( readInIPAddr(result, name) > 0 )
@@ -697,6 +699,8 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
         hints.ai_socktype = sockType;
         if ( getaddrinfo( name, NULL, &hints, &r ) == 0 )
         {
+            cpeLog (LOG_DEBUG, "getaddrinfo() succeed in DNS lookup2\n");
+
             HostCache *hc;
             if ( (hc = findCache(name)))
             {
@@ -714,7 +718,6 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
             }
             freeaddrinfo(r);
             //return 1;
-            
         } 
         else 
         {
@@ -741,20 +744,83 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
         }
     }
 
+    /*if(ipv6_status==1 && result->inFamily==0)*/
+    if(ipv6_status==1)
+    {
+      /*cpeLog(LOG_DEBUG,"IPv6 status equals 1 and result inFamily equals 0)\n");*/
+      cpeLog(LOG_DEBUG,"IPv6 status equals 1, etc. \n");
+	  
+       errcode = getaddrinfo( name, NULL, &hints, &res );  //0: succeed
+       if (errcode != 0)
+       {
+		  cpeLog (LOG_ERR,"Jay1230 errcode of getaddrinfo is %d\n", errcode);
+		  clearInIPAddr(result); //Jay1230 note how GS handles the result to avoid leakage
+          return -1;
+       }
+       else
+       {
+         if (res != NULL)
+         pres = res;
+       }
+	  
+	  
+      //if( getaddrinfo( name, NULL, &hints, &res ) == 0 )
+      //{
+        while (pres && !isv6found)
+        {
+          result->inFamily = pres->ai_family;
+          if ( pres->ai_family == PF_INET6)	/*AF,PF*/
+          {
+             /*result->u.in6Addr*/
+             memcpy(&result->u.in6Addr,&((struct sockaddr_in6 *) pres->ai_addr)->sin6_addr,sizeof(struct in6_addr));
+             isv6found=1;
+             break;
+          }
+          else if ( pres->ai_family == PF_INET)	/*AF,PF*/
+          {
+             /*result->u.inAddr*/
+             memcpy(&result->u.inAddr,&((struct sockaddr_in *) pres->ai_addr)->sin_addr,sizeof(struct in_addr));
+             isv4found=1;
+          }
+          else
+          {
+             /*Reserved*/
+          }
+          pres = pres->ai_next;
+		  /*cpeLog (LOG_DEBUG,"Leaving while (pres && !isv6found)\n");*/
+        }  /*end of while ()*/
+
+        if (res != NULL)
+        {
+          freeaddrinfo(res);   /*same as the flow above*/
+        }
+      //}
+      //else
+      //{
+      //  clearInIPAddr(result); /*same as the flow above*/
+      //}
+    }
+
     if (result != NULL)
     {
+        cpeLog (LOG_DEBUG,"result in dns_lookup2 != NULL \n"); 
+        cpeLog (LOG_DEBUG,"ipv6_status = %d \n", ipv6_status);
+        cpeLog (LOG_DEBUG,"result->inFamily  = %d \n", result->inFamily);
+		
         if(ipv6_status == 1)
         {
                 if(IPv6_iter < 2)
                 {
-                    while(result->inFamily == AF_INET6)
+                    /*while(result->inFamily == AF_INET6)*/
+		    if(result->inFamily == AF_INET6)
                     {
                         IPv6_iter++;
-                        dns_get_next_ip(name, result);
+			/*Risk: removed the buggy function dns_get_next_ip(), it has risk here.*/
+                        /*dns_get_next_ip(name, result);*/
                     }
 
                     if(result->inFamily == 0 )
-                                IPv6_iter++;
+                                IPv6_iter++;/*Note: why???*/
 
                     cpeLog (LOG_INFO,"IPv6 Iteration is = %d\n", IPv6_iter);
                     cpeLog (LOG_INFO,"dns_lookup(%s) = [%s]\n", name, writeInIPAddr(result));
@@ -770,10 +836,12 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
 
         if(IPv4_iter < 2)
         {
-            while(result->inFamily == AF_INET)
+            /*while(result->inFamily == AF_INET)*/
+            if(result->inFamily == AF_INET)
             {
                 IPv4_iter++;
-                dns_get_next_ip(name, result);
+		/*Risk: removed the buggy function dns_get_next_ip(), it has risk here. Need to do more tests*/
+                /*dns_get_next_ip(name, result);*/
                 reStartStun();
             }
 
@@ -785,7 +853,6 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
         {
             IPv6_iter=0;
             IPv4_iter=0;
-
 
             cpeLog (LOG_INFO,"IPv4 Iteration is = %d\n", IPv4_iter);
             cpeLog (LOG_INFO,"dns_lookup(%s) = %s\n", name, writeInIPAddr(result));
