@@ -68,6 +68,9 @@ start(){
 		uci commit network
 	fi
 ######################################################################
+	#Set FWUP_STATE_OK
+	 	state_cfg set fwup_state 0
+######################################################################
 	#For rfs_hash use
 	rfs_ro_hash=`state_cfg get rfs_ro_hash`
 	if test -z "$rfs_ro_hash"
