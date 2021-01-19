@@ -52,6 +52,7 @@ extern char **cwmpConnReqUser;        /* linkage to Connection Request Credentia
 extern char **cwmpConnReqPW;
 extern StunState stunState;
 extern void *acsSession;
+extern int get_IPV6_inteface_status(const char *ifname);
 int dns_lookup(const char *name, int sockType, int family, InAddr *res);
 
 static void sendBindRequest(void *handle);
@@ -106,6 +107,8 @@ static UInt8 lastTid[16];
 static int updateStunState( StunResponse *sp )
 {
 	int changed = 0;
+	int ipv6status=0;
+        /*DBGPRINT((stderr, "entering updateStunState() ...\n"));*/
 	if ( stunState.natIP != sp->mappedAddr.ipv4.addr
 	   || stunState.natPort != sp->mappedAddr.ipv4.port ){
 		/* mapping changed */
@@ -119,8 +122,14 @@ static int updateStunState( StunResponse *sp )
 	    || sp->mappedAddr.ipv4.port != UDPCONNECTIONREQPORT ) {
 	    /* NAT is enabled */
 	    changed |= (stunState.natDetected != 1);
-	    stunState.natDetected = 1;
- 		DBGPRINT((stderr, "NAT detected\n"));
+            
+	   /*Jay, 20210111: add ONLY for Jio's special request for NAT Detected to be False when CRURL is IPv6*/
+	   ipv6status = get_IPV6_inteface_status("br-lan"); 
+	   if(ipv6status!=1) /*Suggestion: remove this line to return back to the original logic of GateSpace*/
+	   { 
+	       stunState.natDetected = 1;
+ 	       DBGPRINT((stderr, "NAT detected\n"));
+	   }
 	} else {
 		changed = stunState.natDetected == 1;
 		stunState.natDetected = 0;
