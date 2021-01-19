@@ -68,6 +68,16 @@ start(){
 		uci commit network
 	fi
 ######################################################################
+        #For check firmware version to enable/disable dropbear
+        fw_version=`cat /etc/openwrt_version | cut -c 13`
+        if [ "$fw_version" == "R" ]; then
+                uci set dropbear.@dropbear[0].enable="0"
+                uci commit dropbear
+        else
+                uci set dropbear.@dropbear[0].enable="1"
+                uci commit dropbear
+        fi
+######################################################################
 	#Set FWUP_STATE_OK
 	 	state_cfg set fwup_state 0
 ######################################################################
