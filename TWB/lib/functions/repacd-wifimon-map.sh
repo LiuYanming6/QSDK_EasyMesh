@@ -479,7 +479,7 @@ __repacd_wifimon_measure_link() {
                 #else
                     __repacd_wifimon_debug "Dynamic Mesh Formation: median rssi is better than -70dB. Forming the mesh"
                     uci set repacd.repacd.is_located='yes'
-                    acfg_tool acfg_set_sens_level wifi1 /-95
+                    acfg_tool acfg_set_sens_level wifi1 /-90
                 #fi
             fi
             ####
