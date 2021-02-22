@@ -4,8 +4,7 @@
 
 local fs = require "nixio.fs"
 
-m = Map("system", translate("Password"),
-	translate("Changes the administrator password for accessing the device"))
+m = Map("system", translate("Change Password"))
 
 s = m:section(TypedSection, "_dummy", "")
 s.addremove = false
