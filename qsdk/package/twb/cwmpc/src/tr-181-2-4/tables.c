@@ -746,7 +746,7 @@ CWMPParam ManagementServer_Params[]={
 	{ "STUNPassword", getManagementServer_STUNPassword, setManagementServer_STUNPassword, NULL, RPC_RW, eStringSetOnly, 0, 256},
 	{ "STUNMaximumKeepAlivePeriod", getManagementServer_STUNMaximumKeepAlivePeriod, setManagementServer_STUNMaximumKeepAlivePeriod, NULL, RPC_RW, eInt, 0, 0},
 	{ "STUNMinimumKeepAlivePeriod", getManagementServer_STUNMinimumKeepAlivePeriod, setManagementServer_STUNMinimumKeepAlivePeriod, NULL, RPC_RW, eUnsignedInt, 0, 0},
-	{ "NATDetected", getManagementServer_NATDetected, setManagementServer_NATDetected, NULL, RPC_R, eBoolean, DEFAULT_ACTIVE, 0},
+	{ "NATDetected", getManagementServer_NATDetected, setManagementServer_NATDetected, NULL, RPC_R, eBoolean, FORCED_INFORM|DEFAULT_ACTIVE, 0},
 	{ "AliasBasedAddressing", getManagementServer_AliasBasedAddressing, NULL, NULL, RPC_R, eBoolean, FORCED_INFORM, 0},
 	{ "InstanceMode", getManagementServer_InstanceMode, setManagementServer_InstanceMode, NULL, RPC_RW, eString, 0, 0},
 	{ "AutoCreateInstances", getManagementServer_AutoCreateInstances, setManagementServer_AutoCreateInstances, NULL, RPC_RW, eBoolean, 0, 0},

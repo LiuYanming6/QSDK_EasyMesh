@@ -43,9 +43,11 @@
 #include <sys/ioctl.h>
 #include <dirent.h>
 
+#include "../../tr111/tr111p2.h"
 
 int IPv6_iter;
 int IPv4_iter;
+extern StunState stunState;	//Note (depending on customer requirement): extern CPEState cpeState;
 
 #define IPV6_ADDR_GLOBAL    0x0000U  
 #define IPV6_ADDR_LOOPBACK  0x0010U  
@@ -670,6 +672,18 @@ int get_IPV6_inteface_status(const char *ifname)
     return 0;
 }
 
+int ping6check() //customer wants the IPv6 check to see if ONT's IPv6 network is workable or not.
+{
+    char result[30]={0};
+
+    cmd_popen("ping -6 www.google.com -c 2 -W 1 2> /dev/null |grep recei|awk -F ',' '{ print $2 }'|awk '{ print $1 }'", result);
+    cpeLog (LOG_DEBUG,"ping6check() = %s \n", result);
+    if( atoi(result) >= 1 ) //considering the unstable net sometimes, tolerate one lose
+        return 1;                        
+    else
+        return 0;
+}
+
 int dns_lookup2(const char *name, int sockType, InAddr *result)
 {
     struct addrinfo *r;
@@ -680,6 +694,7 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
     DIR *dir;
     struct dirent *de;
     int ipv6_status = 0;
+    int ping6_result = 0;
     int status=-1;
     int errcode;
     int isv6found=0;
@@ -740,55 +755,72 @@ int dns_lookup2(const char *name, int sockType, InAddr *result)
         if(strcmp(de->d_name, "br-lan") == 0) 
         {
             ipv6_status =get_IPV6_inteface_status(de->d_name);
-            cpeLog (LOG_DEBUG,"IPv6 status =%d of internface %s \n",ipv6_status,de->d_name);
+            cpeLog (LOG_DEBUG,"IPv6 status =%d of interface %s \n",ipv6_status,de->d_name);
         }
     }
 
     /*if(ipv6_status==1 && result->inFamily==0)*/
     if(ipv6_status==1)
     {
-      /*cpeLog(LOG_DEBUG,"IPv6 status equals 1 and result inFamily equals 0)\n");*/
-      cpeLog(LOG_DEBUG,"IPv6 status equals 1, etc. \n");
-	  
-       errcode = getaddrinfo( name, NULL, &hints, &res );  //0: succeed
-       if (errcode != 0)
-       {
-		  cpeLog (LOG_ERR,"Jay1230 errcode of getaddrinfo is %d\n", errcode);
-		  clearInIPAddr(result); //Jay1230 note how GS handles the result to avoid leakage
-          return -1;
-       }
-       else
-       {
-         if (res != NULL)
-         pres = res;
-       }
-	  
-	  
-      //if( getaddrinfo( name, NULL, &hints, &res ) == 0 )
-      //{
-        while (pres && !isv6found)
+        /*cpeLog(LOG_DEBUG,"IPv6 status equals 1 and result inFamily equals 0)\n");*/
+        cpeLog(LOG_DEBUG,"IPv6 status equals 1, etc. \n");
+ 
+        //net6 check and log the result
+        if ( ping6check())
         {
-          result->inFamily = pres->ai_family;
-          if ( pres->ai_family == PF_INET6)	/*AF,PF*/
-          {
-             /*result->u.in6Addr*/
-             memcpy(&result->u.in6Addr,&((struct sockaddr_in6 *) pres->ai_addr)->sin6_addr,sizeof(struct in6_addr));
-             isv6found=1;
-             break;
-          }
-          else if ( pres->ai_family == PF_INET)	/*AF,PF*/
-          {
-             /*result->u.inAddr*/
-             memcpy(&result->u.inAddr,&((struct sockaddr_in *) pres->ai_addr)->sin_addr,sizeof(struct in_addr));
-             isv4found=1;
-          }
-          else
-          {
-             /*Reserved*/
-          }
-          pres = pres->ai_next;
-		  /*cpeLog (LOG_DEBUG,"Leaving while (pres && !isv6found)\n");*/
-        }  /*end of while ()*/
+            ping6_result=1; //ping6 Pass
+	    cpeLog (LOG_DEBUG," in ping6check() PASS \n");
+	    //stunState.natDetected = 0; //add ONLY for Jio's special request for NAT Detected to be False when CRURL is IPv6. Remove it for other customers
+        }
+        else
+            ping6_result=0; //ping6 Fail
+
+        errcode = getaddrinfo( name, NULL, &hints, &res );  //0: succeed
+
+        if (errcode != 0)
+        {
+            cpeLog (LOG_ERR,"The errcode of getaddrinfo is %d\n", errcode);
+            clearInIPAddr(result); //note how GS handles the result to avoid leakage
+            return -1;
+        }
+        else
+        {
+            if (res != NULL)
+            pres = res;
+        }
+	  
+        //if( getaddrinfo( name, NULL, &hints, &res ) == 0 )
+        //{
+        while (pres && !isv6found) /*IPv6 DNS preferred when ping6 is successful*/
+        {
+            result->inFamily = pres->ai_family;
+            if ( (ping6_result==1) && (pres->ai_family==PF_INET6) )     /*AF,PF*/	//ping6 ok & found the IPv6 ACS addr 
+            {
+                cpeLog (LOG_DEBUG," (ping6_result==1) && (pres->ai_family==PF_INET6) \n");
+                /*result->u.in6Addr*/
+                memcpy(&result->u.in6Addr,&((struct sockaddr_in6 *) pres->ai_addr)->sin6_addr,sizeof(struct in6_addr));
+                isv6found=1;
+                //stopStun();              //Another option: Jio ever request stopStun(): in successful ping6 and the addr IPv6
+                stunState.natDetected = 0; //add ONLY for Jio's special request for NAT Detected to be False when CRURL is IPv6. Remove it for other customers
+                                           // Notes: Reliance responds they are NOT shared the details by Reliance ACS team. 
+                cpeLog (LOG_DEBUG,"stunState.natDetected = 0; \n");
+                break;	                   //to remove it or not .... it depends on customer requirement...
+            }
+            else if ( (ping6_result==0) && (pres->ai_family==PF_INET) ) /*AF,PF*/	//ping6 N/A, but found the IPv4 ACS addr 
+            {
+                cpeLog (LOG_DEBUG,"(ping6_result==0) && (pres->ai_family==PF_INET) \n");
+                /*result->u.inAddr*/
+                memcpy(&result->u.inAddr,&((struct sockaddr_in *) pres->ai_addr)->sin_addr,sizeof(struct in_addr));
+                isv4found=1;
+            }
+            else
+            {
+                /*Reserved*/
+                cpeLog (LOG_DEBUG, "Go next address in dns lookup2 \n");
+            }
+            pres = pres->ai_next;
+            /*cpeLog (LOG_DEBUG,"Leaving while (pres && !isv6found)\n");*/
+        }/*end of while ()*/
 
         if (res != NULL)
         {

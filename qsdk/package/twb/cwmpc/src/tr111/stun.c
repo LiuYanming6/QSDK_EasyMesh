@@ -107,7 +107,7 @@ static UInt8 lastTid[16];
 static int updateStunState( StunResponse *sp )
 {
 	int changed = 0;
-	int ipv6status=0;
+	//reverse int ipv6status=0;
         /*DBGPRINT((stderr, "entering updateStunState() ...\n"));*/
 	if ( stunState.natIP != sp->mappedAddr.ipv4.addr
 	   || stunState.natPort != sp->mappedAddr.ipv4.port ){
@@ -124,12 +124,12 @@ static int updateStunState( StunResponse *sp )
 	    changed |= (stunState.natDetected != 1);
             
 	   /*Jay, 20210111: add ONLY for Jio's special request for NAT Detected to be False when CRURL is IPv6*/
-	   ipv6status = get_IPV6_inteface_status("br-lan"); 
-	   if(ipv6status!=1) /*Suggestion: remove this line to return back to the original logic of GateSpace*/
-	   { 
+	   //reverse ipv6status = get_IPV6_inteface_status("br-lan"); 
+	   //reverse if(ipv6status!=1) /*Suggestion: remove this line to return back to the original logic of GateSpace*/
+	   //reverse { 
 	       stunState.natDetected = 1;
  	       DBGPRINT((stderr, "NAT detected\n"));
-	   }
+	   //reverse }
 	} else {
 		changed = stunState.natDetected == 1;
 		stunState.natDetected = 0;
