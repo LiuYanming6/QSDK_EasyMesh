@@ -755,12 +755,7 @@ void cpeRefreshCPEData(CPEState *cpe) {
 	char mac[30]={0};
 	char cmd[30]={0};
     int i;
-	if ( cpeGetNetIPInfo(0) == NULL) {
-		cpeLog(LOG_INFO, "cpeGetNetIPInfo(0) is NULL, the config.save is wrong, remove it and exit");
-		cpeLog(LOG_INFO, "Please run cwmpc again !");
-		system("rm -rf "CONFIG_FILENAME);
-		exit(0);
-	} else {
+	if ( cpeGetNetIPInfo(0) != NULL) {
 		if (!eqInIPAddr(&cpe->ipAddress, &wanIP)) {
 			/* IP Address has changed - notify those tasks watching for a change */
 			/* This notification is necessary to force STUN to reset it's state. */
