@@ -240,14 +240,15 @@ do_upgrade() {
 #	BACKUPJIOFW=0 #20190213 Remove backup firmware for next release
 	BACKUPJIOFW=1 #20190328 Enable backup firmware from now on.
 	if [ "$BACKUPJIOFW" -eq 1 ]; then
-
 	    v "Backup existing firmware into NAND flash"
-	    mtd write /dev/mtd2 /dev/mtd10
+            flash_erase /dev/mtd10 0 0
+            nandwrite -p /dev/mtd10 /dev/mtd2
             v "Backup Kernel completed"
-            mtd write /dev/mtd3 /dev/mtd11
+            flash_erase /dev/mtd11 0 0
+            nandwrite -p /dev/mtd11 /dev/mtd3
             v "Backup Rootfs completed"
 	    v "Set fwup_state to 1 (in process)"
-	    state_cfg set fwup_state 1	
+	    state_cfg set fwup_state 1
 	fi
 	#
 
