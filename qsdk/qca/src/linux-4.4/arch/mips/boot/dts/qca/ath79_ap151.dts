@@ -173,6 +173,11 @@
                                 };
 
                                 partition@2 {
+                                        label = "backup_config";
+                                        reg = <0x1000000 0x20000>;
+                                };
+
+                                partition@3 {
                                         label = "backup_all";
                                         reg = <0x0000000 0x8000000>;
                                 };

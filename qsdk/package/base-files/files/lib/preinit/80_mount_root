@@ -5,7 +5,9 @@
 do_mount_root() {
 	echo "Before mount_root"
 	echo "Set FWUP_STATE_NOK"
-	state_cfg set fwup_state 1
+	dd if=/dev/mtd12 of=/tmp/backup_config.img
+	printf "\x1" | dd conv=notrunc of=/tmp/backup_config.img bs=1
+	mtd write /tmp/backup_config.img /dev/mtd12
 	mount_root
 	boot_run_hook preinit_mount_root
 	[ -f /sysupgrade.tgz ] && {

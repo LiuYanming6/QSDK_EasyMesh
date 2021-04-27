@@ -79,7 +79,9 @@ start(){
         fi
 ######################################################################
 	#Set FWUP_STATE_OK
-	 	state_cfg set fwup_state 0
+		dd if=/dev/mtd12 of=/tmp/backup_config.img
+		printf "\x0" | dd conv=notrunc of=/tmp/backup_config.img bs=1
+		mtd write /tmp/backup_config.img /dev/mtd12
 ######################################################################
 	#For rfs_hash use
 	rfs_ro_hash=`state_cfg get rfs_ro_hash`
